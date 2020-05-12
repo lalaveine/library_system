@@ -1,0 +1,76 @@
+ <template>
+  <div class="reader-input">
+    <h1>Add a new reader</h1>
+    <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }" @submit="handleSubmit">
+      <a-form-item label="Name:">
+        <a-input
+          v-decorator="['name', { rules: [{ required: true, message: 'Please input name!' }] }]"
+          placeholder="Input reader's name"
+        />
+      </a-form-item>
+      <a-form-item label="Surname">
+        <a-input
+          v-decorator="['surname', { rules: [{ required: true, message: 'Please input surname!' }] }]"
+          placeholder="Input reader's name"
+        />
+      </a-form-item>
+      <a-form-item label="E-mail">
+        <a-input
+          v-decorator="['mail', { rules: [{
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              }, { required: true, message: 'Please input e-mail!' }] }]"
+          placeholder="Input reader's mail"
+        />
+      </a-form-item>
+      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-button type="primary" html-type="submit">Submit</a-button>
+      </a-form-item>
+    </a-form>
+  </div>
+</template>
+
+<script>
+import { Button, Form, Input } from "ant-design-vue";
+import { readerColumns as columns } from "@/constants.js";
+
+export default {
+  name: "BookSearch",
+  components: {
+    "a-button": Button,
+    "a-form": Form,
+    "a-input": Input,
+    "a-form-item": Form.Item
+  },
+  data() {
+    return {
+      formLayout: "horizontal",
+      form: this.$form.createForm(this, { name: "add-reader" }),
+      data: [],
+      columns,
+      isButtonDisabled: true
+    };
+  },
+  methods: {
+    handleSubmit(e) {
+      e.preventDefault();
+      this.form.validateFields((err, values) => {
+        if (!err) {
+          console.log("Received values of form: ", values);
+        }
+      });
+    }
+  }
+};
+</script>
+
+<style>
+.ant-form .ant-form-item-label {
+  text-align: left;
+}
+
+.reader-input {
+  /* width: 950px; */
+  padding: 15px;
+}
+</style>
