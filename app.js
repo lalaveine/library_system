@@ -3,9 +3,9 @@ const express = require('express');
 const app = express();
 const path = require('path')
 
-app.use(express.static('views'))
+// app.use(express.static('views'))
 
-app.set('view engine' , 'html')
+// app.set('view engine' , 'html')
 
 const PORT = process.env.PORT || 3000
 
