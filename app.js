@@ -24,7 +24,7 @@ app.use('/', router);
 // app.get('/about', (request, response) =>{
 // 	response.render('about')
 // })
-router.get('/test', (req, res) => res.sendFile(path.join(__dirname, '/public/dist/index.html')))
+router.get('/', (req, res) => res.sendFile(path.join(__dirname, '/public/dist/index.html')))
 
 
 
