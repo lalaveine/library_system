@@ -30,6 +30,38 @@ export const bookColumns = [
     }
   ];
 
+  export const journalColumns = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Book",
+      dataIndex: "book",
+      key: "book",
+      scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Reader",
+      dataIndex: "reader",
+      key: "reader",
+      scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      key: "age"
+    },
+    {
+      title: "Return date",
+      dataIndex: "mail",
+      key: "address 1",
+      ellipsis: true
+    }
+  ];
+
   export const readerColumns = [
     {
       title: "ID",

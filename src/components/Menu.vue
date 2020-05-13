@@ -9,9 +9,12 @@
       @click="handleClick"
     >
       <a-menu-item key="1">
-        <router-link to="/search">Search data</router-link>
+        <router-link to="/">Journal</router-link>
       </a-menu-item>
       <a-menu-item key="2">
+        <router-link to="/search">Search data</router-link>
+      </a-menu-item>
+      <a-menu-item key="3">
         <router-link to="/input">Input data</router-link>
       </a-menu-item>
     </a-menu>
