@@ -65,8 +65,8 @@ export const bookColumns = [
   export const readerColumns = [
     {
       title: "ID",
-      dataIndex: "id",
-      key: "id",
+      dataIndex: "reader_id",
+      key: "reader_id",
       scopedSlots: { customRender: "name" }
     },
     {
@@ -77,13 +77,19 @@ export const bookColumns = [
     },
     {
       title: "Surname",
-      dataIndex: "age",
-      key: "age"
+      dataIndex: "surname",
+      key: "surname"
+    },
+    {
+      title: "Middle name",
+      dataIndex: "middle_name",
+      key: "middle_name",
+      scopedSlots: { customRender: "name" }
     },
     {
       title: "E-mail",
-      dataIndex: "mail",
-      key: "address 1",
+      dataIndex: "email",
+      key: "email",
       ellipsis: true
     }
   ];

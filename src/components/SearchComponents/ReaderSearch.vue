@@ -30,6 +30,7 @@ import {
   Table
 } from "ant-design-vue";
 import { readerColumns as columns } from "@/constants.js";
+import axios from 'axios'
 
 export default {
   name: "BookSearch",
@@ -68,6 +69,12 @@ export default {
       }
       return true;
     }
+  },
+  mounted() {
+     axios
+      .get('http://localhost:5000/test')
+      .then(response => {let { data } = response
+      this.data = data });
   }
 };
 
