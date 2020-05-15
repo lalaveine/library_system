@@ -10,5 +10,4 @@ const config = {
 
 const client = new pg.Client(config);
 client.connect();
-
-export function getData() { return client.query("SELECT * FROM book_instance").then((result) => result.command) };
+module.exports =  client;
