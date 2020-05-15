@@ -24,7 +24,7 @@
         />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-button type="primary" html-type="submit" :disabled= "getButtonDisabled()">Submit</a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -59,6 +59,19 @@ export default {
           console.log("Received values of form: ", values);
         }
       });
+    },
+    getButtonDisabled() {
+      const fields = this.form.getFieldsValue();
+      const keys = Object.keys(this.form.getFieldsValue());
+      for (let key of keys) {
+        if (
+          (key !== "copies" && fields[key]) ||
+          (key === "copies" && typeof fields[key] === "number")
+        ) {
+          return false;
+        }
+      }
+      return true;
     }
   }
 };

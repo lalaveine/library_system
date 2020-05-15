@@ -27,6 +27,9 @@ export const bookColumns = [
       dataIndex: "address",
       key: "address 2",
       ellipsis: true
+    },
+    {
+      title:"Action"
     }
   ];
 

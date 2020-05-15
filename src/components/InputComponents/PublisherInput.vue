@@ -1,41 +1,43 @@
  <template>
-  <div class="content">
-    <h1>Book search</h1>
-    <hr>
+  <div class="reader-input">
+    <h1>Publisher</h1>
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }" @submit="handleSubmit">
-      <a-form-item label="Book name:">
+      <a-form-item label="Name:">
         <a-input
-          v-decorator="['book-name']"
-          placeholder="Input book name"
+          v-decorator="['title', { rules: [{ required: true, message: 'Please input publisher\'s name!' }] }]"
+          placeholder="Input publisher's name"
         />
       </a-form-item>
-      <a-form-item label="Number of copies:">
-        <a-input-number v-decorator="[ 'copies' ]" placeholder="Input number" />
+      <a-form-item label="title:">
+        <a-input
+          v-decorator="['bbk', { rules: [{ required: true, message: 'Please input title!' }] }]"
+          placeholder="Input book's title"
+        />
       </a-form-item>
-      <a-form-item label="Date:">
-        <a-date-picker v-decorator="[ 'data' ]" />
+        <a-form-item label="adress:">
+        <a-input
+          v-decorator="['adress', { rules: [{ required: true, message: 'Please input adress!' }] }]"
+          placeholder="Input library's adress"
+        />
       </a-form-item>
-      <a-form-item label="Rutern date:">
-        <a-date-picker v-decorator="[ 'return-date' ]" />
+        <a-form-item label="Email:">
+        <a-input
+          v-decorator="['Email', { rules: [{ required: true, message: 'Please input email adress!' }] }]"
+          placeholder="Input E-mail"
+        />
       </a-form-item>
+      
+      
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Submit</a-button>
+        <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Submit</a-button>
       </a-form-item>
     </a-form>
-    <a-table :columns="columns" :data-source="data"></a-table>
   </div>
 </template>
 
 <script>
-import {
-  Button,
-  Form,
-  Input,
-  InputNumber,
-  Table,
-  DatePicker
-} from "ant-design-vue";
-import { bookColumns as columns } from "@/constants.js";
+import { Button, Form, Input } from "ant-design-vue";
+import { readerColumns as columns } from "@/constants.js";
 
 export default {
   name: "BookSearch",
@@ -43,15 +45,12 @@ export default {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
-    "a-form-item": Form.Item,
-    "a-table": Table,
-    "a-input-number": InputNumber,
-    "a-date-picker": DatePicker
+    "a-form-item": Form.Item
   },
   data() {
     return {
       formLayout: "horizontal",
-      form: this.$form.createForm(this, { name: "book-search" }),
+      form: this.$form.createForm(this, { name: "add-reader" }),
       data: [],
       columns,
       isButtonDisabled: true
@@ -81,7 +80,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style>
@@ -89,16 +87,8 @@ export default {
   text-align: left;
 }
 
-.content {
+.reader-input {
+  /* width: 950px; */
   padding: 15px;
-}
-
-hr{
-  border: none;
-
-    margin-bottom: 20px;
-
-  background-color:rgba(217, 217, 217, 0.5);
-  height:1px;
 }
 </style>
