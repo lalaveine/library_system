@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    {{ data }}
     <Menu />
       <router-view></router-view>
   </div>
@@ -17,7 +18,10 @@ export default {
 //    SearchData,
     Menu
   },
-  router
+  router,
+  data() {
+    return { data: ''}
+  },
 };
 </script>
 
