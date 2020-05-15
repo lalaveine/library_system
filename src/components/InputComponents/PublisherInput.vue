@@ -62,6 +62,15 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
+          
+          const api = axios.create({baseURL: 'http://example.com'})
+          api.post('/user/12345', values)
+          .then(res => {
+              console.log(res)
+          })
+          .catch(error => {
+              console.log(error)
+          })
         }
       });
     },
