@@ -8,14 +8,16 @@
           placeholder="Input book name"
         />
       </a-form-item>
+      <hr>
       <a-form-item label="Reader:">
         <a-input v-decorator="[ 'reader', { rules: [{ required: true, message: 'Please input reader!' }] } ]" placeholder="Input reader" />
       </a-form-item>
+       <hr>
       <a-form-item label="Rutern date:">
         <a-date-picker v-decorator="[ 'return-date', { rules: [{ required: true, message: 'Please input return date!' }] } ]" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Submit</a-button>
       </a-form-item>
     </a-form>
     <a-table :columns="columns" :data-source="data"></a-table>
@@ -59,8 +61,22 @@ export default {
           console.log("Received values of form: ", values);
         }
       });
+    },
+    getButtonDisabled() {
+      const fields = this.form.getFieldsValue();
+      const keys = Object.keys(this.form.getFieldsValue());
+      for (let key of keys) {
+        if (
+          (key !== "copies" && fields[key]) ||
+          (key === "copies" && typeof fields[key] === "number")
+        ) {
+          return false;
+        }
+      }
+      return true;
     }
   }
+
 };
 
 </script>
@@ -72,5 +88,12 @@ export default {
 
 .content {
   padding: 15px;
+}
+hr{
+  border: none;
+  margin-bottom: 20px;
+
+  background-color:rgba(217, 217, 217, 0.5);
+  height:1px;
 }
 </style>

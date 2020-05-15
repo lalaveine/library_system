@@ -23,6 +23,11 @@
 <script>
 import ReaderInput from "@/components/InputComponents/ReaderInput.vue";
 import BookInput from "@/components/InputComponents/BookInput.vue";
+import AuthorInput from "@/components/InputComponents/AuthorInput.vue";
+import LibraryInput from "@/components/InputComponents/LibraryInput.vue";
+import PublisherInput from "@/components/InputComponents/PublisherInput.vue";
+
+
 
 import { Tabs } from "ant-design-vue";
 
@@ -31,7 +36,10 @@ export default {
     "a-tabs": Tabs,
     "a-tab-pane": Tabs.TabPane,
     ReaderInput,
-    BookInput
+    BookInput,
+    AuthorInput,
+    LibraryInput,
+    PublisherInput
   }
 };
 </script>
