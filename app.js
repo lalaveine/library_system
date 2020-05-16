@@ -5,6 +5,7 @@ const path = require('path');
 const PORT = process.env.PORT || 3000;
 const client = require('./db/index');
 require('./routes/get.js')(app, client);
+require('./routes/delete.js')(app, client);
 
 
 app.listen(PORT, (request, response) => {
