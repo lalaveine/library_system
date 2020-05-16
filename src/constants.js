@@ -44,21 +44,33 @@ export const bookColumns = [
       scopedSlots: { customRender: "name" }
     },
     {
-      title: "Book",
+      title: "Name",
       dataIndex: "book",
       key: "book",
       scopedSlots: { customRender: "name" }
     },
     {
-      title: "Reader",
+      title: "Middle name",
       dataIndex: "reader",
       key: "reader",
       scopedSlots: { customRender: "name" }
     },
     {
-      title: "Date",
+      title: "Surname",
       dataIndex: "date",
       key: "age"
+    },
+    {
+      title: "title",
+      dataIndex: "mail",
+      key: "address 1",
+      ellipsis: true
+    },
+    {
+      title: "data",
+      dataIndex: "mail",
+      key: "address 1",
+      ellipsis: true
     },
     {
       title: "Return date",
