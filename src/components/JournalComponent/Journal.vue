@@ -22,21 +22,33 @@
 
        <hr>
 
-       <h1>Search book</h1>
-      <a-form-item label="Book name:">
-        <a-input v-decorator="['reader']" placeholder="Input book" />
+       <h2>Search book</h2>
+      <a-form-item label="Name:">
+        <a-input v-decorator="['Name']" placeholder="Input book" />
       </a-form-item>
 
-      <a-form-item label="Reader name:">
-        <a-input v-decorator="[ 'reader name']" placeholder="Input reader" />
+      <a-form-item label="Middle name:">
+        <a-input v-decorator="[ 'Middle name']" placeholder=" Input middle name" />
+      </a-form-item>
+
+      <a-form-item label="Surname:">
+        <a-input v-decorator="[ 'Surname']" placeholder="Input Surname" />
+      </a-form-item>
+      
+      <a-form-item label="Tittle:">
+        <a-input v-decorator="[ 'Tittle']" placeholder="Input tittle" />
       </a-form-item>
 
        <a-form-item label="Take date:">
-        <a-date-picker v-decorator="[ 'date']" />
+        <a-date-picker v-decorator="[ ' Take-date']" />
       </a-form-item>
 
       <a-form-item label="Return date:">
         <a-date-picker v-decorator="[ 'return-date']" />
+      </a-form-item>
+
+       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+         <a-button type="primary">Search</a-button>
       </a-form-item>
     </a-form>
     <a-table :columns="columns" :data-source="data"></a-table>
@@ -103,6 +115,11 @@ export default {
 <style>
 .ant-form .ant-form-item-label {
   text-align: left;
+}
+h2{
+   text-align: left;
+   margin-bottom: 30px;
+   font-size: 25px;
 }
 
 .content {
