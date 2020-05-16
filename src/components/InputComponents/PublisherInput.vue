@@ -4,19 +4,19 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }" @submit="handleSubmit">
       <a-form-item label="Name:">
         <a-input
-          v-decorator="['Name', { rules: [{ required: true, message: 'Please input name !' }] }]"
+          v-decorator="['name', { rules: [{ required: true, message: 'Please input name !' }] }]"
           placeholder="Input publisher's name"
         />
       </a-form-item>
       <a-form-item label="City:">
         <a-input
-          v-decorator="['bbk', { rules: [{ required: true, message: 'Please input city!' }] }]"
+          v-decorator="['city_id', { rules: [{ required: true, message: 'Please input city!' }] }]"
           placeholder="Input city "
         />
       </a-form-item>
         <a-form-item label="E-mail:">
         <a-input
-          v-decorator="['E-mail', { rules: [{ required: true, message: 'Please input email adress!' }] }]"
+          v-decorator="['email', { rules: [{ required: true, message: 'Please input email adress!' }] }]"
           placeholder="Input E-mail"
         />
       </a-form-item>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+const axios = require('axios').default;
 import { Button, Form, Input } from "ant-design-vue";
 import { readerColumns as columns } from "@/constants.js";
 
@@ -56,15 +57,14 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          
-          const api = axios.create({baseURL: 'http://example.com'})
-          api.post('/user/12345', values)
-          .then(res => {
-              console.log(res)
+          axios.post('/publisher', values)
+          .then(function (response) {
+            console.log(response);
+            
           })
-          .catch(error => {
-              console.log(error)
-          })
+          .catch(function (error) {
+            console.log(error);
+          });
         }
       });
     },

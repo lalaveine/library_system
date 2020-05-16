@@ -68,7 +68,7 @@ module.exports = function (app, client) {
         res.send(rows);
     });
 
-    app.get('/libraries', async (req, res) => { 
+    app.get('/libraries', async (req, res) => {
         let query = 'SELECT * FROM library ';
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '

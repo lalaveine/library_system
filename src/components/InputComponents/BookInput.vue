@@ -29,6 +29,7 @@
 </template>
 
 <script>
+const axios = require('axios').default;
 import { Button, Form, Input } from "ant-design-vue";
 import { readerColumns as columns } from "@/constants.js";
 
@@ -55,6 +56,16 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
+          
+           axios.post('/Readers', values)
+            .then(function (response) {
+              console.log(response);
+              
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+          
         }
       });
     },

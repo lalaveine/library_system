@@ -31,6 +31,7 @@
 </template>
 
 <script>
+const axios = require('axios').default;
 import { Button, Form, Input } from "ant-design-vue";
 import { readerColumns as columns } from "@/constants.js";
 
@@ -58,14 +59,14 @@ export default {
         if (!err) {
           console.log("Received values of form: ", values);
 
-          const api = axios.create({baseURL: 'http://example.com'})
-          api.post('/user/12345', values)
-          .then(res => {
-              console.log(res)
-          })
-          .catch(error => {
-              console.log(error)
-          })
+           axios.post('/Readers', values)
+            .then(function (response) {
+              console.log(response);
+              
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         }
       });
     },
