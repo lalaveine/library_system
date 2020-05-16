@@ -6,10 +6,12 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                console.log()
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
+        console.log(query)
         const { rows } = await client.query(query);
         res.send(rows);
     });
@@ -19,7 +21,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
@@ -32,7 +34,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
@@ -45,7 +47,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
@@ -58,7 +60,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
@@ -66,12 +68,12 @@ module.exports = function (app, client) {
         res.send(rows);
     });
 
-    app.get('/libraries', async (req, res) => { //////
+    app.get('/libraries', async (req, res) => { 
         let query = 'SELECT * FROM library ';
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
@@ -84,7 +86,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
@@ -97,7 +99,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = "${req.query[key]}" AND`
+                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND`
             };
             query = query.slice(0, -4);
         };
