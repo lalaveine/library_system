@@ -8,6 +8,12 @@
           placeholder="Author's name"
         />
       </a-form-item>
+       <a-form-item label="Middle name:">
+        <a-input
+          v-decorator="['Middle', { rules: [{ required: true, message: 'middle name' }] }]"
+          placeholder="middle name"
+        />
+      </a-form-item>
       <a-form-item label="Surname:">
             <a-input
             v-decorator="['author', { rules: [{ required: true, message: 'Please input author!' }] }]"

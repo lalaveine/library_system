@@ -4,25 +4,19 @@
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }" @submit="handleSubmit">
       <a-form-item label="Name:">
         <a-input
-          v-decorator="['title', { rules: [{ required: true, message: 'Please input publisher\'s name!' }] }]"
+          v-decorator="['Name', { rules: [{ required: true, message: 'Please input name !' }] }]"
           placeholder="Input publisher's name"
         />
       </a-form-item>
-      <a-form-item label="title:">
+      <a-form-item label="City:">
         <a-input
-          v-decorator="['bbk', { rules: [{ required: true, message: 'Please input title!' }] }]"
-          placeholder="Input book's title"
+          v-decorator="['bbk', { rules: [{ required: true, message: 'Please input city!' }] }]"
+          placeholder="Input city "
         />
       </a-form-item>
-        <a-form-item label="adress:">
+        <a-form-item label="E-mail:">
         <a-input
-          v-decorator="['adress', { rules: [{ required: true, message: 'Please input adress!' }] }]"
-          placeholder="Input library's adress"
-        />
-      </a-form-item>
-        <a-form-item label="Email:">
-        <a-input
-          v-decorator="['Email', { rules: [{ required: true, message: 'Please input email adress!' }] }]"
+          v-decorator="['E-mail', { rules: [{ required: true, message: 'Please input email adress!' }] }]"
           placeholder="Input E-mail"
         />
       </a-form-item>

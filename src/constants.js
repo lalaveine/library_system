@@ -29,7 +29,10 @@ export const bookColumns = [
       ellipsis: true
     },
     {
-      title:"Action"
+      title:"Action",
+      // key:"action",
+      // render: (text, record) => (<button> TEST </button>
+      //   )
     }
   ];
 

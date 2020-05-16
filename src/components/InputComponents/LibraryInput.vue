@@ -8,13 +8,7 @@
           placeholder="Input Library's name"
         />
       </a-form-item>
-      <a-form-item label="title:">
-        <a-input
-          v-decorator="['bbk', { rules: [{ required: true, message: 'Please input title!' }] }]"
-          placeholder="Input book's title"
-        />
-      </a-form-item>
-        <a-form-item label="adress:">
+        <a-form-item label="Adress:">
         <a-input
           v-decorator="['adress', { rules: [{ required: true, message: 'Please input adress!' }] }]"
           placeholder="Input library's adress"

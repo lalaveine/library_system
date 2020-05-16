@@ -1,6 +1,7 @@
  <template>
   <div class="content">
     <h1>Journal</h1>
+    <hr>
     <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }" @submit="handleSubmit">
       <a-form-item label="Book name:">
         <a-input
@@ -8,16 +9,31 @@
           placeholder="Input book name"
         />
       </a-form-item>
-      <hr>
+ 
       <a-form-item label="Reader:">
         <a-input v-decorator="[ 'reader', { rules: [{ required: true, message: 'Please input reader!' }] } ]" placeholder="Input reader" />
       </a-form-item>
-       <hr>
-      <a-form-item label="Rutern date:">
+      
+   
+      <a-form-item label="Return date:">
         <a-date-picker v-decorator="[ 'return-date', { rules: [{ required: true, message: 'Please input return date!' }] } ]" />
       </a-form-item>
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Submit</a-button>
+      </a-form-item>
+       <hr>
+       
+      <a-form-item label="Book name:">
+        <a-input v-decorator="[ 'reader', { rules: [{ required: true, message: 'Please input book!' }] } ]" placeholder="Input book" />
+      </a-form-item>
+
+      <a-form-item label="Reader name:">
+        <a-input v-decorator="[ 'reader name', { rules: [{ required: true, message: 'Please input reader name!' }] } ]" placeholder="Input reader" />
+      </a-form-item>
+
+
+      <a-form-item label="Return date:">
+        <a-date-picker v-decorator="[ 'return-date', { rules: [{ required: true, message: 'Please input return date!' }] } ]" />
       </a-form-item>
     </a-form>
     <a-table :columns="columns" :data-source="data"></a-table>
