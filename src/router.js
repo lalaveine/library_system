@@ -5,6 +5,12 @@ import Router from 'vue-router'
 import SearchComponent from "@/components/SearchComponents/SearchComponent.vue";
 import InputComponent from "@/components/InputComponents/InputComponent.vue";
 import Journal from "@/components/JournalComponent/Journal.vue";
+import Author from "@/components/AuthorComponents/Author.vue";
+import CityInput from "@/components/CityComponent/CityInput.vue";
+import Editions from "@/components/EditionsComponent/Editions.vue";
+import library from "@/components/LibraryComponent/Library.vue";
+import Publisher from "@/components/PublisherComponent/Publisher.vue";
+
 
 Vue.use(Router);
 
@@ -19,7 +25,23 @@ export default new Router({
     }, {
         path: '/input',
         component: InputComponent
+    },{
+        path: '/Author',
+        component: Author
+    },{
+        path: '/CityInput',
+        component: CityInput
+    },{
+        path: '/Editions',
+        component: Editions
+    },{
+        path: '/library',
+        component: library
+    },{
+        path: '/Publisher',
+        component: Publisher
     }
+
 
     ]
 })

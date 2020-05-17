@@ -17,6 +17,22 @@
       <a-menu-item key="3">
         <router-link to="/input">Input data</router-link>
       </a-menu-item>
+
+      <a-menu-item key="4">
+        <router-link to="/Author">Author</router-link>
+      </a-menu-item>
+      <a-menu-item key="5">
+        <router-link to="/CityInput">City</router-link>
+      </a-menu-item>
+      <a-menu-item key="6">
+        <router-link to="/Editions">Editions</router-link>
+      </a-menu-item>
+      <a-menu-item key="7">
+        <router-link to="/Library">Library</router-link>
+      </a-menu-item>
+      <a-menu-item key="8">
+        <router-link to="/Publisher">Publisher</router-link>
+      </a-menu-item>
     </a-menu>
   </div>
 </template>
