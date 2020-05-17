@@ -73,7 +73,7 @@ export default {
   mounted() {
     console.log(process.env.PORT)
      axios
-      .get(`http://localhost:${process.env.PORT}/test`)
+      .get(`http://localhost:5000/test`)
       .then(response => {let { data } = response
       this.data = data });
   }

@@ -39,44 +39,43 @@ export const bookColumns = [
   export const journalColumns = [
     {
       title: "ID",
-      dataIndex: "id",
-      key: "id",
-      scopedSlots: { customRender: "name" }
+      dataIndex: "entry_id",
+      key: "entry_id"
     },
     {
       title: "Name",
-      dataIndex: "book",
-      key: "book",
-      scopedSlots: { customRender: "name" }
+      dataIndex: "name",
+      key: "name"
     },
     {
       title: "Middle name",
-      dataIndex: "reader",
-      key: "reader",
-      scopedSlots: { customRender: "name" }
+      dataIndex: "middle_name",
+      key: "middle_name"
     },
     {
       title: "Surname",
-      dataIndex: "date",
-      key: "age"
+      dataIndex: "surname",
+      key: "surname"
     },
     {
-      title: "title",
-      dataIndex: "mail",
-      key: "address 1",
-      ellipsis: true
+      title: "Title",
+      dataIndex: "title",
+      key: "title"
     },
     {
-      title: "data",
-      dataIndex: "mail",
-      key: "address 1",
-      ellipsis: true
+      title: "Edition ID",
+      dataIndex: "edition_id",
+      key: "edition_id"
+    },
+    {
+      title: "Take date",
+      dataIndex: "take_date",
+      key: "take_date"
     },
     {
       title: "Return date",
-      dataIndex: "mail",
-      key: "address 1",
-      ellipsis: true
+      dataIndex: "return_date",
+      key: "return_date"
     }
   ];
 

@@ -4,10 +4,7 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3000;
 const client = require('./db/index');
-require('./routes/get.js')(app, client);
-require('./routes/delete.js')(app, client);
-require('./routes/put.js')(app, client);
-require('./routes/post.js')(app, client);
+
 
 
 app.listen(PORT, (request, response) => {
@@ -23,7 +20,10 @@ app.use(function (req, res, next) {
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/frontend/dist/index.html')));
 
-
+require('./routes/get.js')(app, client);
+require('./routes/delete.js')(app, client);
+require('./routes/put.js')(app, client);
+require('./routes/post.js')(app, client);
 
 
 
