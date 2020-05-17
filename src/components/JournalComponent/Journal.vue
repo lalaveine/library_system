@@ -80,11 +80,17 @@
       </a-form-item>
 
       <a-form-item label="Take date:">
-        <a-date-picker v-decorator="['take_date']" placeholder="Input take date" />
+        <a-date-picker
+          v-decorator="['take_date']"
+          placeholder="Input take date"
+        />
       </a-form-item>
 
       <a-form-item label="Return date:">
-        <a-date-picker v-decorator="['return_date']" placeholder="Input return date" />
+        <a-date-picker
+          v-decorator="['return_date']"
+          placeholder="Input return date"
+        />
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -99,7 +105,7 @@
 import axios from "axios";
 
 import { Button, Form, Input, Table, DatePicker } from "ant-design-vue";
-import { journalColumns as columns } from "@/constants.js";
+import { journalColumns as columns, dateFormat } from "@/constants.js";
 
 export default {
   name: "BookSearch",
@@ -118,7 +124,8 @@ export default {
       inputForm: this.$form.createForm(this, { name: "journalInput" }),
       data: [],
       columns,
-      isButtonDisabled: true
+      isButtonDisabled: true,
+      dateFormat
     };
   },
   methods: {
@@ -126,6 +133,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
+          console.log(values);
           let link = "http://localhost:5000/journal?";
           for (let key in values) {
             if (values[key]) {
@@ -155,7 +163,7 @@ export default {
           // const response = await axios.get(link);
           // const { data } = response;
           // this.data = data;
-          axios.post('http://localhost:5000/journal', Object.values(values))
+          axios.post("http://localhost:5000/journal", Object.values(values));
           console.log(values);
         }
       });

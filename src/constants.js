@@ -1,3 +1,5 @@
+export const dateFormat = 'DD-MM-YYYY';
+
 export const bookColumns = [
     {
       title: "Book name",
