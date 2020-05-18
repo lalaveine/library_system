@@ -2,8 +2,8 @@ import Vue from 'vue';
 import Router from 'vue-router'
 
 // import Main from '@/components/Main'
-import SearchComponent from "@/components/SearchComponents/SearchComponent.vue";
-import InputComponent from "@/components/InputComponents/InputComponent.vue";
+import Books from "@/components/BookComponent/Books.vue";
+import Reader from "@/components/ReaderComponents/Reader.vue";
 import Journal from "@/components/JournalComponent/Journal.vue";
 import Author from "@/components/AuthorComponents/Author.vue";
 import CityInput from "@/components/CityComponent/CityInput.vue";
@@ -20,11 +20,11 @@ export default new Router({
         {  path: '/',
         component: Journal
     },
-      {  path: '/search',
-        component: SearchComponent
+      {  path: '/Books',
+        component: Books
     }, {
-        path: '/input',
-        component: InputComponent
+        path: '/Reader',
+        component: Reader
     },{
         path: '/Author',
         component: Author

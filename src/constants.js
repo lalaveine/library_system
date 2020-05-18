@@ -2,39 +2,28 @@ export const dateFormat = 'DD-MM-YYYY';
 
 export const bookColumns = [
     {
-      title: "Book name",
-      dataIndex: "name",
+      title: "Book Id",
+      dataIndex: "book_id",
       key: "name",
       scopedSlots: { customRender: "name" }
     },
     {
-      title: "Publish year",
-      dataIndex: "age",
-      key: "age"
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
+      scopedSlots: { customRender: "name" }
     },
     {
       title: "BBK",
-      dataIndex: "address",
+      dataIndex: "bbk",
       key: "address 1",
       ellipsis: true
     },
     {
-      title: "Addresses",
-      dataIndex: "addressess",
+      title: "Author Id",
+      dataIndex: "name",
       key: "address 3",
       ellipsis: true
-    },
-    {
-      title: "Author",
-      dataIndex: "address",
-      key: "address 2",
-      ellipsis: true
-    },
-    {
-      title:"Action",
-      // key:"action",
-      // render: (text, record) => (<button> TEST </button>
-      //   )
     }
   ];
 
@@ -249,7 +238,7 @@ export const bookColumns = [
     {
       title: "City ID",
       dataIndex: "city_id",
-      key: "city_id",
+      key: "name",
       scopedSlots: { customRender: "name" }
     },
 
@@ -262,3 +251,4 @@ export const bookColumns = [
 
   ];
 
+   

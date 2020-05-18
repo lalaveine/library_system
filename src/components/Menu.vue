@@ -12,10 +12,10 @@
         <router-link to="/">Journal</router-link>
       </a-menu-item>
       <a-menu-item key="2">
-        <router-link to="/search">Search data</router-link>
+        <router-link to="/Books">Books</router-link>
       </a-menu-item>
       <a-menu-item key="3">
-        <router-link to="/input">Input data</router-link>
+        <router-link to="/Reader">Reader</router-link>
       </a-menu-item>
 
       <a-menu-item key="4">

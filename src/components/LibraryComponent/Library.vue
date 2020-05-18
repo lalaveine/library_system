@@ -1,6 +1,6 @@
  <template>
   <div class="content">
-    <h1>Author</h1>
+    <h1>Add library</h1>
     <hr />
     <h3>Input</h3>
     <a-form

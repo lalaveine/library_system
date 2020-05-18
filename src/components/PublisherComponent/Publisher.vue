@@ -1,6 +1,6 @@
  <template>
   <div class="content">
-    <h1>Author</h1>
+    <h1>Add publisher</h1>
     <hr />
     <h3>Input</h3>
     <a-form
@@ -18,8 +18,8 @@
 
       <a-form-item label="City :">
         <a-input
-          v-decorator="['city_id', { rules: [{ required: true, message: 'Please input email' }] }]"
-          placeholder="Input email"
+          v-decorator="['city_id', { rules: [{ required: true, message: 'Please input city' }] }]"
+          placeholder="Input city"
         />
       </a-form-item>
 
@@ -47,11 +47,11 @@
       </a-form-item>
 
       <a-form-item label="City ID:">
-        <a-input v-decorator="['city_id']" placeholder="Input Email" />
+        <a-input v-decorator="['city_id']" placeholder="Input city" />
       </a-form-item>
 
       <a-form-item label="Email:">
-        <a-input v-decorator="['email']" placeholder="Input Address" />
+        <a-input v-decorator="['email']" placeholder="Input email" />
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
