@@ -1,94 +1,205 @@
-<template>
-    <div class="reader-input">
-        <h1>Editions</h1>
-        <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 8 }" @submit="handleSubmit">
-            <a-form-item label="Name:">
-                <a-input
-                        v-decorator="['name', { rules: [{ required: true, message: 'Please input editions!' }] }]"
-                        placeholder="Input editions"
-                />
-            </a-form-item>
+ <template>
+  <div class="content">
+    <h1>Edition</h1>
+    <hr />
+    <h3>Input</h3>
+    <a-form
+      :form="inputForm"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 8 }"
+      @submit="handleInputSubmit"
+    >
+      <a-form-item label="publisher year:">
+        <a-input
+          v-decorator="['pub_year', { rules: [{ required: true, message: 'Please input publisher`s year' }] }]"
+          placeholder="Input publisher`s year"
+        />
+      </a-form-item>
 
-            <a-form-item label="E-mail">
-                <a-input
-                        v-decorator="['mail', { rules: [{
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              }, { required: true, message: 'Please input e-mail!' }] }]"
-                        placeholder="Input editions mail"
-                />
-            </a-form-item>
-            <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-                <a-button type="primary" html-type="submit" :disabled= "getButtonDisabled()">Submit</a-button>
-            </a-form-item>
-        </a-form>
-    </div>
+      <a-form-item label="publisher city:">
+        <a-input
+          v-decorator="['pub_city', { rules: [{ required: true, message: 'Please input publisher city' }] }]"
+          placeholder="Input publisher city"
+        />
+      </a-form-item>
+
+      <a-form-item label="library:">
+        <a-input
+          v-decorator="['library_id', { rules: [{ required: true, message: 'Please input reader`s surname' }] }]"
+          placeholder="Input reader`s surname"
+        />
+      </a-form-item>
+
+      <a-form-item label="Publisher ID:">
+        <a-input
+          v-decorator="['publisher_id', { rules: [{ required: true, message: 'Please input edition`s ID' }] }]"
+          placeholder="Input edition`s ID"
+        />
+      </a-form-item>
+
+      <a-form-item label="Take date:">
+        <a-date-picker
+          v-decorator="['take_date', { rules: [{ required: true, message: 'Please input take date' }] }]"
+          placeholder="Input take date"
+        />
+      </a-form-item>
+
+      <a-form-item label="Return date:">
+        <a-date-picker
+          v-decorator="['return_date', { rules: [{ required: true, message: 'Please input return date' }] }]"
+          placeholder="Input return date"
+        />
+      </a-form-item>
+      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-button type="primary" html-type="submit">Submit</a-button>
+      </a-form-item>
+    </a-form>
+    <hr />
+
+    <h3>Search</h3>
+    <a-form
+      :form="searchForm"
+      :label-col="{ span: 5 }"
+      :wrapper-col="{ span: 8 }"
+      @submit="handleSearchSubmit"
+    >
+      <a-form-item label="publisher year:">
+        <a-input v-decorator="['pub_year']" placeholder="Input publisher year:" />
+      </a-form-item>
+
+      <a-form-item label="publisher city:">
+        <a-input v-decorator="['pub_city']" placeholder="Input publisher city" />
+      </a-form-item>
+
+      <a-form-item label="library:">
+        <a-input v-decorator="['library_id']" placeholder="Input library" />
+      </a-form-item>
+
+      <a-form-item label="Tittle:">
+        <a-input v-decorator="['tittle']" placeholder="Input tittle" />
+      </a-form-item>
+
+      <a-form-item label="Take date:">
+        <a-date-picker
+          v-decorator="['take_date']"
+          placeholder="Input take date"
+        />
+      </a-form-item>
+
+      <a-form-item label="Return date:">
+        <a-date-picker
+          v-decorator="['return_date']"
+          placeholder="Input return date"
+        />
+      </a-form-item>
+
+      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+      </a-form-item>
+    </a-form>
+    <a-table :columns="columns" :data-source="data"></a-table>
+  </div>
 </template>
 
 <script>
-	const axios = require('axios').default;
-	import { Button, Form, Input } from "ant-design-vue";
-	import { readerColumns as columns } from "@/constants.js";
+import axios from "axios";
 
-	export default {
-		name: "BookSearch",
-		components: {
-			"a-button": Button,
-			"a-form": Form,
-			"a-input": Input,
-			"a-form-item": Form.Item
-		},
-		data() {
-			return {
-				formLayout: "horizontal",
-				form: this.$form.createForm(this, { name: "add-reader" }),
-				data: [],
-				columns,
-				isButtonDisabled: true
-			};
-		},
-		methods: {
-			handleSubmit(e) {
-				e.preventDefault();
-				this.form.validateFields((err, values) => {
-					if (!err) {
-						console.log("Received values of form: ", values);
+import { Button, Form, Input, Table, DatePicker } from "ant-design-vue";
+import { editionsColumns as columns, dateFormat } from "@/constants.js";
 
-						axios.post('/Readers', values)
-							.then(function (response) {
-								console.log(response);
+export default {
+  name: "BookSearch",
+  components: {
+    "a-button": Button,
+    "a-form": Form,
+    "a-input": Input,
+    "a-form-item": Form.Item,
+    "a-table": Table,
+    "a-date-picker": DatePicker
+  },
+  data() {
+    return {
+      formLayout: "horizontal",
+      searchForm: this.$form.createForm(this, { name: "editionSearch" }),
+      inputForm: this.$form.createForm(this, { name: "editionInput" }),
+      data: [],
+      columns,
+      isButtonDisabled: true,
+      dateFormat
+    };
+  },
+  methods: {
+    handleSearchSubmit(e) {
+      e.preventDefault();
+      this.searchForm.validateFields(async (err, values) => {
+        if (!err) {
+          console.log(values);
+          let link = "http://localhost:5000/editions";
+          for (let key in values) {
+            if (values[key]) {
+              link += `${key}=${values[key]}&`;
+            }
+          }
+          link = link.slice(0, -1);
+     
 
-							})
-							.catch(function (error) {
-								console.log(error);
-							});
-					}
-				});
-			},
-			getButtonDisabled() {
-				const fields = this.form.getFieldsValue();
-				const keys = Object.keys(this.form.getFieldsValue());
-				for (let key of keys) {
-					if (
-						(key !== "copies" && fields[key]) ||
-						(key === "copies" && typeof fields[key] === "number")
-					) {
-						return false;
-					}
-				}
-				return true;
-			}
-		}
-	};
+          const response = await axios.get(link, values);
+          const { data } = response;
+          this.data = data;
+        }
+      });
+    },
+    handleInputSubmit(e) {
+      e.preventDefault();
+      this.inputForm.validateFields(async (err, values) => {
+        if (!err) {
+          axios.post("http://localhost:5000/edition", Object.values(values));
+          console.log(values);
+        }
+      });
+    },
+    getButtonDisabled() {
+      const fields = this.searchForm.getFieldsValue();
+      const keys = Object.keys(this.searchForm.getFieldsValue());
+      for (let key of keys) {
+        if (
+          (key !== "copies" && fields[key]) ||
+          (key === "copies" && typeof fields[key] === "number")
+        ) {
+          return false;
+        }
+      }
+      return true;
+    }
+  },
+  async mounted() {
+    await axios.get(`http://localhost:5000/editions`).then(response => {
+      const { data } = response;
+      this.data = data;
+      console.log(this.data);
+    });
+  }
+};
 </script>
 
 <style>
-    .ant-form .ant-form-item-label {
-        text-align: left;
-    }
+.ant-form .ant-form-item-label {
+  text-align: left;
+}
+h2 {
+  text-align: left;
+  margin-bottom: 30px;
+  font-size: 25px;
+}
 
-    .reader-input {
-        /* width: 950px; */
-        padding: 15px;
-    }
+.content {
+  padding: 15px;
+}
+hr {
+  border: none;
+  margin-bottom: 20px;
+
+  background-color: rgba(217, 217, 217, 0.5);
+  height: 1px;
+}
 </style>

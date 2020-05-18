@@ -134,15 +134,16 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "http://localhost:5000/journal?";
+          let link = "http://localhost:5000/journal";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
             }
           }
           link = link.slice(0, -1);
+     
 
-          const response = await axios.get(link);
+          const response = await axios.get(link, values);
           const { data } = response;
           this.data = data;
         }
