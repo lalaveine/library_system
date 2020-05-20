@@ -67,6 +67,12 @@ export const bookColumns = [
       title: "Return date",
       dataIndex: "return_date",
       key: "return_date"
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
   ];
 

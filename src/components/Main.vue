@@ -63,5 +63,15 @@ h2 {
 .ant-form {
   width: 50%;
 }
+
+.action-buttons {
+  display: flex;
+  margin: 10px;
+  flex-direction: column;
+}
+
+.ant-btn{
+  margin: 3px;
+}
 </style>
 

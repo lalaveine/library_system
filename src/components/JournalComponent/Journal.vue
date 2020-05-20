@@ -89,11 +89,16 @@
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+          <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
         </a-form-item>
       </a-form>
     </div>
-    <a-table :columns="columns" :data-source="data"></a-table>
+    <a-table :columns="columns" :data-source="data">
+      <span class="action-buttons" slot="action" slot-scope="text, record" >
+        <a-button type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
+        <a-button type="primary">Edit</a-button>
+      </span>
+    </a-table>
   </div>
 </template>
 
@@ -149,7 +154,6 @@ export default {
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
           axios.post("/journal", Object.values(values));
-          console.log(values);
         }
       });
     },
@@ -165,13 +169,15 @@ export default {
         }
       }
       return true;
+    },
+    async onDelete(id) {
+       await axios.delete(`/journal/${id}`)
     }
   },
   async mounted() {
     await axios.get(`/journal`).then(response => {
       const { data } = response;
       this.data = data;
-      console.log(this.data);
     });
   }
 };
