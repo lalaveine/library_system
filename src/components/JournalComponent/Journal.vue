@@ -130,7 +130,7 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "http://localhost:5000/journal?";
+          let link = "/journal?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -148,7 +148,7 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/journal", Object.values(values));
+          axios.post("/journal", Object.values(values));
           console.log(values);
         }
       });
@@ -168,7 +168,7 @@ export default {
     }
   },
   async mounted() {
-    await axios.get(`http://localhost:5000/journal`).then(response => {
+    await axios.get(`/journal`).then(response => {
       const { data } = response;
       this.data = data;
       console.log(this.data);
