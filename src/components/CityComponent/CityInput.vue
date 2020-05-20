@@ -1,14 +1,15 @@
  <template>
-  <div class="content">
+  <div class="component">
     <h1>City</h1>
     <hr />
-    <h3>Input</h3>
+  <div class="content">
     <a-form
       :form="inputForm"
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 8 }"
       @submit="handleInputSubmit"
     >
+        <h3>Input</h3>
       <a-form-item label="Name:">
         <a-input
           v-decorator="['name', { rules: [{ required: true, message: 'Please input city`s name' }] }]"
@@ -22,13 +23,14 @@
     </a-form>
     <hr />
 
-    <h3>Search</h3>
+
     <a-form
       :form="searchForm"
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 8 }"
       @submit="handleSearchSubmit"
     >
+        <h3>Search</h3>
       <a-form-item label="Name:">
         <a-input v-decorator="['name']" placeholder="Input city" />
       </a-form-item>
@@ -37,6 +39,7 @@
         <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
       </a-form-item>
     </a-form>
+     </div>
     <a-table :columns="columns" :data-source="data"></a-table>
   </div>
 </template>
@@ -122,25 +125,3 @@ export default {
 };
 </script>
 
-<style>
-.ant-form .ant-form-item-label {
-  text-align: left;
-}
-h2 {
-  text-align: left;
-  margin-bottom: 30px;
-  font-size: 25px;
-}
-
-.content {
-  padding: 15px;
-   width: 950px;
-}
-hr {
-  border: none;
-  margin-bottom: 20px;
-
-  background-color: rgba(217, 217, 217, 0.5);
-  height: 1px;
-}
-</style>

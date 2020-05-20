@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    {{ data }}
     <Menu />
       <router-view></router-view>
   </div>
@@ -19,17 +18,50 @@ export default {
     Menu
   },
   router,
-  data() {
-    return { data: ''}
-  },
 };
 </script>
 
 <style>
 .main {
-  height: 100%;
-  display: flex;
+  width: 100%;
+  display: flex; 
+}
+
+.component{
+    width: 100%;
+}
+
+/* hr {
+  border: none;
+  margin-bottom: 20px;
+  background-color: rgba(217, 217, 217, 0.5);
+  height: 1px;
+} */
+
+.content {
+  padding: 15px;
+   width: 100%;
+display: flex;
   flex-direction: row;
+}
+
+.ant-form .ant-form-item-label {
+  text-align: left;
+}
+
+h1{
+  color: #40a9ff;
+  font-size: 45px;
+  text-align: center;
+}
+h2 {
+   text-align: center;
+     margin-bottom: 30px;
+  font-size: 25px;
+}
+
+.ant-form {
+  width: 50%;
 }
 </style>
 

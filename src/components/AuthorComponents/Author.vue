@@ -1,63 +1,65 @@
  <template>
-  <div class="content">
+  <div class="component">
     <h1>Author</h1>
     <hr />
-    <h3>Input</h3>
-    <a-form
-      :form="inputForm"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 8 }"
-      @submit="handleInputSubmit"
-    >
-      <a-form-item label="Name:">
-        <a-input
-          v-decorator="['name', { rules: [{ required: true, message: 'Please input author`s name' }] }]"
-          placeholder="Input author`s name"
-        />
-      </a-form-item>
+    <div class="content">
+      <a-form
+        :form="inputForm"
+        :label-col="{ span: 5 }"
+        :wrapper-col="{ span: 8 }"
+        @submit="handleInputSubmit"
+      >
+        <h3>Input</h3>
+        <a-form-item label="Name:">
+          <a-input
+            v-decorator="['name', { rules: [{ required: true, message: 'Please input author`s name' }] }]"
+            placeholder="Input author`s name"
+          />
+        </a-form-item>
 
-      <a-form-item label="Middle name:">
-        <a-input
-          v-decorator="['middle_name', { rules: [{ required: true, message: 'Please input author`s middle surname' }] }]"
-          placeholder="Input author`s middle name"
-        />
-      </a-form-item>
+        <a-form-item label="Middle name:">
+          <a-input
+            v-decorator="['middle_name', { rules: [{ required: true, message: 'Please input author`s middle surname' }] }]"
+            placeholder="Input author`s middle name"
+          />
+        </a-form-item>
 
-      <a-form-item label="Surname:">
-        <a-input
-          v-decorator="['surname', { rules: [{ required: true, message: 'Please input author`s surname' }] }]"
-          placeholder="Input author`s surname"
-        />
-      </a-form-item>
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
-      </a-form-item>
-    </a-form>
-    <hr />
+        <a-form-item label="Surname:">
+          <a-input
+            v-decorator="['surname', { rules: [{ required: true, message: 'Please input author`s surname' }] }]"
+            placeholder="Input author`s surname"
+          />
+        </a-form-item>
+        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+          <a-button type="primary" html-type="submit">Submit</a-button>
+        </a-form-item>
+      </a-form>
+      <hr />
 
-    <h3>Search</h3>
-    <a-form
-      :form="searchForm"
-      :label-col="{ span: 5 }"
-      :wrapper-col="{ span: 8 }"
-      @submit="handleSearchSubmit"
-    >
-      <a-form-item label="Name:">
-        <a-input v-decorator="['name']" placeholder="Input book" />
-      </a-form-item>
+      <a-form
+        :form="searchForm"
+        :label-col="{ span: 5 }"
+        :wrapper-col="{ span: 8 }"
+        @submit="handleSearchSubmit"
+      >
+        <h3>Search</h3>
+        <a-form-item label="Name:">
+          <a-input v-decorator="['name']" placeholder="Input book" />
+        </a-form-item>
 
-      <a-form-item label="Middle name:">
-        <a-input v-decorator="['middle_name']" placeholder="Input middle name" />
-      </a-form-item>
+        <a-form-item label="Middle name:">
+          <a-input v-decorator="['middle_name']" placeholder="Input middle name" />
+        </a-form-item>
 
-      <a-form-item label="Surname:">
-        <a-input v-decorator="['surname']" placeholder="Input Surname" />
-      </a-form-item>
+        <a-form-item label="Surname:">
+          <a-input v-decorator="['surname']" placeholder="Input Surname" />
+        </a-form-item>
 
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-        <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
-      </a-form-item>
-    </a-form>
+        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+        </a-form-item>
+      </a-form>
+    </div>
     <a-table :columns="columns" :data-source="data"></a-table>
   </div>
 </template>
@@ -102,7 +104,6 @@ export default {
             }
           }
           link = link.slice(0, -1);
-     
 
           const response = await axios.get(link, values);
           const { data } = response;
@@ -142,26 +143,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.ant-form .ant-form-item-label {
-  text-align: left;
-}
-h2 {
-  text-align: left;
-  margin-bottom: 30px;
-  font-size: 25px;
-}
-
-.content {
-  padding: 15px;
-   width: 950px;
-}
-hr {
-  border: none;
-  margin-bottom: 20px;
-
-  background-color: rgba(217, 217, 217, 0.5);
-  height: 1px;
-}
-</style>
