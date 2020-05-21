@@ -9,6 +9,36 @@
         :wrapper-col="{ span: 8 }"
         @submit="handleInputSubmit"
       >
+        <div class="modal" v-if="modalOpen"> <!-- modal start-->
+          <div class="modal__over" @click="closeModal"></div>
+          <div div class="modal__content"> 
+            <a-form-item label="Name:">
+              <a-input
+                v-decorator="['name']"
+                placeholder="Input publisher`s name"
+              />
+            </a-form-item> 
+            <a-form-item label="City :">
+              <a-input
+                v-decorator="['city_id']"
+                placeholder="Input city"
+              />
+            </a-form-item>
+
+            <a-form-item label="Email:">
+              <a-input
+                v-decorator="['email']"
+                placeholder="Input adress"
+              />
+           </a-form-item>
+          
+            <div class="modal__content--btns">
+               <a-button class="modal__content--edit" type="primary" html-type="submit">Change</a-button>
+              <a-button class="modal__content--cancel" type="danger" @click="closeModal" >Cancel</a-button>  
+            </div>
+                     
+          </div>
+        </div> <!-- modal end-->
         <h3>Input</h3>
         <a-form-item label="Name:">
           <a-input
@@ -26,8 +56,8 @@
 
         <a-form-item label="Email:">
           <a-input
-            v-decorator="['email', { rules: [{ required: true, message: 'Please input adress' }] }]"
-            placeholder="Input adress"
+            v-decorator="['email', { rules: [{ required: true, message: 'Please input email' }] }]"
+            placeholder="Input email"
           />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -42,6 +72,7 @@
         :wrapper-col="{ span: 8 }"
         @submit="handleSearchSubmit"
       >
+      
         <h3>Search</h3>
         <a-form-item label="Name:">
           <a-input v-decorator="['name']" placeholder="Input publisher's name" />
@@ -60,7 +91,14 @@
         </a-form-item>
       </a-form>
     </div>
-    <a-table :columns="columns" :data-source="data"></a-table>
+      <a-table :columns="columns" :data-source="data">
+          <span class="action-buttons" slot="action" slot-scope="text, record" >
+            <a-button  type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
+            <a-button @click="openModal" type="primary">Edit</a-button>
+           
+          </span>
+       </a-table>
+      
   </div>
 </template>
 
@@ -88,7 +126,9 @@ export default {
       data: [],
       columns,
       isButtonDisabled: true,
-      dateFormat
+      dateFormat,
+      modalOpen : false,
+   
     };
   },
   methods: {
@@ -132,6 +172,12 @@ export default {
         }
       }
       return true;
+    },
+    openModal(){
+        this.modalOpen = true
+    },
+    closeModal(){
+      this.modalOpen = false
     }
   },
   async mounted() {
@@ -143,3 +189,51 @@ export default {
   }
 };
 </script>
+
+<style>
+.modal{
+  position: relative;
+ 
+  }
+
+.modal .modal__over{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal__content{
+  background: #fff;
+  width: 400px;
+  padding: 20px;
+  height: 290px;
+  z-index: 100;
+
+  position: fixed;
+  top:0;
+  left: 50%;
+  transform: translate(-50%,13%);
+
+}
+
+.modal__content--edit{
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+.modal__content--cancel{
+    position: absolute;
+    bottom: 20px;
+    right: 110px;
+}
+
+
+
+
+</style>

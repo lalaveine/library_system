@@ -40,7 +40,12 @@
       </a-form-item>
     </a-form>
      </div>
-    <a-table :columns="columns" :data-source="data"></a-table>
+    <a-table :columns="columns" :data-source="data">
+       <span class="action-buttons" slot="action" slot-scope="text, record" >
+        <a-button type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
+        <a-button type="primary">Edit</a-button>
+      </span>
+    </a-table>
   </div>
 </template>
 
@@ -124,4 +129,22 @@ export default {
   }
 };
 </script>
+
+<style>
+.action-buttons{
+  width:102px;
+}
+
+hr{
+  border:none;
+
+  background-color: #e8e8e8;
+  height: 1px;
+}
+
+h1{
+  margin:0 0 10px 0;
+  
+}
+</style>
 

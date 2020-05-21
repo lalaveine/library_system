@@ -24,6 +24,12 @@ export const bookColumns = [
       dataIndex: "name",
       key: "address 3",
       ellipsis: true
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
   ];
 
@@ -105,6 +111,12 @@ export const bookColumns = [
       dataIndex: "email",
       key: "email",
       ellipsis: true
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
   ];
 
@@ -131,6 +143,12 @@ export const bookColumns = [
       title: "Surname",
       dataIndex: "surname",
       key: "surname"
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
    
     
@@ -148,6 +166,12 @@ export const bookColumns = [
       dataIndex: "name",
       key: "name",
       scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
    
     
@@ -193,6 +217,12 @@ export const bookColumns = [
       dataIndex: "book_id",
       key: "name",
       scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
    
     
@@ -224,6 +254,12 @@ export const bookColumns = [
       dataIndex: "email",
       key: "name",
       scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
   ];
 
@@ -253,6 +289,12 @@ export const bookColumns = [
       dataIndex: "email",
       key: "name",
       scopedSlots: { customRender: "name" }
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      scopedSlots: { customRender: 'action' }
     }
 
   ];

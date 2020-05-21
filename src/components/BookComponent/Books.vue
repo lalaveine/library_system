@@ -69,7 +69,12 @@
         </a-form-item>
       </a-form>
     </div>
-    <a-table :columns="columns" :data-source="data"></a-table>
+    <a-table :columns="columns" :data-source="data">
+        <span class="action-buttons" slot="action" slot-scope="text, record" >
+        <a-button type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
+        <a-button type="primary">Edit</a-button>
+      </span>
+    </a-table>
   </div>
 </template>
 
