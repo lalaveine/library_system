@@ -10,11 +10,5 @@ const config = {
 
 const client = new pg.Client(config);
 client.connect();
-client.query('SELECT * from publisher', (err, res) => {
-    if (err) {
-      console.log(err.stack)
-    } else {
-      console.log(res.rows[0])
-    }
-  })
+
 module.exports =  client;

@@ -17,8 +17,8 @@ app.use(function (req, res, next) {
 	next();
 });
 
-app.use(express.static(path.join(__dirname, 'frontend')));
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/frontend/dist/index.html')));
+app.use(express.static(path.join(__dirname, 'dist')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/dist/index.html')));
 
 require('./routes/get.js')(app, client);
 require('./routes/delete.js')(app, client);

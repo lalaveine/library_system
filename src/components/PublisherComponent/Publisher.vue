@@ -95,7 +95,6 @@
           <span class="action-buttons" slot="action" slot-scope="text, record" >
             <a-button  type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
             <a-button @click="openModal" type="primary">Edit</a-button>
-           
           </span>
        </a-table>
       
@@ -121,8 +120,9 @@ export default {
   data() {
     return {
       formLayout: "horizontal",
-      searchForm: this.$form.createForm(this, { name: "publusherSearch" }),
-      inputForm: this.$form.createForm(this, { name: "publusherInput" }),
+      searchForm: this.$form.createForm(this, { name: "publisherSearch" }),
+      inputForm: this.$form.createForm(this, { name: "publisherInput" }),
+      modalForm: this.$form.createForm(this, { name: "publisherEdit" }),
       data: [],
       columns,
       isButtonDisabled: true,
