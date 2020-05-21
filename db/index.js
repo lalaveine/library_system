@@ -1,10 +1,10 @@
 const pg = require('pg');
 const config = {
-    user: "dqyxzdhxxhkvwd",
-    password: "5dd80d4bfcc94e7bdfced05a2f04d772ffba666f2c7cc03ecd735f6217be82aa",
-    database: "dctusulqaa69nh",
+    user: "fqxsfzdrnznmir",
+    password: "f5f8a516df29ac15d0b95c2dfdaee480511c60b9ff5819bc7d62c7cb13f3d497",
+    database: "d7pvv3v5i5cqf2",
     port: 5432,
-    host: "ec2-54-246-85-151.eu-west-1.compute.amazonaws.com",
+    host: "ec2-46-137-100-204.eu-west-1.compute.amazonaws.com",
     ssl: true
 };
 

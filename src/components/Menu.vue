@@ -4,9 +4,7 @@
     <a-menu
       style="width: 256px"
       :default-selected-keys="['1']"
-      :open-keys.sync="openKeys"
       mode="vertical"
-      @click="handleClick"
     >
       <a-menu-item key="1">
         <router-link to="/">Journal</router-link>

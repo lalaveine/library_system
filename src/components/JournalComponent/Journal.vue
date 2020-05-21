@@ -93,49 +93,112 @@
         </a-form-item>
       </a-form>
     </div>
+    <div>
+      <collection-create-form
+            ref="collectionForm"
+            :visible="visible"
+            @cancel="handleCancel"
+            @create="handleCreate"
+      />
+    </div>
+    <!-- Actions @click="onDelete(record.entry_id)" -->
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record" >
-        <a-button type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
-        <a-button type="primary">Edit</a-button>
+        <a-button type="danger" @click="showDeleteConfirm">Delete</a-button>
+        <a-button type="primary" @click="showModal">Edit</a-button>    
       </span>
     </a-table>
+    <!-- End Actions -->
+
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
 
-import { Button, Form, Input, Table, DatePicker } from "ant-design-vue";
+import { Button, Form, Input, Table, Modal, DatePicker } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
+const CollectionCreateForm = {
+  props: ['visible'],
+  beforeCreate() {
+    this.form = this.$form.createForm(this, { name: 'form_in_modal' });
+  },
+  template: `
+    <a-modal
+      :visible="visible"
+      title='Create a new collection'
+      okText='Create'
+      @cancel="() => { $emit('cancel') }"
+      @ok="() => { $emit('create') }"
+    >
+      <a-form layout='vertical' :form="form">
+        <a-form-item label='Title'>
+          <a-input
+            v-decorator="[
+              'title',
+              {
+                rules: [{ required: true, message: 'Please input the title of collection!' }],
+              }
+            ]"
+          />
+        </a-form-item>
+        <a-form-item label='Description'>
+          <a-input
+            type='textarea'
+            v-decorator="['description']"
+          />
+        </a-form-item>
+        <a-form-item class='collection-create-form_last-form-item'>
+          <a-radio-group
+            v-decorator="[
+              'modifier',
+              {
+                initialValue: 'private',
+              }
+            ]"
+          >
+              <a-radio value='public'>Public</a-radio>
+              <a-radio value='private'>Private</a-radio>
+            </a-radio-group>
+        </a-form-item>
+      </a-form>
+    </a-modal>
+  `,
+};
+
 export default {
-  name: "BookSearch",
+  name: "Journal",
   components: {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
     "a-form-item": Form.Item,
     "a-table": Table,
-    "a-date-picker": DatePicker
+    "a-date-picker": DatePicker,
+    "a-modal": Modal,
+    "collection-create-form": CollectionCreateForm
   },
   data() {
     return {
       formLayout: "horizontal",
-      searchForm: this.$form.createForm(this, { name: "journalSearch" }),
-      inputForm: this.$form.createForm(this, { name: "journalInput" }),
+      searchForm: this.$form.createForm(this, { name: "journalSearchForm" }),
+      inputForm: this.$form.createForm(this, { name: "journalInputForm" }),
       data: [],
       columns,
+      visible: false,
       isButtonDisabled: true,
       dateFormat
     };
   },
-  methods: {
+  methods: { 
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "/journal?";
+          let link = "http://localhost:5000/journal?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -153,8 +216,40 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("/journal", Object.values(values));
+          axios.post("http://localhost:5000/journal", Object.values(values));
         }
+      });
+    },
+    showModal() {
+      this.visible = true;
+    },
+    handleCancel() {
+      this.visible = false;
+    },
+    handleCreate() {
+      const form = this.$refs.collectionForm.form;
+      form.validateFields((err, values) => {
+        if (err) {
+          return;
+        }
+        console.log('Received values of form: ', values);
+        form.resetFields();
+        this.visible = false;
+      });
+    },
+    showDeleteConfirm() {
+      this.$confirm({
+        title: 'Are you sure delete this task?',
+        content: 'Some descriptions',
+        okText: 'Yes',
+        okType: 'danger',
+        cancelText: 'No',
+        onOk() {
+          console.log('OK');
+        },
+        onCancel() {
+          console.log('Cancel');
+        },
       });
     },
     getButtonDisabled() {
@@ -171,11 +266,11 @@ export default {
       return true;
     },
     async onDelete(id) {
-       await axios.delete(`/journal/${id}`)
+       await axios.delete(`http://localhost:5000/journal/${id}`)
     }
   },
   async mounted() {
-    await axios.get(`/journal`).then(response => {
+    await axios.get(`http://localhost:5000/journal`).then(response => {
       const { data } = response;
       this.data = data;
     });
