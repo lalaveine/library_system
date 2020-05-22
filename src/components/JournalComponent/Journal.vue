@@ -286,36 +286,60 @@ const JournalUpdateForm = {
   watch: {
     name() {
       this.form.updateFields({
-        entry_id: this.$form.createFormField({
-            ...this.entry_id,
-            value: this.entry_id,
-          }),
         name: this.$form.createFormField({
           ...this.name,
           value: this.name,
         }),
+      });
+    },
+    entry_id() {
+      this.form.updateFields({
+        entry_id: this.$form.createFormField({
+          ...this.entry_id,
+          value: this.entry_id,
+        }),
+      }); 
+    },
+    middle_name() {
+      this.form.updateFields({
         middle_name: this.$form.createFormField({
           ...this.middle_name,
           value: this.middle_name,
         }),
+      }); 
+    },
+    surname() {
+      this.form.updateFields({
         surname: this.$form.createFormField({
             ...this.surname,
             value: this.surname,
         }),
+      }); 
+    },
+    title() {
+      this.form.updateFields({
         title: this.$form.createFormField({
           ...this.title,
           value: this.title,
         }),
+      }); 
+    },  
+    take_date() {
+      this.form.updateFields({
         take_date: this.$form.createFormField({
           ...this.take_date,
           value: this.take_date,
         }),
+      }); 
+    },      
+    take_date() {
+      this.form.updateFields({
         return_date: this.$form.createFormField({
             ...this.return_date,
             value: this.return_date,
         }),
-      });
-    },
+      }); 
+    },    
   },
 };
 
@@ -376,7 +400,7 @@ export default {
     },
     showUpdateModal(record) {
       this.visible = true;
-      this.fields = record
+      this.fields = {...record}
     },
     handleCancel() {
       this.visible = false;
