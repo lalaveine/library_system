@@ -126,7 +126,7 @@
 <script>
 import axios from "axios";
 
-import { Button, Form, Input, Table, Modal, DatePicker } from "ant-design-vue";
+import { Button, Form, Input, Table, Modal, DatePicker, InputNumber } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
 const JournalUpdateForm = {
@@ -148,7 +148,8 @@ const JournalUpdateForm = {
     "a-form": Form,
     "a-form-item": Form.Item,
     "a-input": Input,
-    "a-date-picker": DatePicker
+    "a-date-picker": DatePicker,
+    "a-input-number": InputNumber
   },
   template: `
     <a-modal
@@ -161,6 +162,17 @@ const JournalUpdateForm = {
       <a-form layout='horizontal' 
         :form="form"
       >
+        <a-form-item label='Entry id'>
+          <a-input-number
+            :disabled="disabled"
+            v-decorator="[
+              'entry_id',
+              {
+                rules: [{ required: true, message: 'Please enter the name!' }],
+              }
+            ]"
+          />
+        </a-form-item>
         <a-form-item label='Name'>
           <a-input
             v-decorator="[
@@ -236,6 +248,10 @@ const JournalUpdateForm = {
       },
       mapPropsToFields: () => {
         return {
+          entry_id: this.$form.createFormField({
+            ...this.entry_id,
+            value: this.entry_id,
+          }),
           name: this.$form.createFormField({
             ...this.name,
             value: this.name,
@@ -270,6 +286,10 @@ const JournalUpdateForm = {
   watch: {
     name() {
       this.form.updateFields({
+        entry_id: this.$form.createFormField({
+            ...this.entry_id,
+            value: this.entry_id,
+          }),
         name: this.$form.createFormField({
           ...this.name,
           value: this.name,
@@ -356,8 +376,7 @@ export default {
     showUpdateModal(record) {
       this.visible = true;
       this.fields = record
-      console.log(this.fields.middle_name)
-      console.log( {record} )
+      console.log(record)
     },
     handleCancel() {
       this.visible = false;
@@ -365,16 +384,16 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
-        if (err) {
-          return;
+        if (!err) {
+          // axios.put(`http://localhost:5000/journal/${values.entry_id}`, Object.values(values));
+          console.log(values)
         }
-        console.log("Received values of form: ", values);
+        // console.log("Received values of form: ", values);
         form.resetFields();
         this.visible = false;
       });
     },
     handleFormChange(changedFields) {
-      console.log('changedFields', changedFields);
       this.fields = { ...this.fields, changedFields };
     },
     showDeleteConfirm(id) {
@@ -412,6 +431,10 @@ export default {
   async mounted() {
     await axios.get(`http://localhost:5000/journal`).then(response => {
       const { data } = response;
+      data.forEach((entry) => {
+        entry['take_date'] = entry['take_date'].substring(0, entry['take_date'].indexOf('T'));
+        entry['return_date'] = entry['return_date'].substring(0, entry['return_date'].indexOf('T'));
+      })
       this.data = data;
     });
   }
