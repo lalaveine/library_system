@@ -98,15 +98,25 @@
       <journal-update-form
         ref="editForm" 
         :visible="visible"
+        :name=fields.name
+        :middle_name=fields.middle_name
+        :surname=fields.surname
+        :title=fields.title
+        :edition_id=fields.edition_id
+        :reader_id=fields.reader_id
+        :return_date=fields.return_date
+        :take_date=fields.take_date
+        :entry_id=fields.entry_id 
         @cancel="handleCancel"
         @update="handleUpdateSubmit"
+        @change="handleFormChange"
       />
     </div>
     <!-- Actions @click="onDelete(record.entry_id)" -->
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm(record.entry_id)">Delete</a-button>
-        <a-button type="primary" @click="showModal">Edit</a-button>
+        <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
     <!-- End Actions -->
@@ -120,10 +130,19 @@ import { Button, Form, Input, Table, Modal, DatePicker } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
 const JournalUpdateForm = {
-  props: ["visible"],
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "journalEditForm" });
-  },
+  props: [
+    'visible',
+    'name',
+    'middle_name',
+    'surname',
+    'title',
+    'edition_id',
+    'reader_id',
+    'return_date',
+    'take_date',
+    'entry_id'
+  ],
+ 
   components: {
     "a-modal": Modal,
     "a-form": Form,
@@ -139,7 +158,9 @@ const JournalUpdateForm = {
       @cancel="() => { $emit('cancel') }"
       @ok="() => { $emit('update') }"
     >
-      <a-form layout='horizontal' :form="form">
+      <a-form layout='horizontal' 
+        :form="form"
+      >
         <a-form-item label='Name'>
           <a-input
             v-decorator="[
@@ -151,7 +172,7 @@ const JournalUpdateForm = {
             placeholder="Reader's name"
           />
         </a-form-item>
-        <a-form-item label='MiddleName'>
+        <a-form-item label='Middle name'>
           <a-input
             v-decorator="[
               'middle_name',
@@ -167,10 +188,10 @@ const JournalUpdateForm = {
             v-decorator="[
               'surname',
               {
-                rules: [{ required: true, message: 'Please enter the surname!' }],
+                rules: [{ required: true, message: 'Please enter the middle name!' }],
               }
             ]"
-            placeholder="Reader's surname"
+            placeholder="Reader's middle name"
           />
         </a-form-item>
         <a-form-item label='Title'>
@@ -178,36 +199,104 @@ const JournalUpdateForm = {
             v-decorator="[
               'title',
               {
-                rules: [{ required: true, message: 'Please enter the title of the book!' }],
+                rules: [{ required: true, message: 'Please enter the middle name!' }],
               }
             ]"
-            placeholder="Book's title"
+            placeholder="Reader's middle name"
           />
         </a-form-item>
-        <a-form-item label='TakeDate'>
+        <a-form-item label='Take date'>
           <a-date-picker
             v-decorator="[
               'take_date',
               {
-                rules: [{ required: true, message: 'Please enter the take date!' }],
+                rules: [{ required: true, message: 'Please enter the middle name!' }],
               }
             ]"
-            placeholder="Take date"
           />
-          <a-form-item label='ReturnDate'>
+        </a-form-item>
+        <a-form-item label='Return date'>
           <a-date-picker
             v-decorator="[
               'return_date',
               {
-                rules: [{ required: true, message: 'Please enter the return date!' }],
+                rules: [{ required: true, message: 'Please enter the middle name!' }],
               }
             ]"
-            placeholder="Return date"
           />
         </a-form-item>
       </a-form>
     </a-modal>
-  `
+  `,
+   created() {
+    this.form = this.$form.createForm(this, { 
+      name: "journalEditForm", 
+      onFieldsChange: (_, changedFields) => {
+        this.$emit('change', changedFields);
+      },
+      mapPropsToFields: () => {
+        return {
+          name: this.$form.createFormField({
+            ...this.name,
+            value: this.name,
+          }),
+          middle_name: this.$form.createFormField({
+            ...this.middle_name,
+            value: this.middle_name,
+          }),
+          surname: this.$form.createFormField({
+            ...this.surname,
+            value: this.surname,
+          }),
+          title: this.$form.createFormField({
+            ...this.title,
+            value: this.title,
+          }),
+          take_date: this.$form.createFormField({
+            ...this.take_date,
+            value: this.take_date,
+          }),
+          return_date: this.$form.createFormField({
+            ...this.return_date,
+            value: this.return_date,
+          }),
+        };
+      },
+      onValuesChange(_, values) {
+        console.log(values);
+      },
+    });
+  },
+  watch: {
+    name() {
+      this.form.updateFields({
+        name: this.$form.createFormField({
+          ...this.name,
+          value: this.name,
+        }),
+        middle_name: this.$form.createFormField({
+          ...this.middle_name,
+          value: this.middle_name,
+        }),
+        surname: this.$form.createFormField({
+            ...this.surname,
+            value: this.surname,
+        }),
+        title: this.$form.createFormField({
+          ...this.title,
+          value: this.title,
+        }),
+        take_date: this.$form.createFormField({
+          ...this.take_date,
+          value: this.take_date,
+        }),
+        return_date: this.$form.createFormField({
+            ...this.return_date,
+            value: this.return_date,
+        }),
+      });
+    },
+  },
 };
 
 export default {
@@ -231,6 +320,7 @@ export default {
       columns,
       visible: false,
       isButtonDisabled: true,
+      fields: { },
       dateFormat,
       Modal
     };
@@ -263,8 +353,11 @@ export default {
         }
       });
     },
-    showModal() {
+    showUpdateModal(record) {
       this.visible = true;
+      this.fields = record
+      console.log(this.fields.middle_name)
+      console.log( {record} )
     },
     handleCancel() {
       this.visible = false;
@@ -279,6 +372,10 @@ export default {
         form.resetFields();
         this.visible = false;
       });
+    },
+    handleFormChange(changedFields) {
+      console.log('changedFields', changedFields);
+      this.fields = { ...this.fields, changedFields };
     },
     showDeleteConfirm(id) {
       Modal.confirm({
