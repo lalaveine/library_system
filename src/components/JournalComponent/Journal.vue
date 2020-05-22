@@ -332,7 +332,7 @@ const JournalUpdateForm = {
         }),
       }); 
     },      
-    take_date() {
+    return_date() {
       this.form.updateFields({
         return_date: this.$form.createFormField({
             ...this.return_date,
