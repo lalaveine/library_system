@@ -95,22 +95,20 @@
     </div>
     <div>
       <collection-create-form
-            ref="collectionForm"
-            :visible="visible"
-            @cancel="handleCancel"
-            @create="handleCreate"
+        ref="collectionForm"
+        :visible="visible"
+        @cancel="handleCancel"
+        @create="handleCreate"
       />
     </div>
     <!-- Actions @click="onDelete(record.entry_id)" -->
     <a-table :columns="columns" :data-source="data">
-      <span class="action-buttons" slot="action" slot-scope="text, record" >
+      <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm">Delete</a-button>
-        <a-button type="primary" @click="showModal">Edit</a-button>    
+        <a-button type="primary" @click="showModal">Edit</a-button>
       </span>
     </a-table>
     <!-- End Actions -->
-
-
   </div>
 </template>
 
@@ -121,9 +119,15 @@ import { Button, Form, Input, Table, Modal, DatePicker } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
 const CollectionCreateForm = {
-  props: ['visible'],
+  props: ["visible"],
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'form_in_modal' });
+    this.form = this.$form.createForm(this, { name: "form_in_modal" });
+  },
+  components: {
+    "a-modal": Modal,
+    "a-form": Form,
+    "a-form-item": Form.Item,
+    "a-input": Input,
   },
   template: `
     <a-modal
@@ -165,7 +169,7 @@ const CollectionCreateForm = {
         </a-form-item>
       </a-form>
     </a-modal>
-  `,
+  `
 };
 
 export default {
@@ -189,10 +193,11 @@ export default {
       columns,
       visible: false,
       isButtonDisabled: true,
-      dateFormat
+      dateFormat,
+      Modal
     };
   },
-  methods: { 
+  methods: {
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
@@ -232,24 +237,24 @@ export default {
         if (err) {
           return;
         }
-        console.log('Received values of form: ', values);
+        console.log("Received values of form: ", values);
         form.resetFields();
         this.visible = false;
       });
     },
     showDeleteConfirm() {
-      this.$confirm({
-        title: 'Are you sure delete this task?',
-        content: 'Some descriptions',
-        okText: 'Yes',
-        okType: 'danger',
-        cancelText: 'No',
+      Modal.confirm({
+        title: "Are you sure delete this task?",
+        content: "Some descriptions",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
         onOk() {
-          console.log('OK');
+          console.log("OK");
         },
         onCancel() {
-          console.log('Cancel');
-        },
+          console.log("Cancel");
+        }
       });
     },
     getButtonDisabled() {
@@ -266,7 +271,7 @@ export default {
       return true;
     },
     async onDelete(id) {
-       await axios.delete(`http://localhost:5000/journal/${id}`)
+      await axios.delete(`http://localhost:5000/journal/${id}`);
     }
   },
   async mounted() {
@@ -279,14 +284,13 @@ export default {
 </script>
 
 <style>
-
 .action-buttons {
   display: flex;
   margin: 10px;
   flex-direction: column;
 }
 
-.ant-btn{
+.ant-btn {
   margin: 3px;
 }
 </style>
