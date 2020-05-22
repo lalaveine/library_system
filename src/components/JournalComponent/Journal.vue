@@ -94,11 +94,12 @@
       </a-form>
     </div>
     <div>
-      <collection-create-form
-        ref="collectionForm"
+      <!--  ref="collectionForm" some how connects it to the form-->
+      <journal-update-form
+        ref="editForm" 
         :visible="visible"
         @cancel="handleCancel"
-        @create="handleCreate"
+        @update="handleUpdateSubmit"
       />
     </div>
     <!-- Actions @click="onDelete(record.entry_id)" -->
@@ -118,10 +119,10 @@ import axios from "axios";
 import { Button, Form, Input, Table, Modal, DatePicker } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
-const CollectionCreateForm = {
+const JournalUpdateForm = {
   props: ["visible"],
   beforeCreate() {
-    this.form = this.$form.createForm(this, { name: "form_in_modal" });
+    this.form = this.$form.createForm(this, { name: "journalEditForm" });
   },
   components: {
     "a-modal": Modal,
@@ -133,10 +134,10 @@ const CollectionCreateForm = {
   template: `
     <a-modal
       :visible="visible"
-      title='Create a new collection'
-      okText='Create'
+      title='Edit journal entry'
+      okText='Update'
       @cancel="() => { $emit('cancel') }"
-      @ok="() => { $emit('create') }"
+      @ok="() => { $emit('update') }"
     >
       <a-form layout='horizontal' :form="form">
         <a-form-item label='Name'>
@@ -219,7 +220,7 @@ export default {
     "a-table": Table,
     "a-date-picker": DatePicker,
     "a-modal": Modal,
-    "collection-create-form": CollectionCreateForm
+    "journal-update-form": JournalUpdateForm
   },
   data() {
     return {
@@ -268,8 +269,8 @@ export default {
     handleCancel() {
       this.visible = false;
     },
-    handleCreate() {
-      const form = this.$refs.collectionForm.form;
+    handleUpdateSubmit() {
+      const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
         if (err) {
           return;
