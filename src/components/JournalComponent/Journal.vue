@@ -164,7 +164,7 @@ const JournalUpdateForm = {
       >
         <a-form-item label='Entry id'>
           <a-input-number
-            :disabled="disabled"
+            disabled="disabled"
             v-decorator="[
               'entry_id',
               {
@@ -340,6 +340,7 @@ export default {
       columns,
       visible: false,
       isButtonDisabled: true,
+      disabled: true,
       fields: { },
       dateFormat,
       Modal
@@ -376,7 +377,6 @@ export default {
     showUpdateModal(record) {
       this.visible = true;
       this.fields = record
-      console.log(record)
     },
     handleCancel() {
       this.visible = false;
@@ -403,8 +403,8 @@ export default {
         okText: "Yes",
         okType: "danger",
         cancelText: "No",
-        onOk() {
-          axios.delete(`http://localhost:5000/journal/${id}`);
+        async onOk() {
+          await axios.delete(`http://localhost:5000/journal/${id}`).then(() => true);
         },
         onCancel() {
           console.log("Cancel");
