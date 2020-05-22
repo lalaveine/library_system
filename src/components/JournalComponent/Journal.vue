@@ -206,15 +206,15 @@ const JournalUpdateForm = {
             placeholder="Reader's middle name"
           />
         </a-form-item>
-        <a-form-item label='Title'>
+        <a-form-item label='Edition ID'>
           <a-input
             v-decorator="[
-              'title',
+              'edition_id',
               {
-                rules: [{ required: true, message: 'Please enter the middle name!' }],
+                rules: [{ required: true, message: 'Please enter the edition id!' }],
               }
             ]"
-            placeholder="Reader's middle name"
+            placeholder="Edition's ID"
           />
         </a-form-item>
         <a-form-item label='Take date'>
@@ -264,9 +264,9 @@ const JournalUpdateForm = {
             ...this.surname,
             value: this.surname,
           }),
-          title: this.$form.createFormField({
-            ...this.title,
-            value: this.title,
+          edition_id: this.$form.createFormField({
+            ...this.edition_id,
+            value: this.edition_id,
           }),
           take_date: this.$form.createFormField({
             ...this.take_date,
@@ -316,11 +316,11 @@ const JournalUpdateForm = {
         }),
       }); 
     },
-    title() {
+    edition_id() {
       this.form.updateFields({
-        title: this.$form.createFormField({
-          ...this.title,
-          value: this.title,
+        edition_id: this.$form.createFormField({
+          ...this.edition_id,
+          value: this.edition_id,
         }),
       }); 
     },  
@@ -399,6 +399,7 @@ export default {
       });
     },
     showUpdateModal(record) {
+      console.log(record)
       this.visible = true;
       this.fields = {...record}
     },
@@ -413,7 +414,9 @@ export default {
           console.log(values)
         }
         // console.log("Received values of form: ", values);
-        form.resetFields();
+        // form.resetFields();
+        //this.fields = record;
+        console.log(this.record)
         this.visible = false;
       });
     },
