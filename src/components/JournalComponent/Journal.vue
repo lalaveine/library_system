@@ -94,7 +94,7 @@
       </a-form>
     </div>
     <div>
-      <!--  ref="collectionForm" some how connects it to the form-->
+
       <journal-update-form
         ref="editForm" 
         :visible="visible"
@@ -112,7 +112,7 @@
         @change="handleFormChange"
       />
     </div>
-    <!-- Actions @click="onDelete(record.entry_id)" -->
+    <!-- Actions -->
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm(record.entry_id)">Delete</a-button>
@@ -404,6 +404,7 @@ export default {
     },
     handleCancel() {
       this.visible = false;
+      this.fields = {};
     },
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
@@ -415,6 +416,7 @@ export default {
         // console.log("Received values of form: ", values);
         form.resetFields();
         this.visible = false;
+        this.fields = {};
       });
     },
     handleFormChange(changedFields) {

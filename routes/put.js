@@ -6,7 +6,7 @@ module.exports = function (app, client) {
 
     app.put('/journals/:id', async (req, res) => {
         const parameters = [...Object.values(req.body), req.params.id];
-        await client.query('UPDATE journal SET reader_id = $1, instance_id = $2, take_date = $3, return_date = $4', parameters);
+        await client.query('UPDATE journal SET reader_id = (SELECT reader_id from reader WHERE name = $3 AND middle_name = $4 AND surname = $2), edition_id = $5, take_date = $6, return_date = $7', parameters);
     });
 
     app.put('/books/:id', async (req, res) => {
