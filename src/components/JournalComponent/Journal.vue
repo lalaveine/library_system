@@ -76,8 +76,8 @@
           <a-input v-decorator="['surname']" placeholder="Input Surname" />
         </a-form-item>
 
-        <a-form-item label="Tittle:">
-          <a-input v-decorator="['tittle']" placeholder="Input tittle" />
+        <a-form-item label="Title:">
+          <a-input v-decorator="['title']" placeholder="Input title" />
         </a-form-item>
 
         <a-form-item label="Take date:">
@@ -104,7 +104,7 @@
     <!-- Actions @click="onDelete(record.entry_id)" -->
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.entry_id)">Delete</a-button>
         <a-button type="primary" @click="showModal">Edit</a-button>
       </span>
     </a-table>
@@ -128,6 +128,7 @@ const CollectionCreateForm = {
     "a-form": Form,
     "a-form-item": Form.Item,
     "a-input": Input,
+    "a-date-picker": DatePicker
   },
   template: `
     <a-modal
@@ -137,35 +138,71 @@ const CollectionCreateForm = {
       @cancel="() => { $emit('cancel') }"
       @ok="() => { $emit('create') }"
     >
-      <a-form layout='vertical' :form="form">
+      <a-form layout='horizontal' :form="form">
+        <a-form-item label='Name'>
+          <a-input
+            v-decorator="[
+              'name',
+              {
+                rules: [{ required: true, message: 'Please enter the name!' }],
+              }
+            ]"
+            placeholder="Reader's name"
+          />
+        </a-form-item>
+        <a-form-item label='MiddleName'>
+          <a-input
+            v-decorator="[
+              'middle_name',
+              {
+                rules: [{ required: true, message: 'Please enter the middle name!' }],
+              }
+            ]"
+            placeholder="Reader's middle name"
+          />
+        </a-form-item>
+        <a-form-item label='Surname'>
+          <a-input
+            v-decorator="[
+              'surname',
+              {
+                rules: [{ required: true, message: 'Please enter the surname!' }],
+              }
+            ]"
+            placeholder="Reader's surname"
+          />
+        </a-form-item>
         <a-form-item label='Title'>
           <a-input
             v-decorator="[
               'title',
               {
-                rules: [{ required: true, message: 'Please input the title of collection!' }],
+                rules: [{ required: true, message: 'Please enter the title of the book!' }],
               }
             ]"
+            placeholder="Book's title"
           />
         </a-form-item>
-        <a-form-item label='Description'>
-          <a-input
-            type='textarea'
-            v-decorator="['description']"
-          />
-        </a-form-item>
-        <a-form-item class='collection-create-form_last-form-item'>
-          <a-radio-group
+        <a-form-item label='TakeDate'>
+          <a-date-picker
             v-decorator="[
-              'modifier',
+              'take_date',
               {
-                initialValue: 'private',
+                rules: [{ required: true, message: 'Please enter the take date!' }],
               }
             ]"
-          >
-              <a-radio value='public'>Public</a-radio>
-              <a-radio value='private'>Private</a-radio>
-            </a-radio-group>
+            placeholder="Take date"
+          />
+          <a-form-item label='ReturnDate'>
+          <a-date-picker
+            v-decorator="[
+              'return_date',
+              {
+                rules: [{ required: true, message: 'Please enter the return date!' }],
+              }
+            ]"
+            placeholder="Return date"
+          />
         </a-form-item>
       </a-form>
     </a-modal>
@@ -242,7 +279,7 @@ export default {
         this.visible = false;
       });
     },
-    showDeleteConfirm() {
+    showDeleteConfirm(id) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
@@ -250,7 +287,7 @@ export default {
         okType: "danger",
         cancelText: "No",
         onOk() {
-          console.log("OK");
+          axios.delete(`http://localhost:5000/journal/${id}`);
         },
         onCancel() {
           console.log("Cancel");
