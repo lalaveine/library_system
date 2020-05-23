@@ -235,13 +235,13 @@ export const bookColumns = [
     {
       title: "address",
       dataIndex: "address",
-      key: "name",
+      key: "address",
     },
 
     {
       title: "email",
       dataIndex: "email",
-      key: "name",
+      key: "email",
     },
     {
       title: "Actions",
@@ -256,7 +256,7 @@ export const bookColumns = [
     {
       title: "ID",
       dataIndex: "publisher_id",
-      key: "name",
+      key: "publisher_id",
     },
     {
       title: "Name",
@@ -264,15 +264,15 @@ export const bookColumns = [
       key: "name",
     },
     {
-      title: "City ID",
-      dataIndex: "city_id",
-      key: "name",
+      title: "City",
+      dataIndex: "city",
+      key: "city",
     },
 
     {
       title: "Email",
       dataIndex: "email",
-      key: "name",
+      key: "email",
     },
     {
       title: "Actions",

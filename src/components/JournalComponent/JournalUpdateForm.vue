@@ -1,105 +1,97 @@
  <template>
-        <a-modal
-        :visible="visible"
-        title='Edit journal entry'
-        okText='Update'
-        @cancel="() => { $emit('cancel') }"
-        @ok="() => { $emit('update') }"
-    >
-        <a-form layout='horizontal' 
-        :form="form"
-        >
-        <a-form-item label='Entry id'>
-            <a-input-number
-            disabled="disabled"
-            v-decorator="[
+  <a-modal
+    :visible="visible"
+    title="Edit journal entry"
+    okText="Update"
+    @cancel="() => { $emit('cancel') }"
+    @ok="() => { $emit('update') }"
+  >
+    <a-form layout="horizontal" :form="form">
+      <a-form-item label="Entry id">
+        <a-input-number
+          disabled="disabled"
+          v-decorator="[
                 'entry_id',
                 {
                 rules: [{ required: true, message: 'Please enter the name!' }],
                 }
             ]"
-            />
-        </a-form-item>
-        <a-form-item label='Name'>
-            <a-input
-            v-decorator="[
+        />
+      </a-form-item>
+      <a-form-item label="Name">
+        <a-input
+          v-decorator="[
                 'name',
                 {
                 rules: [{ required: true, message: 'Please enter the name!' }],
                 }
             ]"
-            placeholder="Reader's name"
-            />
-        </a-form-item>
-        <a-form-item label='Middle name'>
-            <a-input
-            v-decorator="[
+          placeholder="Reader's name"
+        />
+      </a-form-item>
+      <a-form-item label="Middle name">
+        <a-input
+          v-decorator="[
                 'middle_name',
                 {
                 rules: [{ required: true, message: 'Please enter the middle name!' }],
                 }
             ]"
-            placeholder="Reader's middle name"
-            />
-        </a-form-item>
-        <a-form-item label='Surname'>
-            <a-input
-            v-decorator="[
+          placeholder="Reader's middle name"
+        />
+      </a-form-item>
+      <a-form-item label="Surname">
+        <a-input
+          v-decorator="[
                 'surname',
                 {
                 rules: [{ required: true, message: 'Please enter the middle name!' }],
                 }
             ]"
-            placeholder="Reader's middle name"
-            />
-        </a-form-item>
-        <a-form-item label='Edition ID'>
-            <a-input
-            v-decorator="[
+          placeholder="Reader's middle name"
+        />
+      </a-form-item>
+      <a-form-item label="Edition ID">
+        <a-input
+          v-decorator="[
                 'edition_id',
                 {
                 rules: [{ required: true, message: 'Please enter the edition id!' }],
                 }
             ]"
-            placeholder="Edition's ID"
-            />
-        </a-form-item>
-        <a-form-item label='Take date'>
-            <a-date-picker
-            v-decorator="[
+          placeholder="Edition's ID"
+        />
+      </a-form-item>
+      <a-form-item label="Take date">
+        <a-date-picker
+          v-decorator="[
                 'take_date',
                 {
                 rules: [{ required: true, message: 'Please enter the middle name!' }],
                 }
             ]"
-            />
-        </a-form-item>
-        <a-form-item label='Return date'>
-            <a-date-picker
-            v-decorator="[
+        />
+      </a-form-item>
+      <a-form-item label="Return date">
+        <a-date-picker
+          v-decorator="[
                 'return_date',
                 {
                 rules: [{ required: true, message: 'Please enter the middle name!' }],
                 }
             ]"
-            />
-        </a-form-item>
-        </a-form>
-    </a-modal>
+        />
+      </a-form-item>
+    </a-form>
+  </a-modal>
 </template>
 
 <script>
-import {
-  Form,
-  Input,
-  Modal,
-  DatePicker,
-  InputNumber,
-} from "ant-design-vue";
+import { Form, Input, Modal, DatePicker, InputNumber } from "ant-design-vue";
 
 export default {
-    name: "JournalUpdateForm",
-    props: [
+  name: "JournalUpdateForm",
+  props: [
     "visible",
     "name",
     "middle_name",
@@ -164,8 +156,8 @@ export default {
     });
   },
   data() {
-      return {
-        disabled: true,
+    return {
+      disabled: true
     };
   },
   watch: {
@@ -226,5 +218,5 @@ export default {
       });
     }
   }
-}
+};
 </script>

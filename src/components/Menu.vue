@@ -1,29 +1,24 @@
 <template>
   <div class="menu">
     <h2>Menu</h2>
-    <a-menu
-      style="width: 256px"
-      :default-selected-keys="['1']"
-      mode="vertical"
-    >
+    <a-menu style="width: 256px" :default-selected-keys="['1']" mode="vertical">
       <a-menu-item key="1">
         <router-link to="/">Journal</router-link>
       </a-menu-item>
       <a-menu-item key="2">
-        <router-link to="/Books">Books</router-link>
+        <router-link to="/Book">Book</router-link>
       </a-menu-item>
       <a-menu-item key="3">
         <router-link to="/Reader">Reader</router-link>
       </a-menu-item>
-
       <a-menu-item key="4">
         <router-link to="/Author">Author</router-link>
       </a-menu-item>
       <a-menu-item key="5">
-        <router-link to="/CityInput">City</router-link>
+        <router-link to="/City">City</router-link>
       </a-menu-item>
       <a-menu-item key="6">
-        <router-link to="/Editions">Editions</router-link>
+        <router-link to="/Edition">Editios</router-link>
       </a-menu-item>
       <a-menu-item key="7">
         <router-link to="/Library">Library</router-link>

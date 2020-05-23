@@ -60,26 +60,21 @@
           <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
         </a-form-item>
       </a-form>
-       <a-form
-        :form="editForm"
-        :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
-        @submit="handleSearchSubmit"
-      >
-        <a-modal v-model="visible" title="Modal" ok-text="Submit" cancel-text="Cancel" @ok="hideModal">
-          <p>Bla bla ...</p>
-          <p>Bla bla ...</p>
-          <p>Bla bla ...</p>
-        </a-modal>
-      </a-form>
     </div>
-    
-      <a-table :columns="columns" :data-source="data">
-          <span class="action-buttons" slot="action" slot-scope="text, record" >
-            <a-button  type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
-            <a-button @click="openModal" type="primary">Edit</a-button>
-          </span>
-      </a-table>
+    <publisher-update-form
+        ref="editForm"
+        :visible="visible"
+        v-bind="fields"
+        @cancel="handleCancel"
+        @update="handleUpdateSubmit"
+        @change="handleFormChange"
+      />
+    <a-table :columns="columns" :data-source="data"> 
+      <span class="action-buttons" slot="action" slot-scope="text, record">
+        <a-button type="danger" @click="showDeleteConfirm(record.publisher_id)">Delete</a-button>
+        <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
+      </span>
+    </a-table>
 
      
   </div>
@@ -87,9 +82,18 @@
 
 <script>
 import axios from "axios";
-
-import { Button, Form, Input, Table, DatePicker } from "ant-design-vue";
+import {
+  Button,
+  Form,
+  Input,
+  Table,
+  Modal,
+  DatePicker,
+  InputNumber,
+  notification
+} from "ant-design-vue";
 import { publisherColumns as columns, dateFormat } from "@/constants.js";
+import PublisherUpdateForm from './PublisherUpdateForm.vue';
 
 export default {
   name: "PublisherSearch",
@@ -99,20 +103,20 @@ export default {
     "a-input": Input,
     "a-form-item": Form.Item,
     "a-table": Table,
-    "a-date-picker": DatePicker
+    "a-date-picker": DatePicker,
+    "publisher-update-form": PublisherUpdateForm
   },
   data() {
     return {
       formLayout: "horizontal",
       searchForm: this.$form.createForm(this, { name: "publisherSearch" }),
       inputForm: this.$form.createForm(this, { name: "publisherInput" }),
-      modalForm: this.$form.createForm(this, { name: "publisherEdit" }),
       data: [],
       columns,
+      visible: false,
       isButtonDisabled: true,
+      fields: {},
       dateFormat,
-      modalOpen : false,
-   
     };
   },
   methods: {
@@ -144,6 +148,63 @@ export default {
         }
       });
     },
+        showUpdateModal(record) {
+      // console.log(record);
+      this.visible = true;
+      this.fields = { ...record };
+    },
+    handleCancel() {
+      this.visible = false;
+      this.fields = {};
+    },
+    handleUpdateSubmit() {
+      const form = this.$refs.editForm.form;
+      form.validateFields((err, values) => {
+        console.log(values);
+        if (!err) {
+          (async () =>
+            await axios
+              .put(
+                `http://localhost:5000/publishers/${values.publisher_id}`,
+                Object.values(values)
+              )
+              .then(res => this.openNotificationWithIcon('success', 'Success', 'Publisher is updated!'))
+              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+        }
+        // console.log("Received values of form: ", values);
+        form.resetFields();
+        //this.fields = record;
+        // console.log(this.record);
+        this.visible = false;
+        this.fields = {};
+      });
+    },
+    openNotificationWithIcon(type, message, description) {
+      notification[type]({
+        message: message,
+        description: description
+      });
+    },
+    handleFormChange(changedFields) {
+      this.fields = { ...this.fields, changedFields };
+    },
+    showDeleteConfirm(id) {
+      Modal.confirm({
+        title: "Are you sure delete this task?",
+        content: "Some descriptions",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        async onOk() {
+          await axios
+            .delete(`http://localhost:5000/publishers/${id}`);
+        },
+        onCancel() {
+          console.log("Cancel");
+        }
+      });
+    },
     getButtonDisabled() {
       const fields = this.searchForm.getFieldsValue();
       const keys = Object.keys(this.searchForm.getFieldsValue());
@@ -156,12 +217,6 @@ export default {
         }
       }
       return true;
-    },
-    openModal(){
-        this.modalOpen = true
-    },
-    closeModal(){
-      this.modalOpen = false
     }
   },
   async mounted() {
@@ -173,51 +228,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.modal{
-  position: relative;
- 
-  }
-
-.modal .modal__over{
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-
-  z-index: 40;
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.modal__content{
-  background: #fff;
-  width: 400px;
-  padding: 20px;
-  height: 290px;
-  z-index: 100;
-
-  position: fixed;
-  top:0;
-  left: 50%;
-  transform: translate(-50%,13%);
-
-}
-
-.modal__content--edit{
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-}
-
-.modal__content--cancel{
-    position: absolute;
-    bottom: 20px;
-    right: 110px;
-}
-
-
-
-
-</style>

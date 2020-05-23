@@ -60,25 +60,48 @@
         </a-form-item>
       </a-form>
     </div>
-    <a-table :columns="columns" :data-source="data"></a-table>
+    <author-update-form
+        ref="editForm"
+        :visible="visible"
+        v-bind="fields"
+        @cancel="handleCancel"
+        @update="handleUpdateSubmit"
+        @change="handleFormChange"
+    />
+    <a-table :columns="columns" :data-source="data"> 
+      <span class="action-buttons" slot="action" slot-scope="text, record">
+        <a-button type="danger" @click="showDeleteConfirm(record.author_id)">Delete</a-button>
+        <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
+      </span>
+    </a-table>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
-import { Button, Form, Input, Table, DatePicker } from "ant-design-vue";
+import {
+  Button,
+  Form,
+  Input,
+  Table,
+  Modal,
+  DatePicker,
+  InputNumber,
+  notification
+} from "ant-design-vue";
 import { authorColumns as columns, dateFormat } from "@/constants.js";
+import AuthorUpdateForm from './AuthorUpdateForm.vue'
 
 export default {
-  name: "BookSearch",
+  name: "Author",
   components: {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
     "a-form-item": Form.Item,
     "a-table": Table,
-    "a-date-picker": DatePicker
+    "a-date-picker": DatePicker,
+    "author-update-form": AuthorUpdateForm
   },
   data() {
     return {
@@ -87,7 +110,9 @@ export default {
       inputForm: this.$form.createForm(this, { name: "authorInput" }),
       data: [],
       columns,
+      visible: false,
       isButtonDisabled: true,
+      fields: {},
       dateFormat
     };
   },
@@ -117,6 +142,63 @@ export default {
         if (!err) {
           axios.post("http://localhost:5000/author", Object.values(values));
           console.log(values);
+        }
+      });
+    },
+    showUpdateModal(record) {
+      // console.log(record);
+      this.visible = true;
+      this.fields = { ...record };
+    },
+    handleCancel() {
+      this.visible = false;
+      this.fields = {};
+    },
+    handleUpdateSubmit() {
+      const form = this.$refs.editForm.form;
+      form.validateFields((err, values) => {
+        console.log(values);
+        if (!err) {
+          (async () =>
+            await axios
+              .put(
+                `http://localhost:5000/authors/${values.author_id}`,
+                Object.values(values)
+              )
+              .then(res => this.openNotificationWithIcon('success', 'Success', 'Author is updated!'))
+              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+        }
+        // console.log("Received values of form: ", values);
+        form.resetFields();
+        //this.fields = record;
+        // console.log(this.record);
+        this.visible = false;
+        this.fields = {};
+      });
+    },
+    openNotificationWithIcon(type, message, description) {
+      notification[type]({
+        message: message,
+        description: description
+      });
+    },
+    handleFormChange(changedFields) {
+      this.fields = { ...this.fields, changedFields };
+    },
+    showDeleteConfirm(id) {
+      Modal.confirm({
+        title: "Are you sure delete this task?",
+        content: "Some descriptions",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        async onOk() {
+          await axios
+            .delete(`http://localhost:5000/authors/${id}`);
+        },
+        onCancel() {
+          console.log("Cancel");
         }
       });
     },

@@ -81,7 +81,7 @@ module.exports = function (app, client) {
     });
 
     app.get('/publishers', async (req, res) => {
-        let query = 'SELECT publisher_id, publisher.name as publisher, city.name as city, email FROM publisher, city WHERE city.city_id = publisher.city_id ';
+        let query = 'SELECT publisher_id, publisher.name, city.name as city, email FROM publisher, city WHERE city.city_id = publisher.city_id ';
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {

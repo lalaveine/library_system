@@ -122,7 +122,7 @@
 
 <script>
 import axios from "axios";
-import moment from "moment"
+import moment from "moment";
 import {
   Button,
   Form,
@@ -134,7 +134,7 @@ import {
   notification
 } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
-import JournalUpdateForm from './JournalUpdateForm.vue'
+import JournalUpdateForm from "./JournalUpdateForm.vue";
 
 export default {
   name: "Journal",
@@ -157,7 +157,7 @@ export default {
       columns,
       visible: false,
       isButtonDisabled: true,
-      fields: {},
+      fields: {}
     };
   },
   methods: {
@@ -207,8 +207,20 @@ export default {
                 `http://localhost:5000/journal/${values.entry_id}`,
                 Object.values(values)
               )
-              .then(res => this.openNotificationWithIcon('success', 'Success', 'Journal entry is updated!'))
-              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Journal entry is updated!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ))();
         }
         // console.log("Received values of form: ", values);
         form.resetFields();
@@ -235,8 +247,7 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios
-            .delete(`http://localhost:5000/journal/${id}`);
+          await axios.delete(`http://localhost:5000/journal/${id}`);
         },
         onCancel() {
           console.log("Cancel");
@@ -244,7 +255,7 @@ export default {
       });
     },
     dateCustomRender(dateString) {
-      return moment(dateString).format('MMMM Do YYYY')
+      return moment(dateString).format("MMMM Do YYYY");
     },
     getButtonDisabled() {
       const fields = this.searchForm.getFieldsValue();

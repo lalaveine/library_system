@@ -17,7 +17,7 @@ module.exports = function (app, client) {
     });
 
     app.delete('/publishers/:id', async (req, res) => {
-        await client.query('DELETE FROM reader WHERE publisher.publisher_id=$1', [req.params.id])
+        await client.query('DELETE FROM publisher WHERE publisher_id=$1', [req.params.id])
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)

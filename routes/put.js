@@ -23,8 +23,8 @@ module.exports = function (app, client) {
             });
     });
 
-    app.put('/publisher/:id', async (req, res) => {
-        await client.query('UPDATE publisher SET publisher name = $1, city_id = (SELECT city_id from city WHERE name=$2), email = $3', req.body)
+    app.put('/publishers/:id', async (req, res) => {
+        await client.query('UPDATE publisher SET name = $2, city_id = (SELECT city_id from city WHERE name=$3), email = $4 WHERE publisher_id = $1', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)
@@ -32,7 +32,7 @@ module.exports = function (app, client) {
     });
 
     app.put('/cities/:id', async (req, res) => {
-        await client.query('UPDATE city SET name = $1', req.body)
+        await client.query('UPDATE city SET name = $2 WHERE city_id=$1', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)
@@ -47,8 +47,16 @@ module.exports = function (app, client) {
             });
     });
 
-    app.post('/author/:id', async (req, res) => {
-        await client.query('UPDATE author SET name = $1, middle_name = $2, surname = $3', req.body)
+    app.put('/libraries/:id', async (req, res) => {
+        await client.query('UPDATE library SET name=$2, email=$4, address=$3 WHERE library_id=$1', req.body)
+            .then(() => { res.status(200).send() })
+            .catch((err) => {
+                res.status(500).send(err)
+            });
+    });
+
+    app.put('/authors/:id', async (req, res) => {
+        await client.query('UPDATE author SET name = $3, middle_name = $4, surname = $2 WHERE author_id=$1', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)
