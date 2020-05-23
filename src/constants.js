@@ -40,6 +40,16 @@ export const bookColumns = [
       key: "entry_id"
     },
     {
+      title: "Reader ID",
+      dataIndex: "reader_id",
+      key: "reader_id"
+    },
+    {
+      title: "Surname",
+      dataIndex: "surname",
+      key: "surname"
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name"
@@ -49,11 +59,7 @@ export const bookColumns = [
       dataIndex: "middle_name",
       key: "middle_name"
     },
-    {
-      title: "Surname",
-      dataIndex: "surname",
-      key: "surname"
-    },
+    
     {
       title: "Title",
       dataIndex: "title",
