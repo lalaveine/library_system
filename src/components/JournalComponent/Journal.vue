@@ -426,8 +426,8 @@ export default {
                 Object.values(values)
               )
               .then(res => console.log("Success!"))
-              .catch(err => this.openNotificationWithIcon('error', 'Error', err)))();
-              // .catch(err => this.openNotificationWithIcon('error', 'Error', typeof(err))))();
+              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
         }
         // console.log("Received values of form: ", values);
         form.resetFields();
