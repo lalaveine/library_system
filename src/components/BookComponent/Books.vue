@@ -31,12 +31,25 @@
           />
         </a-form-item>
 
-        <a-form-item label="author ID:">
+        <a-form-item label="Author Surname:">
           <a-input
-            v-decorator="['edition_id', { rules: [{ required: true, message: 'Please input author ID' }] }]"
-            placeholder="Input author ID"
+            v-decorator="['author_surname', { rules: [{ required: true, message: 'Please input author surname' }] }]"
+            placeholder="Input author surname"
           />
         </a-form-item>
+        <a-form-item label="Author Name:">
+          <a-input
+            v-decorator="['author_name', { rules: [{ required: true, message: 'Please input author name' }] }]"
+            placeholder="Input author name"
+          />
+        </a-form-item>
+        <a-form-item label="Author Middle Name:">
+          <a-input
+            v-decorator="['author_middle_name', { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+            placeholder="Input author middle name"
+          />
+        </a-form-item>
+
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
           <a-button type="primary" html-type="submit">Submit</a-button>
         </a-form-item>

@@ -103,7 +103,7 @@
         @change="handleFormChange"
       />
     </div>
-    <!-- Actions -->
+    <!-- Table Custom Render -->
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm(record.entry_id)">Delete</a-button>
@@ -116,7 +116,7 @@
         <span v-html="dateCustomRender(record.return_date)"></span>
       </span>
     </a-table>
-    <!-- End Actions -->
+    <!-- End Table Custom Render -->
   </div>
 </template>
 
@@ -158,8 +158,6 @@ export default {
       visible: false,
       isButtonDisabled: true,
       fields: {},
-      dateFormat,
-      Modal
     };
   },
   methods: {
@@ -209,9 +207,8 @@ export default {
                 `http://localhost:5000/journal/${values.entry_id}`,
                 Object.values(values)
               )
-              .then(res => console.log("Success!"))
+              .then(res => this.openNotificationWithIcon('success', 'Success', 'Journal entry is updated!'))
               .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
-              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
         }
         // console.log("Received values of form: ", values);
         form.resetFields();
@@ -239,8 +236,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/journal/${id}`)
-            .then(() => true);
+            .delete(`http://localhost:5000/journal/${id}`);
         },
         onCancel() {
           console.log("Cancel");
@@ -285,15 +281,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.action-buttons {
-  display: flex;
-  margin: 10px;
-  flex-direction: column;
-}
-
-.ant-btn {
-  margin: 3px;
-}
-</style>
