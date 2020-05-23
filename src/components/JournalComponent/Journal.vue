@@ -97,15 +97,7 @@
       <journal-update-form
         ref="editForm"
         :visible="visible"
-        :name="fields.name"
-        :middle_name="fields.middle_name"
-        :surname="fields.surname"
-        :title="fields.title"
-        :edition_id="fields.edition_id"
-        :reader_id="fields.reader_id"
-        :return_date="fields.return_date"
-        :take_date="fields.take_date"
-        :entry_id="fields.entry_id"
+        v-bind="fields"
         @cancel="handleCancel"
         @update="handleUpdateSubmit"
         @change="handleFormChange"
@@ -117,6 +109,12 @@
         <a-button type="danger" @click="showDeleteConfirm(record.entry_id)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
+      <span slot="take_date" slot-scope="text, record">
+        <span v-html="dateCustomRender(record.take_date)"></span>
+      </span>
+      <span slot="return_date" slot-scope="text, record">
+        <span v-html="dateCustomRender(record.return_date)"></span>
+      </span>
     </a-table>
     <!-- End Actions -->
   </div>
@@ -124,7 +122,7 @@
 
 <script>
 import axios from "axios";
-
+import moment from "moment"
 import {
   Button,
   Form,
@@ -248,6 +246,9 @@ export default {
           console.log("Cancel");
         }
       });
+    },
+    dateCustomRender(dateString) {
+      return moment(dateString).format('MMMM Do YYYY')
     },
     getButtonDisabled() {
       const fields = this.searchForm.getFieldsValue();

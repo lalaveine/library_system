@@ -73,12 +73,14 @@ export const bookColumns = [
     {
       title: "Take date",
       dataIndex: "take_date",
-      key: "take_date"
+      key: "take_date",
+      scopedSlots: { customRender: 'take_date' }
     },
     {
       title: "Return date",
       dataIndex: "return_date",
-      key: "return_date"
+      key: "return_date",
+      scopedSlots: { customRender: 'return_date' }
     },
     {
       title: "Actions",
