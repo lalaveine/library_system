@@ -132,7 +132,8 @@ import {
   Table,
   Modal,
   DatePicker,
-  InputNumber
+  InputNumber,
+  notification
 } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
@@ -382,7 +383,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          console.log(values);
+          // console.log(values);
           let link = "http://localhost:5000/journal?";
           for (let key in values) {
             if (values[key]) {
@@ -406,7 +407,7 @@ export default {
       });
     },
     showUpdateModal(record) {
-      console.log(record);
+      // console.log(record);
       this.visible = true;
       this.fields = { ...record };
     },
@@ -425,14 +426,21 @@ export default {
                 Object.values(values)
               )
               .then(res => console.log("Success!"))
-              .catch(err => console.log(err.response.data.detail)))();
+              .catch(err => this.openNotificationWithIcon('error', 'Error', err)))();
+              // .catch(err => this.openNotificationWithIcon('error', 'Error', typeof(err))))();
         }
         // console.log("Received values of form: ", values);
-        // form.resetFields();
+        form.resetFields();
         //this.fields = record;
-        console.log(this.record);
+        // console.log(this.record);
         this.visible = false;
         this.fields = {};
+      });
+    },
+    openNotificationWithIcon(type, message, description) {
+      notification[type]({
+        message: message,
+        description: description
       });
     },
     handleFormChange(changedFields) {
