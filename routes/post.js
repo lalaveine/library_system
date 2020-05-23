@@ -1,8 +1,5 @@
 
 module.exports = function (app, client) {
-    const bodyParser = require('body-parser');
-    app.use(bodyParser.urlencoded({ extended: true }));
-    app.use(bodyParser.json())
 
     app.post('/reader', async (req, res) => {
         await client.query('INSERT INTO reader (name, middle_name, surname, email) VALUES ($1,$2,$3,$4)', req.body);
@@ -10,6 +7,7 @@ module.exports = function (app, client) {
 
     app.post('/journal', async (req, res) => {
         await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES((SELECT reader_id from reader WHERE name = $1 AND middle_name = $2 AND surname = $3),$4,$5,$6)', req.body);
+
     });
 
     app.post('/book', async (req, res) => {

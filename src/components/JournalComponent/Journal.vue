@@ -94,19 +94,18 @@
       </a-form>
     </div>
     <div>
-
       <journal-update-form
-        ref="editForm" 
+        ref="editForm"
         :visible="visible"
-        :name=fields.name
-        :middle_name=fields.middle_name
-        :surname=fields.surname
-        :title=fields.title
-        :edition_id=fields.edition_id
-        :reader_id=fields.reader_id
-        :return_date=fields.return_date
-        :take_date=fields.take_date
-        :entry_id=fields.entry_id 
+        :name="fields.name"
+        :middle_name="fields.middle_name"
+        :surname="fields.surname"
+        :title="fields.title"
+        :edition_id="fields.edition_id"
+        :reader_id="fields.reader_id"
+        :return_date="fields.return_date"
+        :take_date="fields.take_date"
+        :entry_id="fields.entry_id"
         @cancel="handleCancel"
         @update="handleUpdateSubmit"
         @change="handleFormChange"
@@ -126,23 +125,31 @@
 <script>
 import axios from "axios";
 
-import { Button, Form, Input, Table, Modal, DatePicker, InputNumber } from "ant-design-vue";
+import {
+  Button,
+  Form,
+  Input,
+  Table,
+  Modal,
+  DatePicker,
+  InputNumber
+} from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
 
 const JournalUpdateForm = {
   props: [
-    'visible',
-    'name',
-    'middle_name',
-    'surname',
-    'title',
-    'edition_id',
-    'reader_id',
-    'return_date',
-    'take_date',
-    'entry_id'
+    "visible",
+    "name",
+    "middle_name",
+    "surname",
+    "title",
+    "edition_id",
+    "reader_id",
+    "return_date",
+    "take_date",
+    "entry_id"
   ],
- 
+
   components: {
     "a-modal": Modal,
     "a-form": Form,
@@ -240,47 +247,47 @@ const JournalUpdateForm = {
       </a-form>
     </a-modal>
   `,
-   created() {
-    this.form = this.$form.createForm(this, { 
-      name: "journalEditForm", 
+  created() {
+    this.form = this.$form.createForm(this, {
+      name: "journalEditForm",
       onFieldsChange: (_, changedFields) => {
-        this.$emit('change', changedFields);
+        this.$emit("change", changedFields);
       },
       mapPropsToFields: () => {
         return {
           entry_id: this.$form.createFormField({
             ...this.entry_id,
-            value: this.entry_id,
+            value: this.entry_id
           }),
           name: this.$form.createFormField({
             ...this.name,
-            value: this.name,
+            value: this.name
           }),
           middle_name: this.$form.createFormField({
             ...this.middle_name,
-            value: this.middle_name,
+            value: this.middle_name
           }),
           surname: this.$form.createFormField({
             ...this.surname,
-            value: this.surname,
+            value: this.surname
           }),
           edition_id: this.$form.createFormField({
             ...this.edition_id,
-            value: this.edition_id,
+            value: this.edition_id
           }),
           take_date: this.$form.createFormField({
             ...this.take_date,
-            value: this.take_date,
+            value: this.take_date
           }),
           return_date: this.$form.createFormField({
             ...this.return_date,
-            value: this.return_date,
-          }),
+            value: this.return_date
+          })
         };
       },
       onValuesChange(_, values) {
         console.log(values);
-      },
+      }
     });
   },
   watch: {
@@ -288,59 +295,59 @@ const JournalUpdateForm = {
       this.form.updateFields({
         name: this.$form.createFormField({
           ...this.name,
-          value: this.name,
-        }),
+          value: this.name
+        })
       });
     },
     entry_id() {
       this.form.updateFields({
         entry_id: this.$form.createFormField({
           ...this.entry_id,
-          value: this.entry_id,
-        }),
-      }); 
+          value: this.entry_id
+        })
+      });
     },
     middle_name() {
       this.form.updateFields({
         middle_name: this.$form.createFormField({
           ...this.middle_name,
-          value: this.middle_name,
-        }),
-      }); 
+          value: this.middle_name
+        })
+      });
     },
     surname() {
       this.form.updateFields({
         surname: this.$form.createFormField({
-            ...this.surname,
-            value: this.surname,
-        }),
-      }); 
+          ...this.surname,
+          value: this.surname
+        })
+      });
     },
     edition_id() {
       this.form.updateFields({
         edition_id: this.$form.createFormField({
           ...this.edition_id,
-          value: this.edition_id,
-        }),
-      }); 
-    },  
+          value: this.edition_id
+        })
+      });
+    },
     take_date() {
       this.form.updateFields({
         take_date: this.$form.createFormField({
           ...this.take_date,
-          value: this.take_date,
-        }),
-      }); 
-    },      
+          value: this.take_date
+        })
+      });
+    },
     return_date() {
       this.form.updateFields({
         return_date: this.$form.createFormField({
-            ...this.return_date,
-            value: this.return_date,
-        }),
-      }); 
-    },    
-  },
+          ...this.return_date,
+          value: this.return_date
+        })
+      });
+    }
+  }
 };
 
 export default {
@@ -365,7 +372,7 @@ export default {
       visible: false,
       isButtonDisabled: true,
       disabled: true,
-      fields: { },
+      fields: {},
       dateFormat,
       Modal
     };
@@ -399,9 +406,9 @@ export default {
       });
     },
     showUpdateModal(record) {
-      console.log(record)
+      console.log(record);
       this.visible = true;
-      this.fields = {...record}
+      this.fields = { ...record };
     },
     handleCancel() {
       this.visible = false;
@@ -411,13 +418,19 @@ export default {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
         if (!err) {
-          // axios.put(`http://localhost:5000/journal/${values.entry_id}`, Object.values(values));
-          console.log(values)
+          (async () =>
+            await axios
+              .put(
+                `http://localhost:5000/journal/${values.entry_id}`,
+                Object.values(values)
+              )
+              .then(res => console.log("Success!"))
+              .catch(err => console.log(err.response.data.detail)))();
         }
         // console.log("Received values of form: ", values);
         // form.resetFields();
         //this.fields = record;
-        console.log(this.record)
+        console.log(this.record);
         this.visible = false;
         this.fields = {};
       });
@@ -433,7 +446,9 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios.delete(`http://localhost:5000/journal/${id}`).then(() => true);
+          await axios
+            .delete(`http://localhost:5000/journal/${id}`)
+            .then(() => true);
         },
         onCancel() {
           console.log("Cancel");
@@ -460,10 +475,16 @@ export default {
   async mounted() {
     await axios.get(`http://localhost:5000/journal`).then(response => {
       const { data } = response;
-      data.forEach((entry) => {
-        entry['take_date'] = entry['take_date'].substring(0, entry['take_date'].indexOf('T'));
-        entry['return_date'] = entry['return_date'].substring(0, entry['return_date'].indexOf('T'));
-      })
+      data.forEach(entry => {
+        entry["take_date"] = entry["take_date"].substring(
+          0,
+          entry["take_date"].indexOf("T")
+        );
+        entry["return_date"] = entry["return_date"].substring(
+          0,
+          entry["return_date"].indexOf("T")
+        );
+      });
       this.data = data;
     });
   }

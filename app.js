@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 3000;
 const client = require('./db/index');
+const bodyParser = require('body-parser');
 
 
 
@@ -19,6 +20,10 @@ app.use(function (req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'dist')));
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '/dist/index.html')));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+
 
 require('./routes/get.js')(app, client);
 require('./routes/delete.js')(app, client);
