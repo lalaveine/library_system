@@ -15,14 +15,30 @@ module.exports = function (app, client) {
     });
 
     app.get('/books', async (req, res) => {
-        let query = 'SELECT name, middle_name, surname, title, bbk from author, book WHERE author.author_id = book.author_id ';
+        let query = `
+            SELECT
+                book.book_id, 
+                book.book_title, 
+                array_agg(author.author_id) as author_ids, 
+                array_agg(author.author_name || ' ' || author.author_mid_name || ' ' || author.author_surname) as authors
+            FROM
+                book
+            INNER JOIN
+                author_book
+                ON book.book_id = author_book.book_id
+            INNER JOIN
+                author
+                ON author.author_id = author_book.author_id
+            `
         if (!_.isEmpty(req.query)) {
-            query += ' AND '
+            query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                table_name = key.substring(0,key.indexOf("_"));
+                query += `${table_name}.${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `;
             };
             query = query.slice(0, -4);
         };
+        query += 'GROUP BY book.book_id'
         const { rows } = await client.query(query);
         res.send(rows);
     });
