@@ -123,7 +123,6 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          console.log(values);
           let link = "http://localhost:5000/books";
           for (let key in values) {
             if (values[key]) {

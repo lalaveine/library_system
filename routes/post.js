@@ -6,7 +6,8 @@ module.exports = function (app, client) {
     });
 
     app.post('/journal', async (req, res) => {
-        await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES((SELECT reader_id from reader WHERE name = $1 AND middle_name = $2 AND surname = $3),$4,$5,$6)', req.body);
+        console.log(req.body)
+        await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES((SELECT reader_id from reader WHERE name = $2 AND middle_name = $3 AND surname = $1),$4,$5,$6)', req.body);
 
     });
 

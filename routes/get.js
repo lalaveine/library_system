@@ -28,7 +28,8 @@ module.exports = function (app, client) {
     });
 
     app.get('/editions', async (req, res) => {
-        let query = 'SELECT edition_id, pub_year, publisher.name as publisher, title, library.name as library from book_edition, library, publisher, book where publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id';
+        console.log(await client.query('SELECT publisher.city_id from publisher, book_edition where publisher.publisher_id = book_edition.publisher_id'))
+        let query = 'SELECT edition_id, city.name as city, pub_year, publisher.name as publisher, title, library.name as library from book_edition, library, publisher, book, city where publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id and city.city_id = (SELECT publisher.city_id from publisher, book_edition where publisher.publisher_id = book_edition.publisher_id)';
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {
