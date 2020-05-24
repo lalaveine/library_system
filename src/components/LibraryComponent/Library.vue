@@ -12,22 +12,29 @@
         <h3>Input</h3>
         <a-form-item label="Name:">
           <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input library`s name' }] }]"
+            v-decorator="['library_name', { rules: [{ required: true, message: 'Please input library`s name' }] }]"
             placeholder="Input library`s name"
           />
         </a-form-item>
 
         <a-form-item label="Email:">
           <a-input
-            v-decorator="['email', { rules: [{ required: true, message: 'Please input email' }] }]"
+            v-decorator="['library_email', { rules: [{ required: true, message: 'Please input email' }] }]"
             placeholder="Input email"
           />
         </a-form-item>
 
-        <a-form-item label="adress:">
+        <a-form-item label="City:">
           <a-input
-            v-decorator="['adress', { rules: [{ required: true, message: 'Please input adress' }] }]"
-            placeholder="Input adress"
+            v-decorator="['city_name', { rules: [{ required: true, message: 'Please input city' }] }]"
+            placeholder="Input city"
+          />
+        </a-form-item>
+
+        <a-form-item label="Address:">
+          <a-input
+            v-decorator="['library_address', { rules: [{ required: true, message: 'Please input adress' }] }]"
+            placeholder="Input address"
           />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -44,15 +51,19 @@
       >
         <h3>Search</h3>
         <a-form-item label="Name:">
-          <a-input v-decorator="['name']" placeholder="Input library's name" />
+          <a-input v-decorator="['library_name']" placeholder="Input library's name" />
         </a-form-item>
 
         <a-form-item label="Email:">
-          <a-input v-decorator="['email']" placeholder="Input Email" />
+          <a-input v-decorator="['library_email']" placeholder="Input Email" />
         </a-form-item>
 
         <a-form-item label="Address:">
-          <a-input v-decorator="['Address']" placeholder="Input Address" />
+          <a-input v-decorator="['library_address']" placeholder="Input address" />
+        </a-form-item>
+
+        <a-form-item label="City:">
+          <a-input v-decorator="['city_name']" placeholder="Input City" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">

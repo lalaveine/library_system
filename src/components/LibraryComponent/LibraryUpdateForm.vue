@@ -13,7 +13,7 @@
       <a-form-item label="Name">
         <a-input
           v-decorator="[
-                'name',
+                'library_name',
                 {
                 rules: [{ required: true, message: 'Please enter a name!' }],
                 }
@@ -24,7 +24,7 @@
       <a-form-item label="Address">
         <a-input
           v-decorator="[
-                'address',
+                'library_address',
                 {
                 rules: [{ required: true, message: 'Please enter an address!' }],
                 }
@@ -32,7 +32,17 @@
           placeholder="Address"
         />
       </a-form-item>
-
+      <a-form-item label="City">
+        <a-input
+          v-decorator="[
+                'city_name',
+                {
+                rules: [{ required: true, message: 'Please enter a city!' }],
+                }
+            ]"
+          placeholder="City"
+        />
+      </a-form-item>
       <a-form-item label="Email">
         <a-input
           v-decorator="[
@@ -55,10 +65,11 @@ export default {
   name: "LibraryUpdateForm",
   props: [
     "visible",
-    "name",
-    "address",
+    "library_address",
+    "library_name",
+    "city_name",
     "library_id",
-    "email"
+    "library_email"
   ],
 
   components: {
@@ -81,17 +92,21 @@ export default {
             ...this.library_id,
             value: this.library_id
           }),
-          name: this.$form.createFormField({
-            ...this.name,
-            value: this.name
+          library_name: this.$form.createFormField({
+            ...this.library_name,
+            value: this.library_name
           }),
-          address: this.$form.createFormField({
-            ...this.address,
-            value: this.address
+          city_name: this.$form.createFormField({
+            ...this.city_name,
+            value: this.city_name
           }),
-          email: this.$form.createFormField({
-            ...this.email,
-            value: this.email
+          library_address: this.$form.createFormField({
+            ...this.library_address,
+            value: this.library_address
+          }),
+          library_email: this.$form.createFormField({
+            ...this.library_email,
+            value: this.library_email
           })
         };
       },
@@ -114,27 +129,35 @@ export default {
         })
       });
     },
-    name() {
+    library_name() {
       this.form.updateFields({
-        name: this.$form.createFormField({
-          ...this.name,
-          value: this.name
+        library_name: this.$form.createFormField({
+          ...this.library_name,
+          value: this.library_name
         })
       });
     },
-    address() {
+    library_address() {
       this.form.updateFields({
-        address: this.$form.createFormField({
-          ...this.address,
-          value: this.address
+        library_address: this.$form.createFormField({
+          ...this.library_address,
+          value: this.library_address
         })
       });
     },
-    email() {
+    city_name() {
       this.form.updateFields({
-        email: this.$form.createFormField({
-          ...this.email,
-          value: this.email
+        city_name: this.$form.createFormField({
+          ...this.city_name,
+          value: this.city_name
+        })
+      });
+    },
+    library_email() {
+      this.form.updateFields({
+        library_email: this.$form.createFormField({
+          ...this.library_email,
+          value: this.library_email
         })
       });
     }

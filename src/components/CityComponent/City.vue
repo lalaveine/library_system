@@ -12,7 +12,7 @@
         <h3>Input</h3>
         <a-form-item label="Name:">
           <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input city`s name' }] }]"
+            v-decorator="['city_name', { rules: [{ required: true, message: 'Please input city`s name' }] }]"
             placeholder="Input city`s name"
           />
         </a-form-item>
@@ -31,7 +31,7 @@
       >
         <h3>Search</h3>
         <a-form-item label="Name:">
-          <a-input v-decorator="['name']" placeholder="Input city" />
+          <a-input v-decorator="['city_name']" placeholder="Input city" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">

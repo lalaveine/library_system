@@ -231,7 +231,11 @@ export const bookColumns = [
       dataIndex: "library_address",
       key: "library_address",
     },
-
+    {
+      title: "City",
+      dataIndex: "city_name",
+      key: "city_name",
+    },
     {
       title: "email",
       dataIndex: "library_email",

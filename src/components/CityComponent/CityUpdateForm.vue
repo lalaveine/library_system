@@ -13,7 +13,7 @@
       <a-form-item label="City Name">
         <a-input
           v-decorator="[
-                'name',
+                'city_name',
                 {
                 rules: [{ required: true, message: 'Please enter a city name!' }],
                 }
@@ -32,7 +32,7 @@ export default {
   name: "CityUpdateForm",
   props: [
     "visible",
-    "name",
+    "city_name",
     "city_id"
   ],
 
@@ -56,9 +56,9 @@ export default {
             ...this.city_id,
             value: this.city_id
           }),
-          name: this.$form.createFormField({
-            ...this.name,
-            value: this.name
+          city_name: this.$form.createFormField({
+            ...this.city_name,
+            value: this.city_name
           })
         };
       },
@@ -81,11 +81,11 @@ export default {
         })
       });
     },
-    name() {
+    city_name() {
       this.form.updateFields({
-        name: this.$form.createFormField({
-          ...this.name,
-          value: this.name
+        city_name: this.$form.createFormField({
+          ...this.city_name,
+          value: this.city_name
         })
       });
     }
