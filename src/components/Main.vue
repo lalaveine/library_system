@@ -8,7 +8,7 @@
 <script>
 // import SearchData from "@/components/SearchData.vue";
 import Menu from "@/components/Menu.vue";
-import "ant-design-vue/dist/antd.css";
+import "ant-design-vue/dist/antd.less";
 import router from '../router.js'
 
 export default {
@@ -50,7 +50,7 @@ display: flex;
 }
 
 h1{
-  color: #40a9ff;
+  color: #52c41a;
   font-size: 45px;
   text-align: center;
 }
