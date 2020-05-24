@@ -13,18 +13,18 @@ export const journalColumns = [
   },
   {
     title: "Surname",
-    dataIndex: "surname",
-    key: "surname"
+    dataIndex: "reader_surname",
+    key: "reader_surname"
   },
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name"
+    dataIndex: "reader_name",
+    key: "reader_name"
   },
   {
     title: "Middle name",
-    dataIndex: "middle_name",
-    key: "middle_name"
+    dataIndex: "reader_mid_name",
+    key: "reader_mid_name"
   },
   
   {
@@ -66,14 +66,8 @@ export const bookColumns = [
     },
     {
       title: "Title",
-      dataIndex: "title",
-      key: "title",
-    },
-    {
-      title: "BBK",
-      dataIndex: "bbk",
-      key: "address 1",
-      ellipsis: true
+      dataIndex: "book_title",
+      key: "book_title",
     },
     {
       title: "Author Id",
@@ -98,23 +92,23 @@ export const bookColumns = [
     },
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "reader_name",
+      key: "reader_name",
     },
     {
       title: "Surname",
-      dataIndex: "surname",
-      key: "surname"
+      dataIndex: "reader_surname",
+      key: "reader_surname"
     },
     {
       title: "Middle name",
-      dataIndex: "middle_name",
-      key: "middle_name",
+      dataIndex: "reader_mid_name",
+      key: "reader_mid_name",
     },
     {
       title: "E-mail",
-      dataIndex: "email",
-      key: "email",
+      dataIndex: "reader_email",
+      key: "reader_email",
       ellipsis: true
     },
     {
@@ -134,18 +128,18 @@ export const bookColumns = [
     },
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "author_name",
+      key: "author_name",
     },
     {
       title: "Middle name",
-      dataIndex: "middle_name",
-      key: "middle_name",
+      dataIndex: "author_mid_name",
+      key: "author_mid_name",
     },
     {
       title: "Surname",
-      dataIndex: "surname",
-      key: "surname"
+      dataIndex: "author_surname",
+      key: "author_surname"
     },
     {
       title: "Actions",
@@ -164,8 +158,8 @@ export const bookColumns = [
     },
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "city_name",
+      key: "city_name",
     },
     {
       title: "Actions",
@@ -228,20 +222,20 @@ export const bookColumns = [
     },
     {
       title: "name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "library_name",
+      key: "library_name",
     },
 
     {
       title: "address",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "library_address",
+      key: "library_address",
     },
 
     {
       title: "email",
-      dataIndex: "email",
-      key: "email",
+      dataIndex: "library_email",
+      key: "library_email",
     },
     {
       title: "Actions",
@@ -260,19 +254,19 @@ export const bookColumns = [
     },
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "publisher_name",
+      key: "publisher_name",
     },
     {
       title: "City",
-      dataIndex: "city",
-      key: "city",
+      dataIndex: "city_name",
+      key: "city_name",
     },
 
     {
       title: "Email",
-      dataIndex: "email",
-      key: "email",
+      dataIndex: "publisher_email",
+      key: "publisher_email",
     },
     {
       title: "Actions",

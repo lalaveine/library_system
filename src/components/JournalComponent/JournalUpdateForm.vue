@@ -21,7 +21,7 @@
       <a-form-item label="Name">
         <a-input
           v-decorator="[
-                'name',
+                'reader_name',
                 {
                 rules: [{ required: true, message: 'Please enter the name!' }],
                 }
@@ -32,7 +32,7 @@
       <a-form-item label="Middle name">
         <a-input
           v-decorator="[
-                'middle_name',
+                'reader_mid_name',
                 {
                 rules: [{ required: true, message: 'Please enter the middle name!' }],
                 }
@@ -43,9 +43,9 @@
       <a-form-item label="Surname">
         <a-input
           v-decorator="[
-                'surname',
+                'reader_surname',
                 {
-                rules: [{ required: true, message: 'Please enter the middle name!' }],
+                rules: [{ required: true, message: 'Please enter the surname!' }],
                 }
             ]"
           placeholder="Reader's middle name"
@@ -93,10 +93,10 @@ export default {
   name: "JournalUpdateForm",
   props: [
     "visible",
-    "name",
-    "middle_name",
-    "surname",
-    "title",
+    "reader_name",
+    "reader_mid_name",
+    "reader_surname",
+    "book_title",
     "edition_id",
     "reader_id",
     "return_date",
@@ -124,17 +124,17 @@ export default {
             ...this.entry_id,
             value: this.entry_id
           }),
-          name: this.$form.createFormField({
-            ...this.name,
-            value: this.name
+          reader_name: this.$form.createFormField({
+            ...this.reader_name,
+            value: this.reader_name
           }),
-          middle_name: this.$form.createFormField({
-            ...this.middle_name,
-            value: this.middle_name
+          reader_mid_name: this.$form.createFormField({
+            ...this.reader_mid_name,
+            value: this.reader_mid_name
           }),
-          surname: this.$form.createFormField({
-            ...this.surname,
-            value: this.surname
+          reader_surname: this.$form.createFormField({
+            ...this.reader_surname,
+            value: this.reader_surname
           }),
           edition_id: this.$form.createFormField({
             ...this.edition_id,
@@ -161,11 +161,11 @@ export default {
     };
   },
   watch: {
-    name() {
+    reader_name() {
       this.form.updateFields({
-        name: this.$form.createFormField({
-          ...this.name,
-          value: this.name
+        reader_name: this.$form.createFormField({
+          ...this.reader_name,
+          value: this.reader_name
         })
       });
     },
@@ -177,19 +177,19 @@ export default {
         })
       });
     },
-    middle_name() {
+    reader_mid_name() {
       this.form.updateFields({
-        middle_name: this.$form.createFormField({
-          ...this.middle_name,
-          value: this.middle_name
+        reader_mid_name: this.$form.createFormField({
+          ...this.reader_mid_name,
+          value: this.reader_mid_name
         })
       });
     },
-    surname() {
+    reader_surname() {
       this.form.updateFields({
-        surname: this.$form.createFormField({
-          ...this.surname,
-          value: this.surname
+        reader_surname: this.$form.createFormField({
+          ...this.reader_surname,
+          value: this.reader_surname
         })
       });
     },

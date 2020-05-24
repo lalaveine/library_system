@@ -12,28 +12,28 @@
         <h3>Input</h3>
         <a-form-item label="Reader name:">
           <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input Reader name' }] }]"
+            v-decorator="['reader_name', { rules: [{ required: true, message: 'Please input Reader name' }] }]"
             placeholder="Input Reader name"
           />
         </a-form-item>
 
         <a-form-item label="Middle name:">
           <a-input
-            v-decorator="['middle_name', { rules: [{ required: true, message: 'Please input middle name' }] }]"
+            v-decorator="['reader_mid_name', { rules: [{ required: true, message: 'Please input middle name' }] }]"
             placeholder="Input reader`s middle name"
           />
         </a-form-item>
 
         <a-form-item label="Surname:">
           <a-input
-            v-decorator="['surname', { rules: [{ required: true, message: 'Please input surname' }] }]"
+            v-decorator="['reader_surname', { rules: [{ required: true, message: 'Please input surname' }] }]"
             placeholder="Input surname"
           />
         </a-form-item>
 
         <a-form-item label="E-mail:">
           <a-input
-            v-decorator="['email', { rules: [{ required: true, message: 'Please input email' }] }]"
+            v-decorator="['reader_email', { rules: [{ required: true, message: 'Please input email' }] }]"
             placeholder="Input email"
           />
         </a-form-item>
@@ -51,19 +51,19 @@
       >
         <h3>Search</h3>
         <a-form-item label="Reader name:">
-          <a-input v-decorator="['name']" placeholder="Input reader" />
+          <a-input v-decorator="['reader_name']" placeholder="Input reader" />
         </a-form-item>
 
         <a-form-item label="Middle name:">
-          <a-input v-decorator="['middle_name']" placeholder="Input middle name" />
+          <a-input v-decorator="['reader_mid_name']" placeholder="Input middle name" />
         </a-form-item>
 
         <a-form-item label="Surname:">
-          <a-input v-decorator="['surname']" placeholder="Input Surname" />
+          <a-input v-decorator="['reader_surname']" placeholder="Input Surname" />
         </a-form-item>
 
         <a-form-item label="E-mail:">
-          <a-input v-decorator="['email']" placeholder="Input tittle" />
+          <a-input v-decorator="['reader_email']" placeholder="Input tittle" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
           <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
