@@ -13,29 +13,29 @@
       <a-form-item label="Surname">
         <a-input
           v-decorator="[
-                  'surname',
+                  'author_surname',
                   {
                   rules: [{ required: true, message: 'Please enter a surname!' }],
                   }
               ]"
-          placeholder="Reader's surname"
+          placeholder="Author's surname"
         />
       </a-form-item>
       <a-form-item label="Name">
         <a-input
           v-decorator="[
-                'name',
+                'author_name',
                 {
                 rules: [{ required: true, message: 'Please enter a name!' }],
                 }
             ]"
-          placeholder="Reader's name"
+          placeholder="Author's name"
         />
       </a-form-item>
       <a-form-item label="Middle name">
         <a-input
           v-decorator="[
-                'middle_name',
+                'author_mid_name',
                 {
                 rules: [{ required: true, message: 'Please enter a middle name!' }],
                 }
@@ -54,9 +54,9 @@ export default {
   name: "AuthorUpdateForm",
   props: [
     "visible",
-    "name",
-    "middle_name",
-    "surname",
+    "author_name",
+    "author_mid_name",
+    "author_surname",
     "author_id"
   ],
 
@@ -80,17 +80,17 @@ export default {
             ...this.author_id,
             value: this.author_id
           }),
-          surname: this.$form.createFormField({
-            ...this.surname,
-            value: this.surname
+          author_surname: this.$form.createFormField({
+            ...this.author_surname,
+            value: this.author_surname
           }),
-          name: this.$form.createFormField({
-            ...this.name,
-            value: this.name
+          author_name: this.$form.createFormField({
+            ...this.author_name,
+            value: this.author_name
           }),
-          middle_name: this.$form.createFormField({
-            ...this.middle_name,
-            value: this.middle_name
+          author_mid_name: this.$form.createFormField({
+            ...this.author_mid_name,
+            value: this.author_mid_name
           })
         };
       },
@@ -113,35 +113,27 @@ export default {
         })
       });
     },
-    surname() {
+    author_surname() {
       this.form.updateFields({
-        surname: this.$form.createFormField({
-          ...this.surname,
-          value: this.surname
+        author_surname: this.$form.createFormField({
+          ...this.author_surname,
+          value: this.author_surname
         })
       });
     },
-    name() {
+    author_name() {
       this.form.updateFields({
-        name: this.$form.createFormField({
-          ...this.name,
-          value: this.name
+        author_name: this.$form.createFormField({
+          ...this.author_name,
+          value: this.author_name
         })
       });
     },
-    middle_name() {
+    author_mid_name() {
       this.form.updateFields({
-        middle_name: this.$form.createFormField({
-          ...this.middle_name,
-          value: this.middle_name
-        })
-      });
-    },
-    email() {
-      this.form.updateFields({
-        email: this.$form.createFormField({
-          ...this.email,
-          value: this.email
+        author_mid_name: this.$form.createFormField({
+          ...this.author_mid_name,
+          value: this.author_mid_name
         })
       });
     }

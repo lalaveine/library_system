@@ -13,7 +13,7 @@
       <a-form-item label="Name">
         <a-input
           v-decorator="[
-                'name',
+                'publisher_name',
                 {
                 rules: [{ required: true, message: 'Please enter a name!' }],
                 }
@@ -24,23 +24,23 @@
       <a-form-item label="City">
         <a-input
           v-decorator="[
-                  'city',
+                  'city_name',
                   {
                   rules: [{ required: true, message: 'Please enter a city!' }],
                   }
               ]"
-          placeholder="Reader's surname"
+          placeholder="New York"
         />
       </a-form-item>
       <a-form-item label="Email">
         <a-input
           v-decorator="[
-                'email',
+                'publisher_email',
                 {
                 rules: [{ required: true, message: 'Please enter an email!' }],
                 }
             ]"
-          placeholder="Reader's email"
+          placeholder="Publisher's email"
         />
       </a-form-item>
     </a-form>
@@ -52,8 +52,13 @@ import { Form, Input, Modal, DatePicker, InputNumber } from "ant-design-vue";
 
 export default {
   name: "PublisherUpdateForm",
-  props: ["visible", "name", "city", "publisher_id", "email"],
-
+  props: [
+    "visible",
+    "publisher_name",
+    "city_name",
+    "publisher_id",
+    "publisher_email"
+  ],
   components: {
     "a-modal": Modal,
     "a-form": Form,
@@ -74,17 +79,17 @@ export default {
             ...this.publisher_id,
             value: this.publisher_id
           }),
-          city: this.$form.createFormField({
-            ...this.city,
-            value: this.city
+          city_name: this.$form.createFormField({
+            ...this.city_name,
+            value: this.city_name
           }),
-          name: this.$form.createFormField({
-            ...this.name,
-            value: this.name
+          publisher_name: this.$form.createFormField({
+            ...this.publisher_name,
+            value: this.publisher_name
           }),
-          email: this.$form.createFormField({
-            ...this.email,
-            value: this.email
+          publisher_email: this.$form.createFormField({
+            ...this.publisher_email,
+            value: this.publisher_email
           })
         };
       },
@@ -107,27 +112,27 @@ export default {
         })
       });
     },
-    city() {
+    city_name() {
       this.form.updateFields({
-        city: this.$form.createFormField({
-          ...this.city,
-          value: this.city
+        city_name: this.$form.createFormField({
+          ...this.city_name,
+          value: this.city_name
         })
       });
     },
-    name() {
+    publisher_name() {
       this.form.updateFields({
-        name: this.$form.createFormField({
-          ...this.name,
-          value: this.name
+        publisher_name: this.$form.createFormField({
+          ...this.publisher_name,
+          value: this.publisher_name
         })
       });
     },
-    email() {
+    publisher_email() {
       this.form.updateFields({
-        email: this.$form.createFormField({
-          ...this.email,
-          value: this.email
+        publisher_email: this.$form.createFormField({
+          ...this.publisher_email,
+          value: this.publisher_email
         })
       });
     }

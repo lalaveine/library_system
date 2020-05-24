@@ -10,38 +10,17 @@
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
-        <a-form-item label="Name:">
-          <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input reader`s name' }] }]"
-            placeholder="Input reader`s name"
-          />
-        </a-form-item>
-
-        <a-form-item label="Middle name:">
-          <a-input
-            v-decorator="['middle_name', { rules: [{ required: true, message: 'Please input reader`s middle surname' }] }]"
-            placeholder="Input reader`s middle name"
-          />
-        </a-form-item>
-
-        <a-form-item label="Surname:">
-          <a-input
-            v-decorator="['surname', { rules: [{ required: true, message: 'Please input reader`s surname' }] }]"
-            placeholder="Input reader`s surname"
+        <a-form-item label="Reader ID:">
+          <a-input-number
+            v-decorator="['reader_id', { rules: [{ required: true, message: 'Please input reader`s ID' }] }]"
+            placeholder="Input reader`s ID"
           />
         </a-form-item>
 
         <a-form-item label="Edition ID:">
-          <a-input
+          <a-input-number
             v-decorator="['edition_id', { rules: [{ required: true, message: 'Please input edition`s ID' }] }]"
             placeholder="Input edition`s ID"
-          />
-        </a-form-item>
-
-        <a-form-item label="Take date:">
-          <a-date-picker
-            v-decorator="['take_date', { rules: [{ required: true, message: 'Please input take date' }] }]"
-            placeholder="Input take date"
           />
         </a-form-item>
 
@@ -55,7 +34,6 @@
           <a-button type="primary" html-type="submit">Submit</a-button>
         </a-form-item>
       </a-form>
-      <!-- <hr /> -->
 
       <a-form
         :form="searchForm"
@@ -64,20 +42,28 @@
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
+        <a-form-item label="Reader ID:">
+          <a-input-number v-decorator="['reader_id']" placeholder="Input reader id"/>
+        </a-form-item>
+
         <a-form-item label="Name:">
-          <a-input v-decorator="['name']" placeholder="Input book" />
+          <a-input v-decorator="['reader_name']" placeholder="Input book" />
         </a-form-item>
 
         <a-form-item label="Middle name:">
-          <a-input v-decorator="['middle_name']" placeholder="Input middle name" />
+          <a-input v-decorator="['reader_mid_name']" placeholder="Input middle name" />
         </a-form-item>
 
         <a-form-item label="Surname:">
-          <a-input v-decorator="['surname']" placeholder="Input Surname" />
+          <a-input v-decorator="['reader_surname']" placeholder="Input Surname" />
+        </a-form-item>
+
+        <a-form-item label="Edition ID:">
+          <a-input-number v-decorator="['edition_id']" placeholder="Input edition id" />
         </a-form-item>
 
         <a-form-item label="Title:">
-          <a-input v-decorator="['title']" placeholder="Input title" />
+          <a-input v-decorator="['book_title']" placeholder="Input title" />
         </a-form-item>
 
         <a-form-item label="Take date:">
@@ -142,6 +128,7 @@ export default {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
+    "a-input-number": InputNumber,
     "a-form-item": Form.Item,
     "a-table": Table,
     "a-date-picker": DatePicker,

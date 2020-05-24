@@ -12,21 +12,21 @@
         <h3>Input</h3>
         <a-form-item label="Name:">
           <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input publisher`s name' }] }]"
+            v-decorator="['publisher_name', { rules: [{ required: true, message: 'Please input publisher`s name' }] }]"
             placeholder="Input publisher`s name"
           />
         </a-form-item>
 
-        <a-form-item label="City :">
+        <a-form-item label="City:">
           <a-input
-            v-decorator="['city_id', { rules: [{ required: true, message: 'Please input city' }] }]"
+            v-decorator="['city_name', { rules: [{ required: true, message: 'Please input city' }] }]"
             placeholder="Input city"
           />
         </a-form-item>
 
         <a-form-item label="Email:">
           <a-input
-            v-decorator="['email', { rules: [{ required: true, message: 'Please input email' }] }]"
+            v-decorator="['publisher_email', { rules: [{ required: true, message: 'Please input email' }] }]"
             placeholder="Input email"
           />
         </a-form-item>
@@ -45,15 +45,15 @@
       
         <h3>Search</h3>
         <a-form-item label="Name:">
-          <a-input v-decorator="['name']" placeholder="Input publisher's name" />
+          <a-input v-decorator="['publisher_name']" placeholder="Input publisher's name" />
         </a-form-item>
 
-        <a-form-item label="City ID:">
-          <a-input v-decorator="['city_id']" placeholder="Input city" />
+        <a-form-item label="City:">
+          <a-input v-decorator="['city_name']" placeholder="Input city" />
         </a-form-item>
 
         <a-form-item label="Email:">
-          <a-input v-decorator="['email']" placeholder="Input email" />
+          <a-input v-decorator="['publisher_email']" placeholder="Input email" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
