@@ -45,7 +45,7 @@ module.exports = function (app, client) {
 
     app.get('/editions', async (req, res) => {
         console.log(await client.query('SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id'))
-        let query = 'SELECT edition_id, city.name as city, pub_year, publisher.name as publisher, title, library.name as library from book_edition, library, publisher, book, city WHERE publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id and city.city_id = (SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id)';
+        let query = 'SELECT edition_id, city_name, pub_year, publisher_name , book_title, library.name as library from book_edition, library, publisher, book, city WHERE publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id and city.city_id = (SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id)';
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {
@@ -58,7 +58,7 @@ module.exports = function (app, client) {
     });
 
     app.get('/journal', async (req, res) => { 
-        let query = `SELECT entry_id, reader.reader_id, name, middle_name, surname, journal.edition_id, title, take_date, return_date 
+        let query = `SELECT entry_id, reader.reader_id, reader_name, reader_mid_name, reader_surname, journal.edition_id, book_title, take_date, return_date 
                     FROM journal, reader, book 
                     WHERE 
                     book.book_id = (SELECT book_id from book_edition 
@@ -90,9 +90,9 @@ module.exports = function (app, client) {
     });
 
     app.get('/libraries', async (req, res) => {
-        let query = 'SELECT * FROM library ';
+        let query = 'SELECT library_name, library_id, library_address, city_name, library_email FROM library, city WHERE city.city_id = library.city_id';
         if (!_.isEmpty(req.query)) {
-            query += ' WHERE '
+            query += ' AND '
             for (key in req.query) {
                 query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
             };
@@ -103,7 +103,7 @@ module.exports = function (app, client) {
     });
 
     app.get('/publishers', async (req, res) => {
-        let query = 'SELECT publisher_id, publisher_name, city_name as city, email FROM publisher, city WHERE city.city_id = publisher.city_id ';
+        let query = 'SELECT publisher_id, publisher_name, city_name, publisher_email FROM publisher, city WHERE city.city_id = publisher.city_id ';
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {

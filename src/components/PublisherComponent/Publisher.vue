@@ -42,7 +42,6 @@
         :wrapper-col="{ span: 8 }"
         @submit="handleSearchSubmit"
       >
-      
         <h3>Search</h3>
         <a-form-item label="Name:">
           <a-input v-decorator="['publisher_name']" placeholder="Input publisher's name" />
@@ -62,21 +61,19 @@
       </a-form>
     </div>
     <publisher-update-form
-        ref="editForm"
-        :visible="visible"
-        v-bind="fields"
-        @cancel="handleCancel"
-        @update="handleUpdateSubmit"
-        @change="handleFormChange"
-      />
-    <a-table :columns="columns" :data-source="data"> 
+      ref="editForm"
+      :visible="visible"
+      v-bind="fields"
+      @cancel="handleCancel"
+      @update="handleUpdateSubmit"
+      @change="handleFormChange"
+    />
+    <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm(record.publisher_id)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
-
-     
   </div>
 </template>
 
@@ -93,7 +90,7 @@ import {
   notification
 } from "ant-design-vue";
 import { publisherColumns as columns, dateFormat } from "@/constants.js";
-import PublisherUpdateForm from './PublisherUpdateForm.vue';
+import PublisherUpdateForm from "./PublisherUpdateForm.vue";
 
 export default {
   name: "PublisherSearch",
@@ -116,40 +113,46 @@ export default {
       visible: false,
       isButtonDisabled: true,
       fields: {},
-      dateFormat,
+      dateFormat
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/publishers`).then(response => {
+        const { data } = response;
+        console.log(data);
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          console.log(values);
-          let link = "http://localhost:5000/publishers";
+          let link = "http://localhost:5000/publishers?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
             }
           }
           link = link.slice(0, -1);
-
           const response = await axios.get(link, values);
           const { data } = response;
           this.data = data;
         }
       });
     },
-    handleInputSubmit(e) {
+    async handleInputSubmit(e) {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/publisher", Object.values(values));
-          console.log(values);
+          await axios.post(
+            "http://localhost:5000/publisher",
+            Object.values(values)
+          );
         }
       });
     },
-        showUpdateModal(record) {
-      // console.log(record);
+    showUpdateModal(record) {
       this.visible = true;
       this.fields = { ...record };
     },
@@ -160,7 +163,6 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
-        console.log(values);
         if (!err) {
           (async () =>
             await axios
@@ -168,14 +170,23 @@ export default {
                 `http://localhost:5000/publishers/${values.publisher_id}`,
                 Object.values(values)
               )
-              .then(res => this.openNotificationWithIcon('success', 'Success', 'Publisher is updated!'))
-              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
-              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Publisher is updated!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => this.getData()))();
         }
-        // console.log("Received values of form: ", values);
         form.resetFields();
-        //this.fields = record;
-        // console.log(this.record);
         this.visible = false;
         this.fields = {};
       });
@@ -189,19 +200,15 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    showDeleteConfirm(id) {
+    async showDeleteConfirm(id) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
         okText: "Yes",
         okType: "danger",
         cancelText: "No",
-        async onOk() {
-          await axios
-            .delete(`http://localhost:5000/publishers/${id}`);
-        },
-        onCancel() {
-          console.log("Cancel");
+         async onOk() {
+          await axios.delete(`http://localhost:5000/publishers/${id}`);
         }
       });
     },
@@ -220,11 +227,7 @@ export default {
     }
   },
   async mounted() {
-    await axios.get(`http://localhost:5000/publishers`).then(response => {
-      const { data } = response;
-      this.data = data;
-      console.log(this.data);
-    });
+    await this.getData();
   }
 };
 </script>
