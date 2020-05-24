@@ -46,7 +46,7 @@
       <a-form-item label="Email">
         <a-input
           v-decorator="[
-                'email',
+                'library_email',
                 {
                 rules: [{ required: true, message: 'Please enter an email!' }],
                 }

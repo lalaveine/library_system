@@ -70,7 +70,7 @@ module.exports = function (app, client) {
     });
 
     app.post('/publisher', async (req, res) => {
-        await client.query('INSERT INTO publisher (name, city_id, email) VALUES($1, (SELECT city_id from city WHERE name=$2), $3)', req.body);
+        await client.query('INSERT INTO publisher (publisher_name, city_id, publisher_email) VALUES($1, (SELECT city_id from city WHERE city_name=$2), $3)', req.body);
     });
 
     app.post('/city', async (req, res) => {
@@ -78,7 +78,7 @@ module.exports = function (app, client) {
     });
 
     app.post('/library', async (req, res) => {
-        await client.query('INSERT INTO library (name, address, email) VALUES($1, $2, $3)', req.body);
+        await client.query('INSERT INTO library (library_name, library_email, city_id, library_address) VALUES($1, $2, (SELECT city_id FROM city WHERE city.city_name = $3), $4)', req.body);
     });
 
     app.post('/edition', async (req, res) => {
