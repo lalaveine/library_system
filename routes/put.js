@@ -8,11 +8,23 @@ module.exports = function (app, client) {
     });
 
     app.put('/journal/:id', async (req, res) => {
-        console.log(req.body)
-        await client.query('UPDATE journal SET reader_id = (SELECT reader_id from reader WHERE name = $2 AND middle_name = $3 AND surname = $4), edition_id = $5, take_date = $6, return_date = $7 WHERE entry_id=$1', req.body)
+        await client.query(`
+            UPDATE journal 
+            SET r
+            eader_id = 
+                (
+                    SELECT 
+                        reader_id from reader WHERE reader_name = $2 
+                    AND 
+                        reader_mid_name = $3 AND reader_surname = $4
+                )
+            , edition_id = $5
+            , take_date = $6
+            , return_date = $7 
+            WHERE entry_id=$1`, req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
-                res.status(500).send(err)
+                res.status(500).send(err);
             });
     });
 

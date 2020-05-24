@@ -43,7 +43,7 @@
       >
         <h3>Search</h3>
         <a-form-item label="Reader ID:">
-          <a-input-number v-decorator="['reader_id']" placeholder="Input reader id"/>
+          <a-input-number v-decorator="['reader_id']" placeholder="Input reader id" />
         </a-form-item>
 
         <a-form-item label="Name:">
@@ -142,6 +142,7 @@ export default {
       inputForm: this.$form.createForm(this, { name: "journalInputForm" }),
       data: [],
       columns,
+      dateFormat,
       visible: false,
       isButtonDisabled: true,
       fields: {}
@@ -151,22 +152,14 @@ export default {
     async getData() {
       await axios.get(`http://localhost:5000/journal`).then(response => {
         const { data } = response;
-        // data.forEach(entry => {
-        //   entry["take_date"] = entry["take_date"].substring(
-        //     0,
-        //     entry["take_date"].indexOf("T")
-        //   );
-        //   entry["return_date"] = entry["return_date"].substring(
-        //     0,
-        //     entry["return_date"].indexOf("T")
-        //   );
-        // });
         this.data = data;
       });
     },
+    // TODO: Fix search by reader_id
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
+        console.log(values)
         if (!err) {
           // console.log(values);
           let link = "http://localhost:5000/journal?";
@@ -176,7 +169,6 @@ export default {
             }
           }
           link = link.slice(0, -1);
-
           const response = await axios.get(link, values);
           const { data } = response;
           this.data = data;
@@ -184,17 +176,33 @@ export default {
         this.getData();
       });
     },
-    handleInputSubmit(e) {
+    async handleInputSubmit(e) {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
+        values['take_date'] = moment()
+        console.log(values)
         if (!err) {
-          axios.post("http://localhost:5000/journal", Object.values(values));
-          this.getData();
+          await axios.post("http://localhost:5000/journal", Object.values(values))
+            .then(res => {
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Journal entry is added!"
+                );
+            })
+            .catch(err => {
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                ) 
+            })
+            .then(async res => await this.getData());
+          
         }
       });
     },
     showUpdateModal(record) {
-      // console.log(record);
       this.visible = true;
       this.fields = { ...record };
     },
@@ -205,6 +213,8 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
+        console.log(values)
+        console.log(err)
         if (!err) {
           (async () =>
             await axios
@@ -212,7 +222,7 @@ export default {
                 `http://localhost:5000/journal/${values.entry_id}`,
                 Object.values(values)
               )
-              .then(res =>
+              .then(res => 
                 this.openNotificationWithIcon(
                   "success",
                   "Success",
@@ -225,13 +235,10 @@ export default {
                   "Error",
                   err.response.data.detail
                 )
-              ))();
-          this.getData();
+              )
+              .then(() => this.getData()))();
         }
-        // console.log("Received values of form: ", values);
         form.resetFields();
-        //this.fields = record;
-        // console.log(this.record);
         this.visible = false;
         this.fields = {};
       });
@@ -253,16 +260,12 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios.delete(`http://localhost:5000/journal/${id}`);
-          this.getData();
-        },
-        onCancel() {
-          console.log("Cancel");
+          await axios.delete(`http://localhost:5000/journal/${id}`)
         }
       });
     },
     dateCustomRender(dateString) {
-      return moment(dateString).format("MMMM Do YYYY");
+      return moment(dateString).format(dateFormat);
     },
     getButtonDisabled() {
       const fields = this.searchForm.getFieldsValue();
@@ -276,14 +279,10 @@ export default {
         }
       }
       return true;
-    },
-    async onDelete(id) {
-      await axios.delete(`http://localhost:5000/journal/${id}`);
-      this.getData();
     }
   },
-  mounted() {
-    this.getData();
+  async mounted() {
+    await this.getData();
   }
 };
 </script>

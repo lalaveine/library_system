@@ -2,13 +2,22 @@
 module.exports = function (app, client) {
     const _ = require('lodash');
     app.post('/reader', async (req, res) => {
-        await client.query('INSERT INTO reader (name, middle_name, surname, email) VALUES ($1,$2,$3,$4)', req.body);
+            await client.query('INSERT INTO reader (reader_name, reader_mid_name, reader_surname, reader_email) VALUES ($1,$2,$3,$4)', req.body)
+            .then(() => { res.status(200).send() })
+            .catch((err) => {
+                console.log(err)
+                res.status(500).send(err)
+            });
     });
 
     app.post('/journal', async (req, res) => {
         console.log(req.body)
-        await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES((SELECT reader_id from reader WHERE name = $1 AND middle_name = $2 AND surname = $3),$4,$5,$6)', req.body);
-
+        await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES($1,$2,$4,$3)', req.body)
+            .then(() => { res.status(200).send() })
+            .catch((err) => {
+                console.log(err)
+                res.status(500).send(err)
+            });
     });
     /* Books POST request example
         {
