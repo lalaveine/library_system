@@ -189,20 +189,20 @@ export const bookColumns = [
     },
 
     {
-      title: "publisher id",
-      dataIndex: "publisher_id",
-      key: "publisher_id",
+      title: "Publisher",
+      dataIndex: "publisher",
+      key: "publisher",
     },
 
     {
-      title: "library id",
-      dataIndex: "library_id",
-      key: "library_id",
+      title: "library",
+      dataIndex: "library",
+      key: "library",
     },
     {
-      title: "book id",
-      dataIndex: "book_id",
-      key: "book_id",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
 
     },
     {

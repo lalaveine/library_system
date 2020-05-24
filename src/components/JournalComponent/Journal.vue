@@ -148,6 +148,22 @@ export default {
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/journal`).then(response => {
+        const { data } = response;
+        // data.forEach(entry => {
+        //   entry["take_date"] = entry["take_date"].substring(
+        //     0,
+        //     entry["take_date"].indexOf("T")
+        //   );
+        //   entry["return_date"] = entry["return_date"].substring(
+        //     0,
+        //     entry["return_date"].indexOf("T")
+        //   );
+        // });
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
@@ -165,6 +181,7 @@ export default {
           const { data } = response;
           this.data = data;
         }
+        this.getData();
       });
     },
     handleInputSubmit(e) {
@@ -172,6 +189,7 @@ export default {
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
           axios.post("http://localhost:5000/journal", Object.values(values));
+          this.getData();
         }
       });
     },
@@ -208,6 +226,7 @@ export default {
                   err.response.data.detail
                 )
               ))();
+          this.getData();
         }
         // console.log("Received values of form: ", values);
         form.resetFields();
@@ -235,6 +254,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios.delete(`http://localhost:5000/journal/${id}`);
+          this.getData();
         },
         onCancel() {
           console.log("Cancel");
@@ -259,23 +279,11 @@ export default {
     },
     async onDelete(id) {
       await axios.delete(`http://localhost:5000/journal/${id}`);
+      this.getData();
     }
   },
-  async mounted() {
-    await axios.get(`http://localhost:5000/journal`).then(response => {
-      const { data } = response;
-      data.forEach(entry => {
-        entry["take_date"] = entry["take_date"].substring(
-          0,
-          entry["take_date"].indexOf("T")
-        );
-        entry["return_date"] = entry["return_date"].substring(
-          0,
-          entry["return_date"].indexOf("T")
-        );
-      });
-      this.data = data;
-    });
+  mounted() {
+    this.getData();
   }
 };
 </script>
