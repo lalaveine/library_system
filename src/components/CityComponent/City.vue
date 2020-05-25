@@ -49,7 +49,7 @@
     />
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.city_id)">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.city_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -96,12 +96,17 @@ export default {
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/cities`).then(response => {
+        const { data } = response;
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          console.log(values);
-          let link = "http://localhost:5000/city";
+          let link = "http://localhost:5000/cities?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -119,13 +124,31 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/cities", Object.values(values));
-          console.log(values);
+          (async () =>
+            await axios
+              .post("http://localhost:5000/city", Object.values(values))
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "City is added!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => {
+                this.getData();
+              }))();
+              this.inputForm.resetFields();
         }
       });
     },
     showUpdateModal(record) {
-      // console.log(record);
       this.visible = true;
       this.fields = { ...record };
     },
@@ -136,7 +159,6 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
-        console.log(values);
         if (!err) {
           (async () =>
             await axios
@@ -157,7 +179,7 @@ export default {
                   "Error",
                   err.response.data.detail
                 )
-              ))();
+              ).then(() => this.getData()))();
         }
         form.resetFields();
         this.visible = false;
@@ -173,7 +195,7 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    showDeleteConfirm(id) {
+    showDeleteConfirm(id, getData, openNotificationWithIcon) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
@@ -181,10 +203,20 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios.delete(`http://localhost:5000/cities/${id}`);
-        },
-        onCancel() {
-          console.log("Cancel");
+          await axios.delete(`http://localhost:5000/cities/${id}`).then(res =>
+                openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "City is deleted!"
+                )
+              )
+              .catch(err =>
+                openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ).then(() => getData());
         }
       });
     },
@@ -202,12 +234,8 @@ export default {
       return true;
     }
   },
-  async mounted() {
-    await axios.get(`http://localhost:5000/cities`).then(response => {
-      const { data } = response;
-      this.data = data;
-      console.log(this.data);
-    });
+  mounted() {
+    this.getData();
   }
 };
 </script>

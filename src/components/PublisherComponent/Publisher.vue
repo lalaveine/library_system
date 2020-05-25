@@ -70,7 +70,7 @@
     />
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.publisher_id)">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.publisher_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -120,35 +120,53 @@ export default {
     async getData() {
       await axios.get(`http://localhost:5000/publishers`).then(response => {
         const { data } = response;
-        console.log(data);
         this.data = data;
       });
     },
     handleSearchSubmit(e) {
       e.preventDefault();
-      this.searchForm.validateFields(async (err, values) => {
+      this.searchForm.validateFields((err, values) => {
         if (!err) {
-          let link = "http://localhost:5000/publishers?";
+          (async () => { let link = "http://localhost:5000/publishers?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
             }
           }
+
           link = link.slice(0, -1);
           const response = await axios.get(link, values);
           const { data } = response;
           this.data = data;
+          })();
         }
       });
     },
-    async handleInputSubmit(e) {
+    handleInputSubmit(e) {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          await axios.post(
-            "http://localhost:5000/publisher",
-            Object.values(values)
-          );
+          (async () =>
+            await axios
+              .post("http://localhost:5000/publisher", Object.values(values))
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Publisher is added!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => {
+                this.getData();
+              }))();
+              this.inputForm.resetFields();
         }
       });
     },
@@ -200,15 +218,30 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    async showDeleteConfirm(id) {
+    async showDeleteConfirm(id, getData, openNotificationWithIcon) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
         okText: "Yes",
         okType: "danger",
         cancelText: "No",
-         async onOk() {
-          await axios.delete(`http://localhost:5000/publishers/${id}`);
+        async onOk() {
+          await axios
+            .delete(`http://localhost:5000/publishers/${id}`)
+            .then(res =>
+                openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Publisher is deleted!"
+                )
+              )
+              .catch(err =>
+                openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ).then(() => getData());
         }
       });
     },
