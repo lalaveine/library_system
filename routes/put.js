@@ -70,7 +70,7 @@ module.exports = function (app, client) {
     });
 
     app.put('/authors/:id', async (req, res) => {
-        await client.query('UPDATE author SET name = $3, middle_name = $4, surname = $2 WHERE author_id=$1', req.body)
+        await client.query('UPDATE author SET author_name = $3, author_mid_name = $4, author_surname = $2 WHERE author_id=$1', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)

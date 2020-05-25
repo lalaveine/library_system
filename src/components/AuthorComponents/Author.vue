@@ -12,21 +12,21 @@
         <h3>Input</h3>
         <a-form-item label="Name:">
           <a-input
-            v-decorator="['name', { rules: [{ required: true, message: 'Please input author`s name' }] }]"
+            v-decorator="['author_name', { rules: [{ required: true, message: 'Please input author`s name' }] }]"
             placeholder="Input author`s name"
           />
         </a-form-item>
 
         <a-form-item label="Middle name:">
           <a-input
-            v-decorator="['middle_name', { rules: [{ required: true, message: 'Please input author`s middle surname' }] }]"
+            v-decorator="['author_mid_name', { rules: [{ required: true, message: 'Please input author`s middle surname' }] }]"
             placeholder="Input author`s middle name"
           />
         </a-form-item>
 
         <a-form-item label="Surname:">
           <a-input
-            v-decorator="['surname', { rules: [{ required: true, message: 'Please input author`s surname' }] }]"
+            v-decorator="['author_surname', { rules: [{ required: true, message: 'Please input author`s surname' }] }]"
             placeholder="Input author`s surname"
           />
         </a-form-item>
@@ -44,15 +44,15 @@
       >
         <h3>Search</h3>
         <a-form-item label="Name:">
-          <a-input v-decorator="['name']" placeholder="Input book" />
+          <a-input v-decorator="['author_name']" placeholder="Input book" />
         </a-form-item>
 
         <a-form-item label="Middle name:">
-          <a-input v-decorator="['middle_name']" placeholder="Input middle name" />
+          <a-input v-decorator="['author_mid_name']" placeholder="Input middle name" />
         </a-form-item>
 
         <a-form-item label="Surname:">
-          <a-input v-decorator="['surname']" placeholder="Input Surname" />
+          <a-input v-decorator="['author_surname']" placeholder="Input Surname" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -70,7 +70,7 @@
     />
     <a-table :columns="columns" :data-source="data"> 
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.author_id)">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.author_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -117,12 +117,18 @@ export default {
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/authors`).then(response => {
+        const { data } = response;
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "http://localhost:5000/author";
+          let link = "http://localhost:5000/authors?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -130,7 +136,14 @@ export default {
           }
           link = link.slice(0, -1);
 
-          const response = await axios.get(link, values);
+          const response = await axios.get(link, values)
+            .catch(() =>
+                this.openNotificationWithIcon(
+                  "warning",
+                  "Warning",
+                  "Author is not found."
+                )
+              );
           const { data } = response;
           this.data = data;
         }
@@ -140,13 +153,30 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/author", Object.values(values));
-          console.log(values);
+          (async () =>
+            axios.post("http://localhost:5000/authors", Object.values(values))
+              .then(res =>
+                    this.openNotificationWithIcon(
+                      "success",
+                      "Success",
+                      "Author is added!"
+                    )
+                  )
+              .catch(err =>
+                    this.openNotificationWithIcon(
+                      "error",
+                      "Error",
+                      err.response.data.detail
+                    )
+                  )
+              .then(() => {
+                this.getData();
+          }))();
+          this.inputForm.resetFields();
         }
       });
     },
     showUpdateModal(record) {
-      // console.log(record);
       this.visible = true;
       this.fields = { ...record };
     },
@@ -165,14 +195,23 @@ export default {
                 `http://localhost:5000/authors/${values.author_id}`,
                 Object.values(values)
               )
-              .then(res => this.openNotificationWithIcon('success', 'Success', 'Author is updated!'))
-              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
-              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Author is updated!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => this.getData()))();
         }
-        // console.log("Received values of form: ", values);
         form.resetFields();
-        //this.fields = record;
-        // console.log(this.record);
         this.visible = false;
         this.fields = {};
       });
@@ -186,7 +225,7 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    showDeleteConfirm(id) {
+    showDeleteConfirm(id, getData, openNotificationWithIcon) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
@@ -195,10 +234,21 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/authors/${id}`);
-        },
-        onCancel() {
-          console.log("Cancel");
+            .delete(`http://localhost:5000/authors/${id}`)
+            .then(res =>
+                openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Author is deleted!"
+                )
+              )
+              .catch(err =>
+                openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ).then(() => getData());
         }
       });
     },
@@ -217,11 +267,7 @@ export default {
     }
   },
   async mounted() {
-    await axios.get(`http://localhost:5000/authors`).then(response => {
-      const { data } = response;
-      this.data = data;
-      console.log(this.data);
-    });
+    await this.getData();
   }
 };
 </script>

@@ -80,7 +80,7 @@
     />
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.reader_id)">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.reader_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/publishers`).then(response => {
+      await axios.get(`http://localhost:5000/readers`).then(response => {
         const { data } = response;
         console.log(data);
         this.data = data;
@@ -228,7 +228,7 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    showDeleteConfirm(id) {
+    showDeleteConfirm(id, getData, openNotificationWithIcon) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
@@ -236,7 +236,21 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios.delete(`http://localhost:5000/readers/${id}`);
+          await axios.delete(`http://localhost:5000/readers/${id}`)
+            .then(res =>
+              openNotificationWithIcon(
+                "success",
+                "Success",
+                "Reader is deleted!"
+              )
+            )
+            .catch(err =>
+              openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              )
+            ).then(() => getData());
         }
       });
     },

@@ -92,7 +92,7 @@
     <!-- Table Custom Render -->
     <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.entry_id)">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.entry_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
       <span slot="take_date" slot-scope="text, record">
@@ -259,7 +259,7 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    showDeleteConfirm(id) {
+    showDeleteConfirm(id, getData, openNotificationWithIcon) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
@@ -268,6 +268,20 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios.delete(`http://localhost:5000/journal/${id}`)
+            .then(res =>
+                  openNotificationWithIcon(
+                    "success",
+                    "Success",
+                    "Journal entry is deleted!"
+                  )
+                )
+            .catch(err =>
+              openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              )
+            ).then(() => getData());
         }
       });
     },

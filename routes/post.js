@@ -106,8 +106,9 @@ module.exports = function (app, client) {
             });
     });
 
-    app.post('/author', async (req, res) => {
-        await client.query('INSERT INTO author (name, middle_name, surname) VALUES($1, $2, $3)', req.body)            .then(() => { res.status(200).send() })
+    app.post('/authors', async (req, res) => {
+        await client.query('INSERT INTO author (author_name, author_mid_name, author_surname) VALUES($1, $2, $3)', req.body)            
+            .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)
             });
