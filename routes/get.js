@@ -134,6 +134,7 @@ module.exports = function (app, client) {
     });
 
     app.get('/authors', async (req, res) => {
+
         let query = 'SELECT * FROM author ';
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
