@@ -6,7 +6,11 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                if (key == 'reader_id') {
+                    query += `${key}=${req.query[key]} AND `
+                } else {
+                    query += `${key}='${req.query[key]}' AND `
+                }
             };
             query = query.slice(0, -4);
         };

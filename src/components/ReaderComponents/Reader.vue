@@ -50,6 +50,10 @@
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
+        <a-form-item label="Reader ID:">
+          <a-input-number v-decorator="['reader_id']" placeholder="Input reader id" />
+        </a-form-item>
+
         <a-form-item label="Reader name:">
           <a-input v-decorator="['reader_name']" placeholder="Input reader" />
         </a-form-item>
@@ -108,6 +112,7 @@ export default {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
+    "a-input-number": InputNumber,
     "a-form-item": Form.Item,
     "a-table": Table,
     "a-date-picker": DatePicker,
