@@ -90,7 +90,7 @@
       @update="handleUpdateSubmit"
       @change="handleFormChange"
     />
-    <a-table :columns="columns" :data-source="data">
+    <a-table :columns="columns" :data-source="data" rowKey="book_id">
       <span  slot="authors" slot-scope="text, record" >
         <span v-for="item in record.authors">
           <p>{{ item }}</p>

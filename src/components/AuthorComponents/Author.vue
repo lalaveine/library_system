@@ -68,7 +68,7 @@
         @update="handleUpdateSubmit"
         @change="handleFormChange"
     />
-    <a-table :columns="columns" :data-source="data"> 
+    <a-table :columns="columns" :data-source="data" rowKey="author_id"> 
       <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm(record.author_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
