@@ -73,7 +73,6 @@ export const bookColumns = [
     title: "Author",
     dataIndex: "authors",
     key: "authors",
-    ellipsis: true,
     scopedSlots: { customRender: 'authors' }
   },
   {
