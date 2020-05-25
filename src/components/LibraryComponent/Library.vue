@@ -72,16 +72,16 @@
       </a-form>
     </div>
     <library-update-form
-        ref="editForm"
-        :visible="visible"
-        v-bind="fields"
-        @cancel="handleCancel"
-        @update="handleUpdateSubmit"
-        @change="handleFormChange"
-      />
-    <a-table :columns="columns" :data-source="data"> 
+      ref="editForm"
+      :visible="visible"
+      v-bind="fields"
+      @cancel="handleCancel"
+      @update="handleUpdateSubmit"
+      @change="handleFormChange"
+    />
+    <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.library_id)">Delete</a-button>
+        <a-button type="danger" @click="showDeleteConfirm(record.library_id, getData, openNotificationWithIcon)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -101,7 +101,7 @@ import {
   notification
 } from "ant-design-vue";
 import { libraryColumns as columns, dateFormat } from "@/constants.js";
-import LibraryUpdateForm from './LibraryUpdateForm.vue';
+import LibraryUpdateForm from "./LibraryUpdateForm.vue";
 
 export default {
   name: "Library",
@@ -128,22 +128,29 @@ export default {
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/libraries`).then(response => {
+        const { data } = response;
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
-      this.searchForm.validateFields(async (err, values) => {
+      this.searchForm.validateFields((err, values) => {
         if (!err) {
-          console.log(values);
-          let link = "http://localhost:5000/libraries?";
-          for (let key in values) {
-            if (values[key]) {
-              link += `${key}=${values[key]}&`;
+          (async () => {
+            let link = "http://localhost:5000/libraries?";
+            for (let key in values) {
+              if (values[key]) {
+                link += `${key}=${values[key]}&`;
+              }
             }
-          }
-          link = link.slice(0, -1);
+            link = link.slice(0, -1);
 
-          const response = await axios.get(link, values);
-          const { data } = response;
-          this.data = data;
+            const response = await axios.get(link, values);
+            const { data } = response;
+            this.data = data;
+          })();
         }
       });
     },
@@ -151,13 +158,31 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/library", Object.values(values));
-          console.log(values);
+          (async () =>
+            await axios
+              .post("http://localhost:5000/library", Object.values(values))
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Library is added!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => {
+                this.getData();
+              }))();
+          this.inputForm.resetFields();
         }
       });
     },
     showUpdateModal(record) {
-      // console.log(record);
       this.visible = true;
       this.fields = { ...record };
     },
@@ -168,7 +193,6 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
-        console.log(values);
         if (!err) {
           (async () =>
             await axios
@@ -176,14 +200,22 @@ export default {
                 `http://localhost:5000/libraries/${values.library_id}`,
                 Object.values(values)
               )
-              .then(res => this.openNotificationWithIcon('success', 'Success', 'Library is updated!'))
-              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
-              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Library is updated!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ).then(()=> this.getData()))();
         }
-        // console.log("Received values of form: ", values);
         form.resetFields();
-        //this.fields = record;
-        // console.log(this.record);
         this.visible = false;
         this.fields = {};
       });
@@ -197,7 +229,7 @@ export default {
     handleFormChange(changedFields) {
       this.fields = { ...this.fields, changedFields };
     },
-    showDeleteConfirm(id) {
+    showDeleteConfirm(id, getData, openNotificationWithIcon) {
       Modal.confirm({
         title: "Are you sure delete this task?",
         content: "Some descriptions",
@@ -205,11 +237,20 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios
-            .delete(`http://localhost:5000/libraries/${id}`);
-        },
-        onCancel() {
-          console.log("Cancel");
+          await axios.delete(`http://localhost:5000/libraries/${id}`).then(res =>
+                openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Library is deleted!"
+                )
+              )
+              .catch(err =>
+                openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ).then(()=> getData());
         }
       });
     },
@@ -227,12 +268,8 @@ export default {
       return true;
     }
   },
-  async mounted() {
-    await axios.get(`http://localhost:5000/libraries`).then(response => {
-      const { data } = response;
-      this.data = data;
-      console.log(this.data);
-    });
+  mounted() {
+    this.getData();
   }
 };
 </script>

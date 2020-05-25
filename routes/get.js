@@ -45,7 +45,7 @@ module.exports = function (app, client) {
 
     app.get('/editions', async (req, res) => {
         console.log(await client.query('SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id'))
-        let query = 'SELECT edition_id, city_name, pub_year, publisher_name , book_title, library.name as library from book_edition, library, publisher, book, city WHERE publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id and city.city_id = (SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id)';
+        let query = 'SELECT edition_id, city_name, pub_year, publisher_name , book_title, library_name as library from book_edition, library, publisher, book, city WHERE publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id and city.city_id = (SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id)';
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {

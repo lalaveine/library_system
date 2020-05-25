@@ -109,9 +109,6 @@ export default {
             value: this.library_email
           })
         };
-      },
-      onValuesChange(_, values) {
-        console.log(values);
       }
     });
   },
