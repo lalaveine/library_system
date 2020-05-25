@@ -8,10 +8,10 @@ module.exports = function (app, client) {
     });
 
     app.put('/journal/:id', async (req, res) => {
+        console.log(req.body)
         await client.query(`
             UPDATE journal 
-            SET r
-            eader_id = 
+            SET reader_id = 
                 (
                     SELECT 
                         reader_id from reader WHERE reader_name = $2 
@@ -24,6 +24,7 @@ module.exports = function (app, client) {
             WHERE entry_id=$1`, req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
+                console.log(err)
                 res.status(500).send(err);
             });
     });

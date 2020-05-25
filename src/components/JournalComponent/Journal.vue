@@ -43,7 +43,7 @@
       >
         <h3>Search</h3>
         <a-form-item label="Reader ID:">
-          <a-input-number v-decorator="['reader_id']" placeholder="Input reader id" />
+          <a-input-number v-decorator="['reader-reader_id']" placeholder="Input reader id" />
         </a-form-item>
 
         <a-form-item label="Name:">
@@ -155,11 +155,10 @@ export default {
         this.data = data;
       });
     },
-    // TODO: Fix search by reader_id
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
-        console.log(values)
+        values['take_date'] = moment(values['take_date']).toISOString()
         if (!err) {
           // console.log(values);
           let link = "http://localhost:5000/journal?";
@@ -173,13 +172,13 @@ export default {
           const { data } = response;
           this.data = data;
         }
-        this.getData();
       });
     },
     async handleInputSubmit(e) {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
-        values['take_date'] = moment()
+        values['take_date'] = moment(new Date().setHours(12,0,0))
+        values['return_date'] = moment(new Date(values['return_date']).setHours(12,0,0))
         console.log(values)
         if (!err) {
           await axios.post("http://localhost:5000/journal", Object.values(values))
@@ -212,9 +211,10 @@ export default {
     },
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
-      form.validateFields((err, values) => {
+      form.validateFields((err, values) => { 
+        values['take_date'] = moment(new Date(values['take_date']).setHours(12,0,0))
+        values['return_date'] = moment(new Date(values['return_date']).setHours(12,0,0))
         console.log(values)
-        console.log(err)
         if (!err) {
           (async () =>
             await axios

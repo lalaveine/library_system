@@ -103,7 +103,6 @@ export default {
     "take_date",
     "entry_id"
   ],
-
   components: {
     "a-modal": Modal,
     "a-form": Form,
