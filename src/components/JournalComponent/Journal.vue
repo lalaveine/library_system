@@ -92,7 +92,10 @@
     <!-- Table Custom Render -->
     <a-table :columns="columns" :data-source="data" rowKey="entry_id">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.entry_id, getData, openNotificationWithIcon)">Delete</a-button>
+        <a-button
+          type="danger"
+          @click="showDeleteConfirm(record.entry_id, getData, openNotificationWithIcon)"
+        >Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
       <span slot="take_date" slot-scope="text, record">
@@ -158,9 +161,8 @@ export default {
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
-        values['take_date'] = moment(values['take_date']).toISOString()
+        values["take_date"] = moment(values["take_date"]).toISOString();
         if (!err) {
-          // console.log(values);
           let link = "http://localhost:5000/journal?";
           for (let key in values) {
             if (values[key]) {
@@ -168,43 +170,48 @@ export default {
             }
           }
           link = link.slice(0, -1);
-          const response = await axios.get(link, values)
-            .catch(() =>
-              this.openNotificationWithIcon(
-                "warning",
-                "Warning",
-                "Journal entry is not found."
-              )
-            );;
-          const { data } = response;
-          this.data = data;
+          const response = await axios.get(link, values).catch(err => {
+            this.openNotificationWithIcon(
+              "warning",
+              "Warning",
+              err.response.data
+            );
+          });
+          if (response) {
+            let { data } = response;
+            this.data = data;
+          } else {
+            this.data = [];
+          }
         }
       });
     },
     async handleInputSubmit(e) {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
-        values['take_date'] = moment(new Date().setHours(12,0,0))
-        values['return_date'] = moment(new Date(values['return_date']).setHours(12,0,0))
-        console.log(values)
+        values["take_date"] = moment(new Date().setHours(12, 0, 0));
+        values["return_date"] = moment(
+          new Date(values["return_date"]).setHours(12, 0, 0)
+        );
+        console.log(values);
         if (!err) {
-          await axios.post("http://localhost:5000/journal", Object.values(values))
+          await axios
+            .post("http://localhost:5000/journal", Object.values(values))
             .then(res => {
-                this.openNotificationWithIcon(
-                  "success",
-                  "Success",
-                  "Journal entry is added!"
-                );
+              this.openNotificationWithIcon(
+                "success",
+                "Success",
+                "Journal entry is added!"
+              );
             })
             .catch(err => {
-                this.openNotificationWithIcon(
-                  "error",
-                  "Error",
-                  err.response.data.detail
-                ) 
+              this.openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              );
             })
             .then(() => this.getData());
-          
         }
       });
     },
@@ -218,10 +225,14 @@ export default {
     },
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
-      form.validateFields((err, values) => { 
-        values['take_date'] = moment(new Date(values['take_date']).setHours(12,0,0))
-        values['return_date'] = moment(new Date(values['return_date']).setHours(12,0,0))
-        console.log(values)
+      form.validateFields((err, values) => {
+        values["take_date"] = moment(
+          new Date(values["take_date"]).setHours(12, 0, 0)
+        );
+        values["return_date"] = moment(
+          new Date(values["return_date"]).setHours(12, 0, 0)
+        );
+        console.log(values);
         if (!err) {
           (async () =>
             await axios
@@ -229,7 +240,7 @@ export default {
                 `http://localhost:5000/journal/${values.entry_id}`,
                 Object.values(values)
               )
-              .then(res => 
+              .then(res =>
                 this.openNotificationWithIcon(
                   "success",
                   "Success",
@@ -267,21 +278,23 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios.delete(`http://localhost:5000/journal/${id}`)
+          await axios
+            .delete(`http://localhost:5000/journal/${id}`)
             .then(res =>
-                  openNotificationWithIcon(
-                    "success",
-                    "Success",
-                    "Journal entry is deleted!"
-                  )
-                )
+              openNotificationWithIcon(
+                "success",
+                "Success",
+                "Journal entry is deleted!"
+              )
+            )
             .catch(err =>
               openNotificationWithIcon(
                 "error",
                 "Error",
                 err.response.data.detail
               )
-            ).then(() => getData());
+            )
+            .then(() => getData());
         }
       });
     },

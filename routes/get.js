@@ -84,7 +84,7 @@ module.exports = function (app, client) {
         };
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
-            res.status(404).send()
+            res.status(404).send("Journal entry is not found.")
         } else {
             res.send(rows);    
         }

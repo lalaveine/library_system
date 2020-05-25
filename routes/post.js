@@ -5,7 +5,6 @@ module.exports = function (app, client) {
             await client.query('INSERT INTO reader (reader_name, reader_mid_name, reader_surname, reader_email) VALUES ($1,$2,$3,$4)', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
-                console.log(err)
                 res.status(500).send(err)
             });
     });
@@ -15,7 +14,6 @@ module.exports = function (app, client) {
         await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES($1,$2,$4,$3)', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
-                console.log(err)
                 res.status(500).send(err)
             });
     });
