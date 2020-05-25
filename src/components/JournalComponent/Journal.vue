@@ -203,7 +203,7 @@ export default {
                   err.response.data.detail
                 ) 
             })
-            .then(async res => await this.getData());
+            .then(() => this.getData());
           
         }
       });

@@ -66,7 +66,6 @@ module.exports = function (app, client) {
     });
 
     app.get('/journal', async (req, res) => { 
-        // console.log(req.query)
         let query = `SELECT entry_id, reader.reader_id, reader_name, reader_mid_name, reader_surname, journal.edition_id, book_title, take_date, return_date 
                     FROM journal, reader, book 
                     WHERE book.book_id = (
@@ -81,9 +80,7 @@ module.exports = function (app, client) {
             };
             query = query.slice(0, -4);
         };
-        // console.log(query)
         const { rows } = await client.query(query);
-        // console.log(rows)
         if (_.isEmpty(rows)) {
             res.status(404).send()
         } else {
@@ -139,7 +136,6 @@ module.exports = function (app, client) {
             };
             query = query.slice(0, -4);
         };
-        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send()
