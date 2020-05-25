@@ -44,7 +44,11 @@ module.exports = function (app, client) {
         };
         query += 'GROUP BY book.book_id'
         const { rows } = await client.query(query);
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send()
+        } else {
+            res.send(rows);    
+        }
     });
 
     app.get('/editions', async (req, res) => {
@@ -80,7 +84,11 @@ module.exports = function (app, client) {
         // console.log(query)
         const { rows } = await client.query(query);
         // console.log(rows)
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send()
+        } else {
+            res.send(rows);    
+        }
     });
 
     app.get('/cities', async (req, res) => {
@@ -132,6 +140,10 @@ module.exports = function (app, client) {
             query = query.slice(0, -4);
         };
         const { rows } = await client.query(query);
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send()
+        } else {
+            res.send(rows);    
+        }
     });
 }

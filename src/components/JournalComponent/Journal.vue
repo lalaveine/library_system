@@ -168,7 +168,14 @@ export default {
             }
           }
           link = link.slice(0, -1);
-          const response = await axios.get(link, values);
+          const response = await axios.get(link, values)
+            .catch(() =>
+              this.openNotificationWithIcon(
+                "warning",
+                "Warning",
+                "Journal entry is not found."
+              )
+            );;
           const { data } = response;
           this.data = data;
         }

@@ -146,7 +146,7 @@ export default {
           }
           link = link.slice(0, -1);
           const response = await axios.get(link, values)
-            .catch(res =>
+            .catch(() =>
               this.openNotificationWithIcon(
                 "warning",
                 "Warning",
