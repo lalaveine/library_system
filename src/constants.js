@@ -70,15 +70,25 @@ export const bookColumns = [
     key: "book_title",
   },
   {
+    title: "Quantity",
+    dataIndex: "book_count",
+    key: "book_count"
+  },
+  {
     title: "Author",
     dataIndex: "authors",
     key: "authors",
     scopedSlots: { customRender: 'authors' }
   },
   {
-    title: "Quantity",
-    dataIndex: "book_count",
-    key: "book_count"
+    title: "ISBN",
+    dataIndex: "isbn",
+    key: "isbn"
+  },
+  {
+    title: "ББК",
+    dataIndex: "bbk",
+    key: "bbk"
   },
   {
     title: "Actions",

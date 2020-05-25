@@ -62,23 +62,31 @@
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
-        <a-form-item label="Book name:">
-          <a-input v-decorator="['name']" placeholder="Input book" />
+        <a-form-item label="Book title:">
+          <a-input v-decorator="['book-book_title']" placeholder="Input book" />
         </a-form-item>
 
-        <a-form-item label="Title:">
-          <a-input v-decorator="['title']" placeholder="Input middle name" />
+        <a-form-item label="ISBN:">
+          <a-input v-decorator="['isbn']" placeholder="Input ISBN" />
         </a-form-item>
 
         <a-form-item label="Bbk:">
-          <a-input v-decorator="['bbk']" placeholder="Input Surname" />
+          <a-input v-decorator="['bbk']" placeholder="Input bbk" />
         </a-form-item>
 
-        <a-form-item label="Author:">
-          <a-input v-decorator="['author_id']" placeholder="Input tittle" />
+        <a-form-item label="Author name:">
+          <a-input v-decorator="['author_name']" placeholder="Input author name" />
+        </a-form-item>
+
+        <a-form-item label="Author middle name:">
+          <a-input v-decorator="['author_mid_name']" placeholder="Input author middle name" />
+        </a-form-item>
+
+        <a-form-item label="Author surname:">
+          <a-input v-decorator="['author_surname']" placeholder="Input author surname" />
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+          <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
         </a-form-item>
       </a-form>
     </div>
@@ -154,7 +162,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          let link = "http://localhost:5000/books";
+          let link = "http://localhost:5000/books?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
