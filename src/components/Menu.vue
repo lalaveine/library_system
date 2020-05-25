@@ -12,42 +12,42 @@
       <a-menu-item key="1">
         <a-icon type="pie-chart" />
         <span>Journal</span>
-        <router-link to="/">Journal</router-link>
+        <router-link to="/"></router-link>
       </a-menu-item>
       <a-menu-item key="2">
         <a-icon type="pie-chart" />
         <span>Book</span>
-        <router-link to="/Book">Book</router-link>
+        <router-link to="/Book"></router-link>
       </a-menu-item>
       <a-menu-item key="3">
         <a-icon type="pie-chart" />
         <span>Reader</span>
-        <router-link to="/Reader">Reader</router-link>
+        <router-link to="/Reader"></router-link>
       </a-menu-item>
       <a-menu-item key="4">
         <a-icon type="pie-chart" />
         <span>Author</span>
-        <router-link to="/Author">Author</router-link>
+        <router-link to="/Author"></router-link>
       </a-menu-item>
       <a-menu-item key="5">
         <a-icon type="pie-chart" />
         <span>City</span>
-        <router-link to="/City">City</router-link>
+        <router-link to="/City"></router-link>
       </a-menu-item>
       <a-menu-item key="6">
         <a-icon type="pie-chart" />
         <span>Edition</span>
-        <router-link to="/Edition">Editios</router-link>
+        <router-link to="/Edition"></router-link>
       </a-menu-item>
       <a-menu-item key="7">
         <a-icon type="pie-chart" />
         <span>Library</span>
-        <router-link to="/Library">Library</router-link>
+        <router-link to="/Library"></router-link>
       </a-menu-item>
       <a-menu-item key="8">
         <a-icon type="pie-chart" />
         <span>Publisher</span>
-        <router-link to="/Publisher">Publisher</router-link>
+        <router-link to="/Publisher"></router-link>
       </a-menu-item>
     </a-menu>
   </div>

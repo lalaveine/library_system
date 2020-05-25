@@ -58,21 +58,24 @@ module.exports = function (app, client) {
     });
 
     app.get('/journal', async (req, res) => { 
+        // console.log(req.query)
         let query = `SELECT entry_id, reader.reader_id, reader_name, reader_mid_name, reader_surname, journal.edition_id, book_title, take_date, return_date 
                     FROM journal, reader, book 
-                    WHERE 
-                    book.book_id = (SELECT book_id from book_edition 
-                        WHERE book_edition.edition_id = journal.edition_id) 
-                    AND  journal.reader_id = reader.reader_id `;
+                    WHERE book.book_id = (
+                        SELECT book_id from book_edition 
+                        WHERE book_edition.edition_id = journal.edition_id
+                    ) 
+                    AND journal.reader_id = reader.reader_id `;
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
             };
             query = query.slice(0, -4);
         };
-        console.log(query)
+        // console.log(query)
         const { rows } = await client.query(query);
+        // console.log(rows)
         res.send(rows);
     });
 

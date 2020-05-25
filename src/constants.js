@@ -1,4 +1,4 @@
-export const dateFormat = 'DD-MM-YYYY';
+export const dateFormat = 'MMMM Do YYYY';
 
 export const journalColumns = [
   {
@@ -29,8 +29,8 @@ export const journalColumns = [
 
   {
     title: "Title",
-    dataIndex: "title",
-    key: "title"
+    dataIndex: "book_title",
+    key: "book_title"
   },
   {
     title: "Edition ID",
