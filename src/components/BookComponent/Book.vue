@@ -119,6 +119,12 @@ export default {
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/books`).then(response => {
+        const { data } = response;
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
@@ -161,11 +167,7 @@ export default {
     }
   },
   async mounted() {
-    await axios.get(`http://localhost:5000/books`).then(response => {
-      const { data } = response;
-      this.data = data;
-      console.log(this.data);
-    });
+    await this.getData();
   }
 };
 </script>

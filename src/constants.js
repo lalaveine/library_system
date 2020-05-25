@@ -70,10 +70,16 @@ export const bookColumns = [
     key: "book_title",
   },
   {
-    title: "Author Id",
-    dataIndex: "name",
-    key: "address 3",
-    ellipsis: true
+    title: "Author",
+    dataIndex: "authors",
+    key: "authors",
+    ellipsis: true,
+    scopedSlots: { customRender: 'authors' }
+  },
+  {
+    title: "Quantity",
+    dataIndex: "book_count",
+    key: "book_count"
   },
   {
     title: "Actions",

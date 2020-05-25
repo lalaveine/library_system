@@ -23,6 +23,7 @@ module.exports = function (app, client) {
             SELECT
                 book.book_id, 
                 book.book_title, 
+                (SELECT COUNT(*) FROM book_edition WHERE book_edition.book_id = book.book_id) AS book_count,
                 array_agg(author.author_id) as author_ids, 
                 array_agg(author.author_name || ' ' || author.author_mid_name || ' ' || author.author_surname) as authors
             FROM
