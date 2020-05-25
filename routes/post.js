@@ -44,14 +44,12 @@ module.exports = function (app, client) {
         // If there is book with the same title program returns 500
         // Secondly if any author listed in the request is not in the database program returns 500
         const { rows } =  await client.query(`SELECT book_id FROM book WHERE book_title=$1`, [req.body['book_title']]);
-        // console.log(...book_id.rows)
         let author_ids = []
         book_exists = !_.isEmpty(rows)
         if (!book_exists) {
-            // await client.query(`INSERT INTO book (book_title) VALUES ($1)`, [req.body['book_title']]);
             for (key in req.body['authors']) {
-                let author = Object.values(req.body['authors'][key])
-                const { rows } =  await client.query(`SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3`, author);
+                let author = req.body['authors'][key];
+                const { rows } =  await client.query(`SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3`, [author['author_name'],author['author_surname'], author['author_mid_name']]);
                 if (_.isEmpty(rows)) {
                     res.status(500).send();
                     author_ids = []

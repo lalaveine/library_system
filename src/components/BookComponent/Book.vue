@@ -10,17 +10,17 @@
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
-        <a-form-item label="Book name:">
-          <a-input
-            v-decorator="['book_id', { rules: [{ required: true, message: 'Please input book id' }] }]"
-            placeholder="Input book"
-          />
-        </a-form-item>
 
         <a-form-item label="Title:">
           <a-input
-            v-decorator="['title', { rules: [{ required: true, message: 'Please input title' }] }]"
+            v-decorator="['book_title', { rules: [{ required: true, message: 'Please input title' }] }]"
             placeholder="Input reader`s middle name"
+          />
+        </a-form-item>
+        <a-form-item label="ISBN:">
+          <a-input
+            v-decorator="['isbn', { rules: [{ required: true, message: 'Please input book id' }] }]"
+            placeholder="Input book"
           />
         </a-form-item>
 
@@ -30,24 +30,76 @@
             placeholder="Input bbk"
           />
         </a-form-item>
-
+        <a-form-item label="Publisher name:">
+          <a-input
+            v-decorator="['publisher_name', { rules: [{ required: true, message: 'Please input book id' }] }]"
+            placeholder="Input book"
+          />
+        </a-form-item>
+        <a-form-item label="Publisher year:">
+          <a-input
+            v-decorator="['pub_year', { rules: [{ required: true, message: 'Please input book id' }] }]"
+            placeholder="Input book"
+          />
+        </a-form-item>
         <a-form-item label="Author Surname:">
           <a-input
-            v-decorator="['author_surname', { rules: [{ required: true, message: 'Please input author surname' }] }]"
+            v-decorator="['0author_surname', { rules: [{ required: true, message: 'Please input author surname' }] }]"
             placeholder="Input author surname"
           />
         </a-form-item>
+
         <a-form-item label="Author Name:">
           <a-input
-            v-decorator="['author_name', { rules: [{ required: true, message: 'Please input author name' }] }]"
+            v-decorator="['0author_name', { rules: [{ required: true, message: 'Please input author name' }] }]"
             placeholder="Input author name"
           />
         </a-form-item>
+
         <a-form-item label="Author Middle Name:">
           <a-input
-            v-decorator="['author_middle_name', { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+            v-decorator="['0author_mid_name', { rules: [{ required: true, message: 'Please input author middle name' }] }]"
             placeholder="Input author middle name"
           />
+        </a-form-item>
+        <a-form-item
+          v-for="(k, index) in inputForm.getFieldValue('keys')"
+          :key="k"
+          :required="false"
+        >
+          <a-form-item label="Author Surname:">
+            <a-input
+              v-decorator="[`${k}author_surname`, { rules: [{ required: true, message: 'Please input author surname' }] }]"
+              placeholder="Input author surname"
+            />
+          </a-form-item>
+
+          <a-form-item label="Author Name:">
+            <a-input
+              v-decorator="[`${k}author_name`, { rules: [{ required: true, message: 'Please input author name' }] }]"
+              placeholder="Input author name"
+            />
+          </a-form-item>
+
+          <a-form-item label="Author Middle Name:">
+            <a-input
+              v-decorator="[`${k}author_mid_name`, { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+              placeholder="Input author middle name"
+            />
+          </a-form-item>
+
+          <a-icon
+            v-if="inputForm.getFieldValue('keys').length > 1"
+            class="dynamic-delete-button"
+            type="minus-circle-o"
+            @click="() => remove(k)"
+          />
+          <!-- :disabled="inputForm.getFieldValue('keys').length === 1" -->
+        </a-form-item>
+        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+          <a-button type="dashed" @click="add">
+            <a-icon type="plus" />Add author
+          </a-button>
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -63,7 +115,7 @@
       >
         <h3>Search</h3>
         <a-form-item label="Book title:">
-          <a-input v-decorator="['book-book_title']" placeholder="Input book" />
+          <a-input v-decorator="['book_title']" placeholder="Input book" />
         </a-form-item>
 
         <a-form-item label="ISBN:">
@@ -99,13 +151,16 @@
       @change="handleFormChange"
     />
     <a-table :columns="columns" :data-source="data" rowKey="book_id">
-      <span  slot="authors" slot-scope="text, record" >
+      <span slot="authors" slot-scope="text, record">
         <span v-for="item in record.authors">
           <p>{{ item }}</p>
         </span>
       </span>
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.book_id, getData, openNotificationWithIcon)">Delete</a-button>
+        <a-button
+          type="danger"
+          @click="showDeleteConfirm(record.book_id, getData, openNotificationWithIcon)"
+        >Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -122,10 +177,13 @@ import {
   Modal,
   DatePicker,
   InputNumber,
-  notification
+  notification,
+  Icon
 } from "ant-design-vue";
 import { bookColumns as columns, dateFormat } from "@/constants.js";
 import BookUpdateForm from "./BookUpdateForm.vue";
+import _ from "lodash";
+let id = 1;
 
 export default {
   name: "BookSearch",
@@ -136,7 +194,8 @@ export default {
     "a-form-item": Form.Item,
     "a-table": Table,
     "a-date-picker": DatePicker,
-    "book-update-form": BookUpdateForm
+    "book-update-form": BookUpdateForm,
+    "a-icon": Icon
   },
   data() {
     return {
@@ -178,10 +237,33 @@ export default {
     },
     handleInputSubmit(e) {
       e.preventDefault();
-      this.inputForm.validateFields(async (err, values) => {
+      this.inputForm.validateFields((err, values) => {
         if (!err) {
+          let { keys } = values;
+          keys = [0, ...keys];
+          const key = Object.keys(values);
+          let authors = [];
+
+          for (let i in keys) {
+            authors[`author${i}`] = {};
+            let filtered = key.filter(e => e.toString().includes(`${i}`));
+            let arr = [];
+            for (let j of filtered) {
+              authors[`author${i}`][j.toString().slice(1)] = values[j];
+            }
+          }
+          let { book_title, bbk, pub_year, publisher_name, isbn } = values;
+          let result = {
+            book_title,
+            isbn,
+            bbk,
+            publisher_name,
+            pub_year,
+            authors: { ...authors }
+          };
           (async () =>
-            axios.post("http://localhost:5000/books", Object.values(values))
+            axios
+              .post("http://localhost:5000/books", result)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -262,19 +344,16 @@ export default {
           await axios
             .delete(`http://localhost:5000/books/${id}`)
             .then(res =>
-                openNotificationWithIcon(
-                  "success",
-                  "Success",
-                  "Book is deleted!"
-                )
+              openNotificationWithIcon("success", "Success", "Book is deleted!")
+            )
+            .catch(err =>
+              openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
               )
-              .catch(err =>
-                openNotificationWithIcon(
-                  "error",
-                  "Error",
-                  err.response.data.detail
-                )
-              ).then(() => getData());
+            )
+            .then(() => getData());
         }
       });
     },
@@ -290,10 +369,38 @@ export default {
         }
       }
       return true;
+    },
+    add() {
+      // can use data-binding to get
+      const keys = this.inputForm.getFieldValue("keys");
+      const nextKeys = keys.concat(id++);
+      // can use data-binding to set
+      // important! notify form to detect changes
+      this.inputForm.setFieldsValue({
+        keys: nextKeys
+      });
+    },
+    remove(k) {
+      // can use data-binding to get
+      const keys = this.inputForm.getFieldValue("keys");
+      // We need at least one passenger
+      if (keys.length === 0) {
+        return;
+      }
+
+      // can use data-binding to set
+      this.inputForm.setFieldsValue({
+        keys: keys.filter(key => key !== k)
+      });
+      // this.inputForm.resetFields();
     }
   },
   async mounted() {
     await this.getData();
+    this.inputForm.getFieldDecorator("keys", {
+      initialValue: [],
+      preserve: true
+    });
   }
 };
 </script>
