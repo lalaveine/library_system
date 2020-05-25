@@ -20,21 +20,26 @@ module.exports = function (app, client) {
     /* Books POST request example
         {
             "book_title": "30 ночей шахеризады",
+            "isbn": "57439287",
+            "bbk": "1232532",
+            "publisher_name": "Издательство АСТ",
+            "pub_year": "1984",
             "authors" : {
                 "author_1": {
-                    "author_name": "Виктор",
+                    "author_name": "Лев",
                     "author_surname": "Толстой",
                     "author_mid_name": "Николаевич"
                 },
                 "author_2": {
-                    "author_name": "Алексей",
-                    "author_surname": "Толстой",
-                    "author_mid_name": "Николаевич"
-                }
+                    "author_name": "Иммануил",
+                    "author_surname": "Кант",
+                    "author_mid_name": ""
             }
-        }
+	}
+	
+}
     */
-    app.post('/books', async (req, res) => {
+    app.post('/books', async (req, res, next) => {
         // This part checks if everything is alright with the data
         // If there is book with the same title program returns 500
         // Secondly if any author listed in the request is not in the database program returns 500
@@ -61,18 +66,41 @@ module.exports = function (app, client) {
         // If the data is ok
         // Program just pushes it to the database
         if (!book_exists && !_.isEmpty(author_ids)) {
-            await client.query(`INSERT INTO book (book_title) VALUES ($1);`, [req.body['book_title']]);
-            for (id in author_ids) {
-                await client.query(`
-                INSERT INTO author_book 
-                    (author_id, book_id) 
-                VALUES(
-                    $1 
-                    ,(SELECT book_id FROM book WHERE book_title=$2)
-                );`
-                , [author_ids[id], req.body['book_title']]);
-            }
-            res.status(200).send();
+            console.log([req.body['pub_year'], req.body['bbk'], req.body['isbn'], req.body['publisher_name'], req.body['book_title']])
+            await client.query(`INSERT INTO book 
+                                    (pub_year, bbk, isbn, publisher_id, book_title) 
+                                VALUES($1, $2, $3, (SELECT publisher_id FROM publisher WHERE publisher_name=$4), $5)`
+                            , [req.body['pub_year'], req.body['bbk'], req.body['isbn'], req.body['publisher_name'], req.body['book_title']])
+                        .then(() => {
+                            for (id in author_ids) {
+                                client.query(`
+                                    INSERT INTO author_book 
+                                        (author_id, book_id) 
+                                    VALUES(
+                                        $1 
+                                        ,(SELECT book_id FROM book WHERE book_title=$2)
+                                    );`
+                                    , [author_ids[id], req.body['book_title']]);
+                                }
+                                res.status(200).send();
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            res.status(500).send(err);
+                        });
+            // if (book_added) {
+            //     for (id in author_ids) {
+            //         await client.query(`
+            //             INSERT INTO author_book 
+            //                 (author_id, book_id) 
+            //             VALUES(
+            //                 $1 
+            //                 ,(SELECT book_id FROM book WHERE book_title=$2)
+            //             );`
+            //             , [author_ids[id], req.body['book_title']]);
+            //     }
+            //     res.status(200).send();
+            // }
         }
     });
 

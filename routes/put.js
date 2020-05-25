@@ -30,11 +30,57 @@ module.exports = function (app, client) {
     });
 
     app.put('/books/:id', async (req, res) => {
-        await client.query('UPDATE book SET title=$1, bbk=$2, author_id = (SELECT author_id FROM author WHERE name=$3 AND middle_name=$4 AND surname=$5) WHERE book.book_id=$5', req.body)
-            .then(() => { res.status(200).send() })
-            .catch((err) => {
+        let author_ids = []
+        if (!book_exists) {
+            // await client.query(`INSERT INTO book (book_title) VALUES ($1)`, [req.body['book_title']]);
+            for (key in req.body['authors']) {
+                let author = Object.values(req.body['authors'][key]);
+                const { rows } =  await client.query(`SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3`, author);
+                if (_.isEmpty(rows)) {
+                    res.status(500).send();
+                    author_ids = []
+                } else {
+                    author_ids.push(...Object.values(...rows))
+                }
+            }
+        } else {
+            res.status(500).send();
+        };
+
+        if (!_.isEmpty(author_ids)) {
+            // Add updated values for book
+            await client.query(`UPDATE book 
+            SET book_title=$1, isbn=$2 bbk=$3
+            WHERE book.book_id=$5`
+            , req.body)
+                .then(() => { res.status(200).send() })
+                .catch((err) => {
                 res.status(500).send(err)
-            });
+                });
+            let author = Object.values(req.body['authors'][key]);
+            const { rows } =  await client.query(`SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3`, author);
+            if (_.isEmpty(rows)) {
+                res.status(500).send();
+                author_ids = []
+            } else {
+                author_ids.push(...Object.values(...rows))
+            }
+        }
+        // // Insest new author_book relations
+        // if (!_.isEmpty(author_ids)) {
+        //     for (id in author_ids) {
+        //         await client.query(`
+        //         INSERT INTO author_book 
+        //             (author_id, book_id) 
+        //         VALUES(
+        //             $1 
+        //             ,(SELECT book_id FROM book WHERE book_title=$2)
+        //         );`
+        //         , [author_ids[id], req.body['book_title']]);
+        //     }
+        //     res.status(200).send();
+        // }
+        
     });
 
     app.put('/publishers/:id', async (req, res) => {
