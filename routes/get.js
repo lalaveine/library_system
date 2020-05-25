@@ -11,7 +11,11 @@ module.exports = function (app, client) {
             query = query.slice(0, -4);
         };
         const { rows } = await client.query(query);
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send()
+        } else {
+            res.send(rows);    
+        }
     });
 
     app.get('/books', async (req, res) => {

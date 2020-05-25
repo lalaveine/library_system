@@ -1,7 +1,7 @@
 
 module.exports = function (app, client) {
     const _ = require('lodash');
-    app.post('/reader', async (req, res) => {
+    app.post('/readers', async (req, res) => {
             await client.query('INSERT INTO reader (reader_name, reader_mid_name, reader_surname, reader_email) VALUES ($1,$2,$3,$4)', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {

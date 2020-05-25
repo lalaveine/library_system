@@ -71,14 +71,14 @@
       </a-form>
     </div>
     <reader-update-form
-        ref="editForm"
-        :visible="visible"
-        v-bind="fields"
-        @cancel="handleCancel"
-        @update="handleUpdateSubmit"
-        @change="handleFormChange"
-      />
-    <a-table :columns="columns" :data-source="data"> 
+      ref="editForm"
+      :visible="visible"
+      v-bind="fields"
+      @cancel="handleCancel"
+      @update="handleUpdateSubmit"
+      @change="handleFormChange"
+    />
+    <a-table :columns="columns" :data-source="data">
       <span class="action-buttons" slot="action" slot-scope="text, record">
         <a-button type="danger" @click="showDeleteConfirm(record.reader_id)">Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
@@ -100,7 +100,7 @@ import {
   notification
 } from "ant-design-vue";
 import { readerColumns as columns, dateFormat } from "@/constants.js";
-import ReaderUpdateForm from './ReaderUpdateForm.vue';
+import ReaderUpdateForm from "./ReaderUpdateForm.vue";
 
 export default {
   name: "BookSearch",
@@ -122,24 +122,37 @@ export default {
       columns,
       visible: false,
       isButtonDisabled: true,
-      fields: {},
+      fields: {}
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/publishers`).then(response => {
+        const { data } = response;
+        console.log(data);
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "http://localhost:5000/readers";
+          let link = "http://localhost:5000/readers?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
             }
           }
           link = link.slice(0, -1);
-
-          const response = await axios.get(link, values);
+          const response = await axios.get(link, values)
+            .catch(res =>
+              this.openNotificationWithIcon(
+                "warning",
+                "Warning",
+                "Reader is not found."
+              )
+            );
           const { data } = response;
           this.data = data;
         }
@@ -149,13 +162,25 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/readers", Object.values(values));
-          console.log(values);
+          axios.post("http://localhost:5000/readers", Object.values(values))
+            .then(res =>
+                  this.openNotificationWithIcon(
+                    "success",
+                    "Success",
+                    "Reader is added!"
+                  )
+                )
+            .catch(err =>
+              this.openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              )
+            );
         }
       });
     },
     showUpdateModal(record) {
-      // console.log(record);
       this.visible = true;
       this.fields = { ...record };
     },
@@ -174,14 +199,22 @@ export default {
                 `http://localhost:5000/readers/${values.reader_id}`,
                 Object.values(values)
               )
-              .then(res => this.openNotificationWithIcon('success', 'Success', 'Reader is updated!'))
-              .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
-              // .catch(err => this.openNotificationWithIcon('error', 'Error', err.response.data.detail)))();
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Reader is updated!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ))();
         }
-        // console.log("Received values of form: ", values);
         form.resetFields();
-        //this.fields = record;
-        // console.log(this.record);
         this.visible = false;
         this.fields = {};
       });
@@ -203,11 +236,7 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios
-            .delete(`http://localhost:5000/readers/${id}`);
-        },
-        onCancel() {
-          console.log("Cancel");
+          await axios.delete(`http://localhost:5000/readers/${id}`);
         }
       });
     },

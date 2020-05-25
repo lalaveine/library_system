@@ -1,6 +1,6 @@
 module.exports = function (app, client) {
     app.put('/readers/:id', async (req, res) => {
-        await client.query('UPDATE reader SET name = $3, middle_name = $4, surname = $2, email = $5 WHERE reader_id = $1', req.body)
+        await client.query('UPDATE reader SET reader_name = $3, reader_mid_name = $4, reader_surname = $2, reader_email = $5 WHERE reader_id = $1', req.body)
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)
