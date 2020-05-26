@@ -100,9 +100,18 @@ module.exports = function (app, client) {
     });
 
     app.put('/editions/:id', async (req, res) => {
-        await client.query('UPDATE book_edition SET pub_year = $1, pub_city = (SELECT city_id from city WHERE name=$2), publisher_id = (SELECT publisher_id from publisher WHERE name=$3), taken = $4, library_id = (SELECT library_id from library WHERE name=$5), book_id = (SELECT book_id from books WHERE title=$6)', req.body)
+        console.log(req.body)
+        await client.query(`
+                UPDATE book_edition 
+                SET 
+                    taken = $1
+                    , library_id = (SELECT library_id from library WHERE library_name=$2)
+                    , book_id = (SELECT book_id from book WHERE book_title=$3)
+                WHERE edition_id=$4`
+            , [req.body['taken'], req.body['library_name'], req.body['book_title'], req.body['edition_id']])
             .then(() => { res.status(200).send() })
             .catch((err) => {
+                console.log(err)
                 res.status(500).send(err)
             });
     });

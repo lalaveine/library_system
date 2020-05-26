@@ -42,22 +42,16 @@
           <a-input-number v-decorator="['edition_id']" placeholder="Input edition id" />
         </a-form-item>
 
-         <a-form-item label="Book Title:">
-          <a-input
-            v-decorator="['book-book_title']"
-            placeholder="Input book title"
-          />
+        <a-form-item label="Book Title:">
+          <a-input v-decorator="['book-book_title']" placeholder="Input book title" />
         </a-form-item>
 
         <a-form-item label="Library:">
-          <a-input
-            v-decorator="['library-library_name']"
-            placeholder="library"
-          />
+          <a-input v-decorator="['library-library_name']" placeholder="library" />
         </a-form-item>
 
         <a-form-item label="Taken">
-          <a-checkbox v-decorator="['taken']" :defaultChecked="false"/>
+          <a-checkbox v-decorator="['taken']" :defaultChecked="false" />
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -74,11 +68,14 @@
       @change="handleFormChange"
     />
     <a-table :columns="columns" :data-source="data" rowKey="edition_id">
-        <span slot="taken" slot-scope="text, record">
-          <a-checkbox :checked="record.taken" disabled/>
-        </span>
-       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.edition_id, getData, openNotificationWithIcon)">Delete</a-button>
+      <span slot="taken" slot-scope="text, record">
+        <a-checkbox :checked="record.taken" disabled />
+      </span>
+      <span class="action-buttons" slot="action" slot-scope="text, record">
+        <a-button
+          type="danger"
+          @click="showDeleteConfirm(record.edition_id, getData, openNotificationWithIcon)"
+        >Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -156,7 +153,8 @@ export default {
         if (!err) {
           console.log(values);
           (async () =>
-          await axios.post("http://localhost:5000/editions", values)
+            await axios
+              .post("http://localhost:5000/editions", values)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -174,11 +172,11 @@ export default {
               .then(() => {
                 this.getData();
               }))();
-              this.inputForm.resetFields();
+          this.inputForm.resetFields();
         }
       });
     },
-     showUpdateModal(record) {
+    showUpdateModal(record) {
       this.visible = true;
       this.fields = { ...record };
     },
@@ -192,10 +190,7 @@ export default {
         if (!err) {
           (async () =>
             await axios
-              .put(
-                `http://localhost:5000/editions/${values.edition_id}`,
-                Object.values(values)
-              )
+              .put(`http://localhost:5000/editions/${values.edition_id}`, values)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -237,19 +232,20 @@ export default {
           await axios
             .delete(`http://localhost:5000/editions/${id}`)
             .then(res =>
-                openNotificationWithIcon(
-                  "success",
-                  "Success",
-                  "Edition is deleted!"
-                )
+              openNotificationWithIcon(
+                "success",
+                "Success",
+                "Edition is deleted!"
               )
-              .catch(err =>
-                openNotificationWithIcon(
-                  "error",
-                  "Error",
-                  err.response.data.detail
-                )
-              ).then(() => getData());
+            )
+            .catch(err =>
+              openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              )
+            )
+            .then(() => getData());
         }
       });
     },
