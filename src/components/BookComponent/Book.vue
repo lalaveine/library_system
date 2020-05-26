@@ -305,20 +305,21 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
-        let { keys } = values;
-        const key = Object.keys(values);
+        // let { keys } = values;
+        let keys = Object.keys(values);
         let authors = [];
-     console.log(values)
-        for (let i in keys) {
+        let author_keys = keys.filter((key) => !isNaN(Number(key.substring(0, 1))));
+
+        for (let i = 0; i < author_keys.length / 3; i++) {
           authors[`author${i}`] = {};
-          let filtered = key.filter(e => e.toString().includes(`${i}`));
           let arr = [];
-          for (let j of filtered) {
+          for (let j of author_keys) {
             authors[`author${i}`][j.toString().slice(1)] = values[j];
           }
         }
-        let { book_title, bbk, pub_year, publisher_name, isbn } = values;
+        let { book_id, book_title, bbk, pub_year, publisher_name, isbn } = values;
         const data = {
+          book_id,
           book_title,
           isbn,
           bbk,
@@ -326,11 +327,11 @@ export default {
           pub_year,
           authors: { ...authors }
         };
-   
+        console.log(data)
         if (!err) {
           (async () =>
             await axios
-              .put(`http://localhost:5000/books/${values.publisher_id}`, data)
+              .put(`http://localhost:5000/books/${values.book_id}`, data)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",

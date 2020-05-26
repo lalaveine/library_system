@@ -36,7 +36,6 @@ module.exports = function (app, client) {
         for (key in req.body['authors']) {
             let author = req.body['authors'][key];
             const { rows } =  await client.query('SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3', [author['author_name'],author['author_surname'], author['author_mid_name']]);
-            console.log(...rows)
             if (_.isEmpty(rows)) {
                 res.status(500).send();
                 req_ids = []
@@ -59,7 +58,6 @@ module.exports = function (app, client) {
                     WHERE book.book_id = $1
                     GROUP BY book.book_id
                 `, [req.body['book_id']]);
-            console.log(rows)
             cur_ids = Object.values(...rows)[0];
             to_be_deleted = cur_ids.filter(x => !req_ids.includes(x));
             to_be_added = req_ids.filter(x => !cur_ids.includes(x));
