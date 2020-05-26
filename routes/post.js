@@ -86,19 +86,6 @@ module.exports = function (app, client) {
                             console.log(err)
                             res.status(500).send(err);
                         });
-            // if (book_added) {
-            //     for (id in author_ids) {
-            //         await client.query(`
-            //             INSERT INTO author_book 
-            //                 (author_id, book_id) 
-            //             VALUES(
-            //                 $1 
-            //                 ,(SELECT book_id FROM book WHERE book_title=$2)
-            //             );`
-            //             , [author_ids[id], req.body['book_title']]);
-            //     }
-            //     res.status(200).send();
-            // }
         }
     });
 
@@ -123,10 +110,20 @@ module.exports = function (app, client) {
             });
     });
 
-    app.post('/edition', async (req, res) => {
-        await client.query('INSERT INTO book_edition (pub_year, pub_city, publisher_id, taken, library_id, book_id) VALUES($1, (SELECT city_id from city WHERE name=$2), (SELECT publisher_id from publisher WHERE name=$3), $4, (SELECT library_id from library WHERE name=$5), (SELECT book_id from books WHERE title=$6))', req.body)            .then(() => { res.status(200).send() })
+    app.post('/editions', async (req, res) => {
+        console.log(req.body)
+        await client.query(`
+                INSERT INTO book_edition 
+                    (book_id, library_id, taken) 
+                VALUES(
+                    (SELECT book_id from book WHERE book_title=$1)
+                    , (SELECT library_id from library WHERE library_name=$2)
+                    , $3)`
+            , [req.body['book_title'], req.body['library_name'], false])
+            .then(() => { res.status(200).send() })
             .catch((err) => {
-                res.status(500).send(err)
+                console.log(err);
+                res.status(500).send(err);
             });
     });
 

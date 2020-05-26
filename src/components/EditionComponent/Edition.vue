@@ -20,7 +20,7 @@
 
         <a-form-item label="Library:">
           <a-input
-            v-decorator="['library_id', { rules: [{ required: true, message: 'Please input library name' }] }]"
+            v-decorator="['library_name', { rules: [{ required: true, message: 'Please input library name' }] }]"
             placeholder="library"
           />
         </a-form-item>
@@ -137,7 +137,6 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          console.log(values);
           let link = "http://localhost:5000/editions?";
           for (let key in values) {
             if (values[key]) {
@@ -155,13 +154,14 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
+          console.log(values);
           (async () =>
-          await axios.post("http://localhost:5000/editions", Object.values(values))
+          await axios.post("http://localhost:5000/editions", values)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
                   "Success",
-                  "Publisher is added!"
+                  "Edition is added!"
                 )
               )
               .catch(err =>

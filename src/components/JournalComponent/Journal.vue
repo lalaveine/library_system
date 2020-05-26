@@ -153,7 +153,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`/journal`).then(response => {
+      await axios.get(`http://localhost:5000/journal`).then(response => {
         const { data } = response;
         this.data = data;
       });

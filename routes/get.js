@@ -79,7 +79,6 @@ module.exports = function (app, client) {
             };
             query = query.slice(0, -4);
         };
-        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Edition is not found.")
