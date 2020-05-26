@@ -49,6 +49,10 @@ display: flex;
   text-align: left;
 }
 
+.ant-col-5 {
+    width: 100%;
+}
+
 h1{
   color: #52c41a;
   font-size: 45px;
@@ -72,6 +76,11 @@ h2 {
 
 .ant-btn{
   margin: 3px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
 }
 </style>
 

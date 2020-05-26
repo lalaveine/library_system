@@ -36,10 +36,7 @@
       </a-form-item>
 
       <a-form-item label="ББК">
-        <a-input
-          v-decorator="['bbk']"
-          placeholder="Input bbk"
-        />
+        <a-input v-decorator="['bbk']" placeholder="Input bbk" />
       </a-form-item>
 
       <a-form-item label="Publisher name">
@@ -54,7 +51,7 @@
         />
       </a-form-item>
 
-       <a-form-item label="Publishing year">
+      <a-form-item label="Publishing year">
         <a-input
           v-decorator="[
                 'pub_year',
@@ -66,25 +63,30 @@
         />
       </a-form-item>
 
-     <a-form-item label="Author Surname:">
-        <a-input
-          v-decorator="[`${k}author_surname`, { rules: [{ required: true, message: 'Please input author surname' }] }]"
-          placeholder="Input author surname"
-        />
-      </a-form-item>
+      <a-form-item v-for="(i, index) in authors" :key="index" :required="false">
+        <div class="author-label">
+          <h3>Author {{index+1}}:</h3>
+        </div>
+        <a-form-item label="Author Surname:">
+          <a-input
+            v-decorator="[`${index}author_surname`, { rules: [{ required: true, message: 'Please input author surname' }] }]"
+            placeholder="Input author surname"
+          />
+        </a-form-item>
 
-      <a-form-item label="Author Name:">
-        <a-input
-          v-decorator="[`${k}author_name`, { rules: [{ required: true, message: 'Please input author name' }] }]"
-          placeholder="Input author name"
-        />
-      </a-form-item>
+        <a-form-item label="Author Name:">
+          <a-input
+            v-decorator="[`${index}author_name`, { rules: [{ required: true, message: 'Please input author name' }] }]"
+            placeholder="Input author name"
+          />
+        </a-form-item>
 
-      <a-form-item label="Author Middle Name:">
-        <a-input
-          v-decorator="[`${k}author_mid_name`, { rules: [{ required: true, message: 'Please input author middle name' }] }]"
-          placeholder="Input author middle name"
-        />
+        <a-form-item label="Author Middle Name:">
+          <a-input
+            v-decorator="[`${index}author_mid_name`, { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+            placeholder="Input author middle name"
+          />
+        </a-form-item>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -113,14 +115,35 @@ export default {
     "a-date-picker": DatePicker,
     "a-input-number": InputNumber
   },
-  created() {
+  mounted() {
     this.form = this.$form.createForm(this, {
-      name: "journalEditForm",
+      name: "booklEditForm",
       onFieldsChange: (_, changedFields) => {
         this.$emit("change", changedFields);
       },
       mapPropsToFields: () => {
+        
+        let authors = this.authors;
+        let authorsObject = {};
+        if (authors) {
+          authors.map((e, i) => {
+            let [author_name, author_mid_name, author_surname] = e.split(" ");
+            authorsObject[`${i}author_name`] = this.$form.createFormField({
+              ...author_name,
+              value: author_name
+            });
+            authorsObject[`${i}author_mid_name`] = this.$form.createFormField({
+              ...author_mid_name,
+              value: author_mid_name
+            });
+            authorsObject[`${i}author_surname`] = this.$form.createFormField({
+              ...author_surname,
+              value: author_surname
+            });
+          });
+        }
         return {
+          ...authorsObject,
           book_id: this.$form.createFormField({
             ...this.book_id,
             value: this.book_id
@@ -144,11 +167,8 @@ export default {
           bbk: this.$form.createFormField({
             ...this.bbk,
             value: this.bbk
-          })
+          }),
         };
-      },
-      onValuesChange(_, values) {
-        console.log(values);
       }
     });
   },

@@ -6,7 +6,7 @@
       <a-form
         :form="inputForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
@@ -30,15 +30,17 @@
             placeholder="Input return date"
           />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
           <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form-item>
       </a-form>
 
       <a-form
         :form="searchForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
@@ -74,8 +76,10 @@
           <a-date-picker v-decorator="['return_date']" placeholder="Input return date" />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
           <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
