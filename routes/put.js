@@ -64,20 +64,16 @@ module.exports = function (app, client) {
             to_be_deleted = cur_ids.filter(x => !req_ids.includes(x));
             to_be_added = req_ids.filter(x => !cur_ids.includes(x));
 
-            if (!_.isEmpty(to_be_deleted)) {
-                to_be_deleted.forEach(async (id) => {
-                    console.log("Delete this", id)
-                    await client.query('DELETE FROM author_book WHERE author_id = $1 AND book_id = $2', [id, req.body['book_id']]);
-                });
-            }
-            
+            to_be_deleted.forEach(async (id) => {
+                console.log("Delete this", id)
+                await client.query('DELETE FROM author_book WHERE author_id = $1 AND book_id = $2', [id, req.body['book_id']]);
+            });
             
             to_be_added.forEach(async (id) => {
                 console.log("Add this", id)
                 await client.query('INSERT INTO author_book (author_id, book_id) VALUES ($1, $2)', [id, req.body['book_id']]);
             });
             
-
             // Add updated values for book
             await client.query(`
                     UPDATE book 
