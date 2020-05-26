@@ -89,7 +89,7 @@
           </a-form-item>
 
           <a-icon
-            v-if="inputForm.getFieldValue('keys').length > 1"
+            v-if="inputForm.getFieldValue('keys').length > 0"
             class="dynamic-delete-button"
             type="minus-circle-o"
             @click="() => remove(k)"
