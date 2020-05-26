@@ -7,40 +7,83 @@
     @ok="() => { $emit('update') }"
   >
     <a-form layout="horizontal" :form="form">
-      <a-form-item label="Publisher ID">
-        <a-input-number disabled="disabled" v-decorator="['publisher_id']" />
+      <a-form-item label="Book ID">
+        <a-input-number disabled="disabled" v-decorator="['book_id']" />
       </a-form-item>
-      <a-form-item label="Name">
+
+      <a-form-item label="Book title">
+        <a-input
+          v-decorator="[
+                'book_title',
+                {
+                rules: [{ required: true, message: 'Please enter a book title!' }],
+                }
+            ]"
+          placeholder="Book title name"
+        />
+      </a-form-item>
+
+      <a-form-item label="ISBN">
+        <a-input
+          v-decorator="[
+                'isbn',
+                {
+                rules: [{ required: true, message: `Please enter book's isbn!` }],
+                }
+            ]"
+          placeholder="Input isbn"
+        />
+      </a-form-item>
+
+      <a-form-item label="ББК">
+        <a-input
+          v-decorator="['bbk']"
+          placeholder="Input bbk"
+        />
+      </a-form-item>
+
+      <a-form-item label="Publisher name">
         <a-input
           v-decorator="[
                 'publisher_name',
                 {
-                rules: [{ required: true, message: 'Please enter a name!' }],
+                rules: [{ required: true, message: `Please enter publihser name!` }],
                 }
             ]"
-          placeholder="Reader's name"
+          placeholder="Input publihser name"
         />
       </a-form-item>
-      <a-form-item label="City">
+
+       <a-form-item label="Publishing year">
         <a-input
           v-decorator="[
-                  'city_name',
-                  {
-                  rules: [{ required: true, message: 'Please enter a city!' }],
-                  }
-              ]"
-          placeholder="New York"
-        />
-      </a-form-item>
-      <a-form-item label="Email">
-        <a-input
-          v-decorator="[
-                'publisher_email',
+                'pub_year',
                 {
-                rules: [{ required: true, message: 'Please enter an email!' }],
+                rules: [{ required: true, message: `Please enter publihsing year!` }],
                 }
             ]"
-          placeholder="Publisher's email"
+          placeholder="Input publihsing year"
+        />
+      </a-form-item>
+
+     <a-form-item label="Author Surname:">
+        <a-input
+          v-decorator="[`${k}author_surname`, { rules: [{ required: true, message: 'Please input author surname' }] }]"
+          placeholder="Input author surname"
+        />
+      </a-form-item>
+
+      <a-form-item label="Author Name:">
+        <a-input
+          v-decorator="[`${k}author_name`, { rules: [{ required: true, message: 'Please input author name' }] }]"
+          placeholder="Input author name"
+        />
+      </a-form-item>
+
+      <a-form-item label="Author Middle Name:">
+        <a-input
+          v-decorator="[`${k}author_mid_name`, { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+          placeholder="Input author middle name"
         />
       </a-form-item>
     </a-form>
@@ -54,10 +97,13 @@ export default {
   name: "BookUpdateForm",
   props: [
     "visible",
+    "book_id",
+    "book_title",
     "publisher_name",
-    "city_name",
-    "publisher_id",
-    "publisher_email"
+    "bbk",
+    "isbn",
+    "pub_year",
+    "authors"
   ],
   components: {
     "a-modal": Modal,
@@ -75,21 +121,29 @@ export default {
       },
       mapPropsToFields: () => {
         return {
-          publisher_name: this.$form.createFormField({
-            ...this.publisher_id,
-            value: this.publisher_id
+          book_id: this.$form.createFormField({
+            ...this.book_id,
+            value: this.book_id
           }),
-          city_name: this.$form.createFormField({
-            ...this.city_name,
-            value: this.city_name
+          book_title: this.$form.createFormField({
+            ...this.book_title,
+            value: this.book_title
+          }),
+          isbn: this.$form.createFormField({
+            ...this.isbn,
+            value: this.isbn
+          }),
+          pub_year: this.$form.createFormField({
+            ...this.pub_year,
+            value: this.pub_year
           }),
           publisher_name: this.$form.createFormField({
             ...this.publisher_name,
             value: this.publisher_name
           }),
-          publisher_email: this.$form.createFormField({
-            ...this.publisher_email,
-            value: this.publisher_email
+          bbk: this.$form.createFormField({
+            ...this.bbk,
+            value: this.bbk
           })
         };
       },
@@ -104,19 +158,19 @@ export default {
     };
   },
   watch: {
-    publisher_id() {
+    book_id() {
       this.form.updateFields({
-        publisher_id: this.$form.createFormField({
-          ...this.publisher_id,
-          value: this.publisher_id
+        book_id: this.$form.createFormField({
+          ...this.book_id,
+          value: this.book_id
         })
       });
     },
-    city_name() {
+    book_title() {
       this.form.updateFields({
-        city_name: this.$form.createFormField({
-          ...this.city_name,
-          value: this.city_name
+        book_title: this.$form.createFormField({
+          ...this.book_title,
+          value: this.book_title
         })
       });
     },
@@ -128,11 +182,27 @@ export default {
         })
       });
     },
-    publisher_email() {
+    isbn() {
       this.form.updateFields({
-        publisher_email: this.$form.createFormField({
-          ...this.publisher_email,
-          value: this.publisher_email
+        isbn: this.$form.createFormField({
+          ...this.isbn,
+          value: this.isbn
+        })
+      });
+    },
+    pub_year() {
+      this.form.updateFields({
+        pub_year: this.$form.createFormField({
+          ...this.pub_year,
+          value: this.pub_year
+        })
+      });
+    },
+    bbk() {
+      this.form.updateFields({
+        bbk: this.$form.createFormField({
+          ...this.bbk,
+          value: this.bbk
         })
       });
     }
