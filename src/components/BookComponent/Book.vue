@@ -6,7 +6,7 @@
       <a-form
         :form="inputForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
@@ -42,31 +42,37 @@
             placeholder="Input book"
           />
         </a-form-item>
+        <h3>Author 1:</h3>
         <a-form-item label="Author Surname:">
           <a-input
-            v-decorator="['0author_surname', { rules: [{ required: true, message: 'Please input author surname' }] }]"
+            v-decorator="['1author_surname', { rules: [{ required: true, message: 'Please input author surname' }] }]"
             placeholder="Input author surname"
           />
         </a-form-item>
 
         <a-form-item label="Author Name:">
           <a-input
-            v-decorator="['0author_name', { rules: [{ required: true, message: 'Please input author name' }] }]"
+            v-decorator="['1author_name', { rules: [{ required: true, message: 'Please input author name' }] }]"
             placeholder="Input author name"
           />
         </a-form-item>
 
         <a-form-item label="Author Middle Name:">
           <a-input
-            v-decorator="['0author_mid_name', { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+            v-decorator="['1author_mid_name', { rules: [{ required: true, message: 'Please input author middle name' }] }]"
             placeholder="Input author middle name"
           />
         </a-form-item>
-        <a-form-item
-          v-for="(k, index) in inputForm.getFieldValue('keys')"
-          :key="k"
-          :required="false"
-        >
+        <a-form-item v-for="k in inputForm.getFieldValue('keys')" :key="k" :required="false">
+          <div class="author-label">
+            <a-icon
+              v-if="inputForm.getFieldValue('keys').length > 0"
+              class="dynamic-delete-button"
+              type="minus-circle-o"
+              @click="() => remove(k)"
+            />
+            <h3>Author {{k}}:</h3>
+          </div>
           <a-form-item label="Author Surname:">
             <a-input
               v-decorator="[`${k}author_surname`, { rules: [{ required: true, message: 'Please input author surname' }] }]"
@@ -87,30 +93,21 @@
               placeholder="Input author middle name"
             />
           </a-form-item>
-
-          <a-icon
-            v-if="inputForm.getFieldValue('keys').length > 0"
-            class="dynamic-delete-button"
-            type="minus-circle-o"
-            @click="() => remove(k)"
-          />
-          <!-- :disabled="inputForm.getFieldValue('keys').length === 1" -->
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="dashed" @click="add">
-            <a-icon type="plus" />Add author
-          </a-button>
-        </a-form-item>
-
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="dashed" @click="add">
+              <a-icon type="plus" />Add author
+            </a-button>
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form-item>
       </a-form>
 
       <a-form
         :form="searchForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
@@ -125,7 +122,6 @@
         <a-form-item label="Bbk:">
           <a-input v-decorator="['bbk']" placeholder="Input bbk" />
         </a-form-item>
-
         <a-form-item label="Author name:">
           <a-input v-decorator="['author_name']" placeholder="Input author name" />
         </a-form-item>
@@ -137,8 +133,10 @@
         <a-form-item label="Author surname:">
           <a-input v-decorator="['author_surname']" placeholder="Input author surname" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -152,7 +150,7 @@
     />
     <a-table :columns="columns" :data-source="data" rowKey="book_id">
       <span slot="authors" slot-scope="text, record">
-        <span v-for="item in record.authors">
+        <span v-for="(item, index) in record.authors" :key="index">
           <p>{{ item }}</p>
         </span>
       </span>
@@ -183,7 +181,7 @@ import {
 import { bookColumns as columns, dateFormat } from "@/constants.js";
 import BookUpdateForm from "./BookUpdateForm.vue";
 import _ from "lodash";
-let id = 1;
+let id = 2;
 
 export default {
   name: "BookSearch",
@@ -250,7 +248,7 @@ export default {
       this.inputForm.validateFields((err, values) => {
         if (!err) {
           let { keys } = values;
-          keys = [0, ...keys];
+          keys = [1, ...keys];
           const key = Object.keys(values);
           let authors = [];
 
@@ -263,7 +261,7 @@ export default {
             }
           }
           let { book_title, bbk, pub_year, publisher_name, isbn } = values;
-          let result = {
+          const data = {
             book_title,
             isbn,
             bbk,
@@ -271,9 +269,10 @@ export default {
             pub_year,
             authors: { ...authors }
           };
+
           (async () =>
             axios
-              .post("http://localhost:5000/books", result)
+              .post("http://localhost:5000/books", data)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -306,13 +305,32 @@ export default {
     handleUpdateSubmit() {
       const form = this.$refs.editForm.form;
       form.validateFields((err, values) => {
+        let { keys } = values;
+        const key = Object.keys(values);
+        let authors = [];
+     console.log(values)
+        for (let i in keys) {
+          authors[`author${i}`] = {};
+          let filtered = key.filter(e => e.toString().includes(`${i}`));
+          let arr = [];
+          for (let j of filtered) {
+            authors[`author${i}`][j.toString().slice(1)] = values[j];
+          }
+        }
+        let { book_title, bbk, pub_year, publisher_name, isbn } = values;
+        const data = {
+          book_title,
+          isbn,
+          bbk,
+          publisher_name,
+          pub_year,
+          authors: { ...authors }
+        };
+   
         if (!err) {
           (async () =>
             await axios
-              .put(
-                `http://localhost:5000/books/${values.publisher_id}`,
-                Object.values(values)
-              )
+              .put(`http://localhost:5000/books/${values.publisher_id}`, data)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -414,3 +432,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.author-label {
+  display: flex;
+  flex-direction: row;
+}
+
+.dynamic-delete-button {
+  line-height: 3;
+}
+</style>
