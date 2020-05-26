@@ -44,7 +44,7 @@ module.exports = function (app, client) {
                 ON author.author_id = author_book.author_id
             `
         if (!_.isEmpty(req.query)) {
-            query += ' AND '
+            query += ' WHERE '
             for (key in req.query) {
                 query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `;
             };

@@ -49,7 +49,9 @@ module.exports = function (app, client) {
         if (!book_exists) {
             for (key in req.body['authors']) {
                 let author = req.body['authors'][key];
-                const { rows } =  await client.query(`SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3`, [author['author_name'],author['author_surname'], author['author_mid_name']]);
+                console.log(author['author_name'])
+                const { rows } =  await client.query('SELECT author_id FROM author WHERE author_name=$1 AND author_surname=$2 AND author_mid_name=$3', [author['author_name'],author['author_surname'], author['author_mid_name']]);
+                console.log(rows)
                 if (_.isEmpty(rows)) {
                     res.status(500).send();
                     author_ids = []
