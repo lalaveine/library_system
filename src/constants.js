@@ -91,6 +91,16 @@ export const bookColumns = [
     key: "bbk"
   },
   {
+    title: "Publishing year",
+    dataIndex: "pub_year",
+    key: "pub_year"
+  },
+  {
+    title: "Publisher name",
+    dataIndex: "publisher_name",
+    key: "publisher_name"
+  },
+  {
     title: "Actions",
     dataIndex: "actions",
     key: "actions",

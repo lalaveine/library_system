@@ -29,9 +29,11 @@ module.exports = function (app, client) {
                 book.book_title, 
                 book.isbn,
                 book.bbk,
+                book.pub_year,
+                (SELECT publisher_name FROM publisher WHERE publisher.publisher_id = book.publisher_id) AS publisher_name,
                 (SELECT COUNT(*) FROM book_edition WHERE book_edition.book_id = book.book_id) AS book_count,
-                array_agg(author.author_id) as author_ids, 
-                array_agg(author.author_name || ' ' || author.author_mid_name || ' ' || author.author_surname) as authors
+                array_agg(author.author_id) AS author_ids, 
+                array_agg(author.author_name || ' ' || author.author_mid_name || ' ' || author.author_surname) AS authors
             FROM
                 book
             INNER JOIN
@@ -42,7 +44,7 @@ module.exports = function (app, client) {
                 ON author.author_id = author_book.author_id
             `
         if (!_.isEmpty(req.query)) {
-            query += ' WHERE '
+            query += ' AND '
             for (key in req.query) {
                 query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `;
             };
