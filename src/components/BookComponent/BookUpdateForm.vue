@@ -75,7 +75,7 @@ export default {
       },
       mapPropsToFields: () => {
         return {
-          publisher_id: this.$form.createFormField({
+          publisher_name: this.$form.createFormField({
             ...this.publisher_id,
             value: this.publisher_id
           }),

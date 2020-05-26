@@ -51,7 +51,7 @@ module.exports = function (app, client) {
         query += 'GROUP BY book.book_id'
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
-            res.status(404).send()
+            res.status(404).send("Book is not found.")
         } else {
             res.send(rows);    
         }
