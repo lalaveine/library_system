@@ -33,7 +33,7 @@ module.exports = function (app, client) {
     });
 
     app.delete('/editions/:id', async (req, res) => {
-        await client.query('DELETE FROM book_edition WHERE edition.edition_id=$1', [req.params.id])
+        await client.query('DELETE FROM book_edition WHERE edition_id=$1', [req.params.id])
             .then(() => { res.status(200).send() })
             .catch((err) => {
                 res.status(500).send(err)

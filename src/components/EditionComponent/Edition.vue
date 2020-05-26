@@ -235,12 +235,12 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/publishers/${id}`)
+            .delete(`http://localhost:5000/editions/${id}`)
             .then(res =>
                 openNotificationWithIcon(
                   "success",
                   "Success",
-                  "Publisher is deleted!"
+                  "Edition is deleted!"
                 )
               )
               .catch(err =>
