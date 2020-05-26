@@ -142,7 +142,7 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "http://localhost:5000/readers?";
+          (async () => { let link = "http://localhost:5000/readers?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -159,6 +159,7 @@ export default {
             );
           const { data } = response;
           this.data = data;
+           })();
         }
       });
     },

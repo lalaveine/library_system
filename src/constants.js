@@ -147,11 +147,6 @@ export const readerColumns = [
 
 export const authorColumns = [
   {
-    title: "ID",
-    dataIndex: "author_id",
-    key: "author_id",
-  },
-  {
     title: "Name",
     dataIndex: "author_name",
     key: "author_name",

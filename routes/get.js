@@ -122,7 +122,11 @@ module.exports = function (app, client) {
             query = query.slice(0, -4);
         };
         const { rows } = await client.query(query);
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send("City is not found.")
+        } else {
+            res.send(rows);    
+        }
     });
 
     app.get('/libraries', async (req, res) => {
@@ -135,7 +139,11 @@ module.exports = function (app, client) {
             query = query.slice(0, -4);
         };
         const { rows } = await client.query(query);
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send("Library is not found.")
+        } else {
+            res.send(rows);    
+        }
     });
 
     app.get('/publishers', async (req, res) => {
@@ -143,27 +151,30 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
-            };
-            query = query.slice(0, -4);
-        };
-        const { rows } = await client.query(query);
-        res.send(rows);
-    });
-
-    app.get('/authors', async (req, res) => {
-
-        let query = 'SELECT * FROM author ';
-        if (!_.isEmpty(req.query)) {
-            query += ' WHERE '
-            for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                query += `${key}='${req.query[key]}' AND `
             };
             query = query.slice(0, -4);
         };
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
-            res.status(404).send()
+            res.status(404).send("Publisher is not found.")
+        } else {
+            res.send(rows);    
+        }
+    });
+
+    app.get('/authors', async (req, res) => {
+        let query = 'SELECT * FROM author ';
+        if (!_.isEmpty(req.query)) {
+            query += ' WHERE '
+            for (key in req.query) {
+                query += `${key}='${req.query[key]}' AND `
+            };
+            query = query.slice(0, -4);
+        };
+        const { rows } = await client.query(query);
+        if (_.isEmpty(rows)) {
+            res.status(404).send("Author is not found.")
         } else {
             res.send(rows);    
         }
