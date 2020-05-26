@@ -10,52 +10,25 @@
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
-        <a-form-item label="publisher year:">
+
+        <a-form-item label="Book Title:">
           <a-input
-            v-decorator="['pub_year', { rules: [{ required: true, message: 'Please input publisher`s year' }] }]"
-            placeholder="Input publisher`s year"
+            v-decorator="['book_title', { rules: [{ required: true, message: 'Please input book title' }] }]"
+            placeholder="Input book title"
           />
         </a-form-item>
 
-        <a-form-item label="publisher city:">
+        <a-form-item label="Library:">
           <a-input
-            v-decorator="['pub_city', { rules: [{ required: true, message: 'Please input publisher city' }] }]"
-            placeholder="Input publisher city"
+            v-decorator="['library_id', { rules: [{ required: true, message: 'Please input library name' }] }]"
+            placeholder="library"
           />
         </a-form-item>
 
-        <a-form-item label="library:">
-          <a-input
-            v-decorator="['library_id', { rules: [{ required: true, message: 'Please input reader`s surname' }] }]"
-            placeholder="Input reader`s surname"
-          />
-        </a-form-item>
-
-        <a-form-item label="Publisher ID:">
-          <a-input
-            v-decorator="['publisher_id', { rules: [{ required: true, message: 'Please input edition`s ID' }] }]"
-            placeholder="Input edition`s ID"
-          />
-        </a-form-item>
-
-        <a-form-item label="Take date:">
-          <a-date-picker
-            v-decorator="['take_date', { rules: [{ required: true, message: 'Please input take date' }] }]"
-            placeholder="Input take date"
-          />
-        </a-form-item>
-
-        <a-form-item label="Return date:">
-          <a-date-picker
-            v-decorator="['return_date', { rules: [{ required: true, message: 'Please input return date' }] }]"
-            placeholder="Input return date"
-          />
-        </a-form-item>
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
           <a-button type="primary" html-type="submit">Submit</a-button>
         </a-form-item>
       </a-form>
-      <hr />
 
       <a-form
         :form="searchForm"
@@ -64,28 +37,27 @@
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
-        <a-form-item label="publisher year:">
-          <a-input v-decorator="['pub_year']" placeholder="Input publisher year:" />
+
+        <a-form-item label="Edition ID:">
+          <a-input-number v-decorator="['edition_id']" placeholder="Input edition id" />
         </a-form-item>
 
-        <a-form-item label="publisher city:">
-          <a-input v-decorator="['pub_city']" placeholder="Input publisher city" />
+         <a-form-item label="Book Title:">
+          <a-input
+            v-decorator="['book-book_title']"
+            placeholder="Input book title"
+          />
         </a-form-item>
 
-        <a-form-item label="library:">
-          <a-input v-decorator="['library_id']" placeholder="Input library" />
+        <a-form-item label="Library:">
+          <a-input
+            v-decorator="['library-library_name']"
+            placeholder="library"
+          />
         </a-form-item>
 
-        <a-form-item label="Tittle:">
-          <a-input v-decorator="['tittle']" placeholder="Input tittle" />
-        </a-form-item>
-
-        <a-form-item label="Take date:">
-          <a-date-picker v-decorator="['take_date']" placeholder="Input take date" />
-        </a-form-item>
-
-        <a-form-item label="Return date:">
-          <a-date-picker v-decorator="['return_date']" placeholder="Input return date" />
+        <a-form-item label="Taken">
+          <a-checkbox v-decorator="['taken']" :defaultChecked="false"/>
         </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -93,10 +65,21 @@
         </a-form-item>
       </a-form>
     </div>
+    <edition-update-form
+      ref="editForm"
+      :visible="visible"
+      v-bind="fields"
+      @cancel="handleCancel"
+      @update="handleUpdateSubmit"
+      @change="handleFormChange"
+    />
     <a-table :columns="columns" :data-source="data" rowKey="edition_id">
-       <span class="action-buttons" slot="action" slot-scope="text, record" >
-        <a-button type="danger" @click="onDelete(record.entry_id)">Delete</a-button>
-        <a-button type="primary">Edit</a-button>
+        <span slot="taken" slot-scope="text, record">
+          <a-checkbox :checked="record.taken" disabled/>
+        </span>
+       <span class="action-buttons" slot="action" slot-scope="text, record">
+        <a-button type="danger" @click="showDeleteConfirm(record.edition_id, getData, openNotificationWithIcon)">Delete</a-button>
+        <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
   </div>
@@ -105,18 +88,30 @@
 <script>
 import axios from "axios";
 
-import { Button, Form, Input, Table, DatePicker } from "ant-design-vue";
+import {
+  Button,
+  Form,
+  Input,
+  Table,
+  Modal,
+  InputNumber,
+  Checkbox,
+  notification
+} from "ant-design-vue";
 import { editionsColumns as columns, dateFormat } from "@/constants.js";
+import EditionUpdateForm from "./EditionUpdateForm.vue";
 
 export default {
-  name: "BookSearch",
+  name: "EditionSearch",
   components: {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
+    "a-input-number": InputNumber,
     "a-form-item": Form.Item,
     "a-table": Table,
-    "a-date-picker": DatePicker
+    "a-checkbox": Checkbox,
+    "edition-update-form": EditionUpdateForm
   },
   data() {
     return {
@@ -125,24 +120,31 @@ export default {
       inputForm: this.$form.createForm(this, { name: "editionInput" }),
       data: [],
       columns,
+      visible: false,
       isButtonDisabled: true,
+      fields: {},
       dateFormat
     };
   },
   methods: {
+    async getData() {
+      await axios.get(`http://localhost:5000/editions`).then(response => {
+        const { data } = response;
+        this.data = data;
+      });
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          let link = "http://localhost:5000/editions";
+          let link = "http://localhost:5000/editions?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
             }
           }
           link = link.slice(0, -1);
-
           const response = await axios.get(link, values);
           const { data } = response;
           this.data = data;
@@ -153,8 +155,101 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/edition", Object.values(values));
-          console.log(values);
+          (async () =>
+          await axios.post("http://localhost:5000/editions", Object.values(values))
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Publisher is added!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => {
+                this.getData();
+              }))();
+              this.inputForm.resetFields();
+        }
+      });
+    },
+     showUpdateModal(record) {
+      this.visible = true;
+      this.fields = { ...record };
+    },
+    handleCancel() {
+      this.visible = false;
+      this.fields = {};
+    },
+    handleUpdateSubmit() {
+      const form = this.$refs.editForm.form;
+      form.validateFields((err, values) => {
+        if (!err) {
+          (async () =>
+            await axios
+              .put(
+                `http://localhost:5000/editions/${values.edition_id}`,
+                Object.values(values)
+              )
+              .then(res =>
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Edition is updated!"
+                )
+              )
+              .catch(err =>
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
+              .then(() => this.getData()))();
+        }
+        form.resetFields();
+        this.visible = false;
+        this.fields = {};
+      });
+    },
+    openNotificationWithIcon(type, message, description) {
+      notification[type]({
+        message: message,
+        description: description
+      });
+    },
+    handleFormChange(changedFields) {
+      this.fields = { ...this.fields, changedFields };
+    },
+    async showDeleteConfirm(id, getData, openNotificationWithIcon) {
+      Modal.confirm({
+        title: "Are you sure delete this task?",
+        content: "Some descriptions",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        async onOk() {
+          await axios
+            .delete(`http://localhost:5000/publishers/${id}`)
+            .then(res =>
+                openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Publisher is deleted!"
+                )
+              )
+              .catch(err =>
+                openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              ).then(() => getData());
         }
       });
     },
@@ -173,11 +268,7 @@ export default {
     }
   },
   async mounted() {
-    await axios.get(`http://localhost:5000/editions`).then(response => {
-      const { data } = response;
-      this.data = data;
-      console.log(this.data);
-    });
+    await this.getData();
   }
 };
 </script>

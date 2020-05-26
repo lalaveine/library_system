@@ -58,17 +58,34 @@ module.exports = function (app, client) {
     });
 
     app.get('/editions', async (req, res) => {
-        console.log(await client.query('SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id'))
-        let query = 'SELECT edition_id, city_name, pub_year, publisher_name , book_title, library_name as library from book_edition, library, publisher, book, city WHERE publisher.publisher_id = book_edition.publisher_id AND  library.library_id = book_edition.library_id AND  book.book_id = book_edition.book_id and city.city_id = (SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id)';
+        // console.log(await client.query('SELECT publisher.city_id from publisher, book_edition WHERE publisher.publisher_id = book_edition.publisher_id'))
+        let query = `
+            SELECT 
+                edition_id
+                , book_title
+                , library_name
+                , taken
+            FROM book_edition
+            INNER JOIN
+                book
+                ON book_edition.book_id = book.book_id
+            INNER JOIN
+                library
+                ON book_edition.library_id = library.library_id`;
         if (!_.isEmpty(req.query)) {
-            query += ' AND '
+            query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
             };
             query = query.slice(0, -4);
         };
+        console.log(query)
         const { rows } = await client.query(query);
-        res.send(rows);
+        if (_.isEmpty(rows)) {
+            res.status(404).send("Edition is not found.")
+        } else {
+            res.send(rows);    
+        }
     });
 
     app.get('/journal', async (req, res) => { 

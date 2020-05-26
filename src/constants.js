@@ -195,33 +195,21 @@ export const editionsColumns = [
     key: "edition_id",
   },
   {
-    title: "publisher year",
-    dataIndex: "pub_year",
-    key: "pub_year",
-  },
-
-  {
-    title: "publisher city",
-    dataIndex: "pub_city",
-    key: "pub_city",
-  },
-
-  {
-    title: "Publisher",
-    dataIndex: "publisher",
-    key: "publisher",
-  },
-
-  {
-    title: "library",
-    dataIndex: "library",
-    key: "library",
-  },
-  {
     title: "Title",
-    dataIndex: "title",
-    key: "title",
+    dataIndex: "book_title",
+    key: "book_title",
 
+  },
+  {
+    title: "Library",
+    dataIndex: "library_name",
+    key: "library_name",
+  },
+  {
+    title: "Taken",
+    dataIndex: "taken",
+    key: "taken",
+    scopedSlots: { customRender: 'taken' }
   },
   {
     title: "Actions",
