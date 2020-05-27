@@ -24,38 +24,42 @@ module.exports = function (app, client) {
 
     app.get('/books', async (req, res) => {
         let query = `
-            SELECT
-                book.book_id, 
-                book.book_title, 
-                book.isbn,
-                book.bbk,
-                book.pub_year,
-                (SELECT publisher_name FROM publisher WHERE publisher.publisher_id = book.publisher_id) AS publisher_name,
-                (SELECT COUNT(*) FROM book_edition WHERE book_edition.book_id = book.book_id) AS book_count,
-                array_agg(author.author_id) AS author_ids, 
-                array_agg(author.author_name || ' ' || author.author_mid_name || ' ' || author.author_surname) AS authors
-            FROM
-                book
-            INNER JOIN
-                author_book
-                ON book.book_id = author_book.book_id
-            INNER JOIN
-                author
-                ON author.author_id = author_book.author_id
-            `
+        SELECT
+        book.book_id,
+        book.book_title,
+        book.isbn,
+        book.bbk,
+        book.pub_year,
+        array_agg(distinct publisher_name) AS publisher_name,
+        (SELECT COUNT(*) FROM book_edition WHERE book_edition.book_id = book.book_id) AS book_count,
+        array_agg(author.author_id) AS author_ids,
+        array_agg(author.author_name || ' ' || author.author_mid_name || ' ' || author.author_surname) AS authors
+        FROM
+            book
+        INNER JOIN 
+            publisher 
+            ON publisher.publisher_id = book.publisher_id
+        INNER JOIN
+            author_book
+            ON book.book_id = author_book.book_id
+        INNER JOIN
+            author
+            ON author.author_id = author_book.author_id
+        `
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
                 if (key == 'book-book_id') {
                     query += `${key.replace('-','.')}=${req.query[key]} AND `
                 } else {
-                    query += `${key}='${req.query[key]}' AND `
+                    query += `${key.replace('-','.')}='${req.query[key]}' AND `
                 }
                 // query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `;
             };
             query = query.slice(0, -4);
         };
         query += 'GROUP BY book.book_id'
+        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Book is not found.")

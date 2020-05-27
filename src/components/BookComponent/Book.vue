@@ -129,7 +129,7 @@
         </a-form-item>
         <a-form-item label="Publisher name:">
           <a-input
-            v-decorator="['publisher_name']"
+            v-decorator="['publisher-publisher_name']"
             placeholder="Input publisher name"
           />
         </a-form-item>
@@ -229,7 +229,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`/books`).then(response => {
+      await axios.get(`http://localhost:5000/books`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -242,7 +242,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          (async () => { let link = "/books?";
+          (async () => { let link = "http://localhost:5000/books?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
