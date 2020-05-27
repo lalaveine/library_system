@@ -171,7 +171,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/journal`).then(response => {
+      await axios.get(`/journal`).then(response => {
         const { data } = response;
         this.data = data;
         console.log(data)
@@ -185,7 +185,7 @@ export default {
         }
       
         if (!err) {
-          (async () => { let link = "http://localhost:5000/journal?";
+          (async () => { let link = "/journal?";
           
           if (values['not_returned']) {
             values['returned'] = values['not_returned'];
