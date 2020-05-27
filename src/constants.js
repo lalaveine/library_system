@@ -2,7 +2,7 @@ export const dateFormat = 'MMMM Do YYYY';
 
 export const journalColumns = [
   {
-    title: "ID",
+    title: "Entry ID",
     dataIndex: "entry_id",
     key: "entry_id"
   },
@@ -60,7 +60,7 @@ export const journalColumns = [
 
 export const bookColumns = [
   {
-    title: "Book Id",
+    title: "Book ID",
     dataIndex: "book_id",
     key: "name",
   },
@@ -111,7 +111,7 @@ export const bookColumns = [
 
 export const readerColumns = [
   {
-    title: "ID",
+    title: "Reader ID",
     dataIndex: "reader_id",
     key: "reader_id",
   },
@@ -172,12 +172,6 @@ export const authorColumns = [
 
 export const cityColumns = [
   {
-    title: "ID",
-    dataIndex: "city_id",
-    key: "reader_id",
-    width: '33%',
-  },
-  {
     title: "Name",
     dataIndex: "city_name",
     key: "city_name",
@@ -195,7 +189,7 @@ export const cityColumns = [
 
 export const editionsColumns = [
   {
-    title: "ID",
+    title: "Edition ID",
     dataIndex: "edition_id",
     key: "edition_id",
   },
@@ -227,18 +221,13 @@ export const editionsColumns = [
 
 export const libraryColumns = [
   {
-    title: "ID",
-    dataIndex: "library_id",
-    key: "library_id",
-  },
-  {
-    title: "name",
+    title: "Name",
     dataIndex: "library_name",
     key: "library_name",
   },
 
   {
-    title: "address",
+    title: "Address",
     dataIndex: "library_address",
     key: "library_address",
   },
@@ -248,7 +237,7 @@ export const libraryColumns = [
     key: "city_name",
   },
   {
-    title: "email",
+    title: "E-mail",
     dataIndex: "library_email",
     key: "library_email",
   },
@@ -263,11 +252,6 @@ export const libraryColumns = [
 
 export const publisherColumns = [
   {
-    title: "ID",
-    dataIndex: "publisher_id",
-    key: "publisher_id",
-  },
-  {
     title: "Name",
     dataIndex: "publisher_name",
     key: "publisher_name",
@@ -279,7 +263,7 @@ export const publisherColumns = [
   },
 
   {
-    title: "Email",
+    title: "E-mail",
     dataIndex: "publisher_email",
     key: "publisher_email",
   },
