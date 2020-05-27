@@ -9,21 +9,34 @@ module.exports = function (app, client) {
     });
 
     app.put('/journal/:id', async (req, res) => {
-        console.log(req.body)
         await client.query(`
             UPDATE journal 
             SET reader_id = 
                 (
                     SELECT 
-                        reader_id from reader WHERE reader_name = $2 
+                        reader_id from reader WHERE reader_name = $1 
                     AND 
-                        reader_mid_name = $3 AND reader_surname = $4
+                        reader_mid_name = $2 AND reader_surname = $3
                 )
-            , edition_id = $5
-            , take_date = $6
-            , return_date = $7 
-            WHERE entry_id=$1`, req.body)
-            .then(() => { res.status(200).send() })
+            , edition_id = $4
+            , take_date = $5
+            , return_date = $6
+            , returned = $7
+            WHERE entry_id=$8`
+            , [
+                req.body['reader_name']
+                , req.body['reader_mid_name']
+                , req.body['reader_surname']
+                , req.body['edition_id']
+                , req.body['take_date']
+                , req.body['return_date']
+                , req.body['returned']
+                , req.body['entry_id']
+            ])
+            .then(async () => { 
+                await client.query(`UPDATE book_edition SET taken = $1 WHERE edition_id=$2`, [!req.body['returned'], req.body['edition_id']]); 
+                res.status(200).send() 
+            })
             .catch((err) => {
                 console.log(err)
                 res.status(500).send(err);

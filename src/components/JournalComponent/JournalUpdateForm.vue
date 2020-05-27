@@ -82,17 +82,24 @@
             ]"
         />
       </a-form-item>
+      <a-form-item label="Returned">
+        <a-checkbox 
+            v-decorator="['returned']" 
+            :defaultChecked="returned"
+          />
+      </a-form-item>
     </a-form>
   </a-modal>
 </template>
 
 <script>
-import { Form, Input, Modal, DatePicker, InputNumber } from "ant-design-vue";
+import { Form, Input, Modal, DatePicker, Checkbox, InputNumber } from "ant-design-vue";
 
 export default {
   name: "JournalUpdateForm",
   props: [
     "visible",
+    "returned",
     "reader_name",
     "reader_mid_name",
     "reader_surname",
@@ -109,6 +116,7 @@ export default {
     "a-form-item": Form.Item,
     "a-input": Input,
     "a-date-picker": DatePicker,
+    "a-checkbox": Checkbox,
     "a-input-number": InputNumber
   },
   created() {
@@ -146,6 +154,10 @@ export default {
           return_date: this.$form.createFormField({
             ...this.return_date,
             value: this.return_date
+          }),
+          returned: this.$form.createFormField({
+            ...this.returned,
+            value: this.returned
           })
         };
       },
@@ -213,6 +225,14 @@ export default {
         return_date: this.$form.createFormField({
           ...this.return_date,
           value: this.return_date
+        })
+      });
+    },
+    returned() {
+      this.form.updateFields({
+        returned: this.$form.createFormField({
+          ...this.returned,
+          value: this.returned
         })
       });
     }
