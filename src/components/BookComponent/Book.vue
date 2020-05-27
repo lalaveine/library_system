@@ -63,7 +63,7 @@
             placeholder="Input author middle name"
           />
         </a-form-item>
-        <a-form-item v-for="k in inputForm.getFieldValue('keys')" :key="k" :required="false">
+        <a-form-item v-for="(k, index) in inputForm.getFieldValue('keys')" :key="k" :required="false">
           <div class="author-label">
             <a-icon
               v-if="inputForm.getFieldValue('keys').length > 0"
@@ -71,7 +71,7 @@
               type="minus-circle-o"
               @click="() => remove(k)"
             />
-            <h3>Author {{k}}:</h3>
+            <h3>Author {{index + 2}}:</h3>
           </div>
           <a-form-item label="Author Surname:">
             <a-input
@@ -217,7 +217,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`/books`).then(response => {
+      await axios.get(`http://localhost:5000/books`).then(response => {
         const { data } = response;
         this.data = data;
       });
