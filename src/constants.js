@@ -59,6 +59,13 @@ export const journalColumns = [
     scopedSlots: { customRender: 'return_date' }
   },
   {
+    title: "Returned",
+    dataIndex: "returned",
+    key: "returned",
+    align: "center",
+    scopedSlots: { customRender: 'returned' }
+  },
+  {
     title: "Actions",
     dataIndex: "actions",
     key: "actions",

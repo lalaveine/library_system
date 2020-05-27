@@ -109,6 +109,9 @@
       <span slot="return_date" slot-scope="text, record">
         <span v-html="dateCustomRender(record.return_date)"></span>
       </span>
+      <span slot="returned" slot-scope="text, record">
+        <a-checkbox :checked="record.returned" disabled />
+      </span>
     </a-table>
     <!-- End Table Custom Render -->
   </div>
