@@ -190,7 +190,7 @@ export default {
           (async () => { let link = "/journal?";
           
           if (values['not_returned']) {
-            values['returned'] = values['not_returned'];
+            values['returned'] = false;
             delete values['not_returned'];
           }
           
