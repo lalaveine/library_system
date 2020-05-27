@@ -63,6 +63,7 @@ export const journalColumns = [
     dataIndex: "actions",
     key: "actions",
     align: "center",
+    width: '20px',
     scopedSlots: { customRender: 'action' }
   }
 ];
@@ -165,6 +166,7 @@ export const readerColumns = [
     dataIndex: "actions",
     key: "actions",
     align: "center",
+    width: '135px',
     scopedSlots: { customRender: 'action' }
   }
 ];
@@ -194,6 +196,7 @@ export const authorColumns = [
     dataIndex: "actions",
     key: "actions",
     align: "center",
+    width: '20px',
     scopedSlots: { customRender: 'action' }
   }
 ];
@@ -211,7 +214,7 @@ export const cityColumns = [
     title: "Actions",
     dataIndex: "actions",
     key: "actions",
-    width: '33%',
+    width: '2%',
     align: "center",
     scopedSlots: { customRender: 'action' }
   }
@@ -250,6 +253,7 @@ export const editionsColumns = [
     dataIndex: "actions",
     key: "actions",
     align: "center",
+    width: '20px',
     scopedSlots: { customRender: 'action' }
   }
 ];
@@ -286,6 +290,7 @@ export const libraryColumns = [
     dataIndex: "actions",
     key: "actions",
     align: "center",
+    width: '20px',
     scopedSlots: { customRender: 'action' }
   }
 ];
@@ -316,6 +321,7 @@ export const publisherColumns = [
     dataIndex: "actions",
     key: "actions",
     align: "center",
+    width: '80px',
     scopedSlots: { customRender: 'action' }
   }
 ];
