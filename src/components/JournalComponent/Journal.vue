@@ -221,6 +221,10 @@ export default {
         }
       });
     },
+    resetSearch() {
+      this.searchForm.resetFields();
+      this.getData();
+    },
     showUpdateModal(record) {
       this.visible = true;
       this.fields = { ...record };

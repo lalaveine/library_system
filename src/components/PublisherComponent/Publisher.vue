@@ -265,6 +265,10 @@ export default {
         }
       });
     },
+    resetSearch() {
+      this.searchForm.resetFields();
+      this.getData();
+    },
     getButtonDisabled() {
       const fields = this.searchForm.getFieldsValue();
       const keys = Object.keys(this.searchForm.getFieldsValue());
