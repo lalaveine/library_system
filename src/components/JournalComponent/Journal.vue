@@ -180,27 +180,25 @@ export default {
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
-        if (values["take_date"]) {
-          values["take_date"] = moment(new Date(values["take_date"]).setHours(12, 0, 0)).toISOString();
-        }
-        if (values["return_date"]) {
-          values["return_date"] = moment(new Date(values["return_date"]).setHours(12, 0, 0)).toISOString();
-        }
         if (!err) {
           (async () => { let link = "/journal?";
-          
+          if (values["take_date"]) {
+            values["take_date"] = moment(new Date(values["take_date"]).setHours(12, 0, 0)).toISOString();
+          }
+          if (values["return_date"]) {
+            values["return_date"] = moment(new Date(values["return_date"]).setHours(12, 0, 0)).toISOString();
+          }
           if (values['not_returned']) {
             values['returned'] = false;
             delete values['not_returned'];
           }
           
           for (let key in values) {
-            if (values[key]) {
+            if (values[key] != undefined) {
               link += `${key}=${values[key]}&`;
             }
           }
           link = link.slice(0, -1);
-          console.log(values)
           const response = await axios.get(link, values).catch(err => {
             this.openNotificationWithIcon(
               "warning",
