@@ -11,14 +11,14 @@
       >
         <h3>Input</h3>
         <a-form-item label="Reader ID:">
-          <a-input-number
+          <a-input-number :min="0"
             v-decorator="['reader_id', { rules: [{ required: true, message: 'Please input reader`s ID' }] }]"
             placeholder="Input reader`s ID"
           />
         </a-form-item>
 
         <a-form-item label="Edition ID:">
-          <a-input-number
+          <a-input-number :min="0"
             v-decorator="['edition_id', { rules: [{ required: true, message: 'Please input edition`s ID' }] }]"
             placeholder="Input edition`s ID"
           />
@@ -45,7 +45,7 @@
       >
         <h3>Search</h3>
         <a-form-item label="Reader ID:">
-          <a-input-number v-decorator="['reader-reader_id']" placeholder="Input reader id" />
+          <a-input-number :min="0" v-decorator="['reader-reader_id']" placeholder="Input reader id" />
         </a-form-item>
 
         <a-form-item label="Name:">
@@ -61,7 +61,7 @@
         </a-form-item>
 
         <a-form-item label="Edition ID:">
-          <a-input-number v-decorator="['edition_id']" placeholder="Input edition id" />
+          <a-input-number :min="0" v-decorator="['edition_id']" placeholder="Input edition id" />
         </a-form-item>
 
         <a-form-item label="Title:">

@@ -53,7 +53,7 @@
       >
         <h3>Search</h3>
         <a-form-item label="Reader ID:">
-          <a-input-number v-decorator="['reader_id']" placeholder="Input reader id" />
+          <a-input-number :min="0" v-decorator="['reader_id']" placeholder="Input reader id" />
         </a-form-item>
 
         <a-form-item label="Reader name:">

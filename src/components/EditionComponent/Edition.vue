@@ -41,7 +41,7 @@
         <h3>Search</h3>
 
         <a-form-item label="Edition ID:">
-          <a-input-number v-decorator="['edition_id']" placeholder="Input edition id" />
+          <a-input-number :min="0" v-decorator="['edition_id']" placeholder="Input edition id" />
         </a-form-item>
 
         <a-form-item label="Book Title:">

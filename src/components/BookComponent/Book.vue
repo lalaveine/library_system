@@ -113,7 +113,7 @@
         <h3>Search</h3>
 
         <a-form-item label="Book ID:">
-          <a-input-number v-decorator="['book-book_id']" placeholder="Input book id" />
+          <a-input-number :min="0" v-decorator="['book-book_id']" placeholder="Input book id" />
         </a-form-item>
 
         <a-form-item label="Book title:">
