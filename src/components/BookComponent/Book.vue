@@ -24,7 +24,7 @@
           />
         </a-form-item>
 
-        <a-form-item label="BBK:">
+        <a-form-item label="ББК:">
           <a-input
             v-decorator="['bbk', { rules: [{ required: true, message: 'Please input bbk' }] }]"
             placeholder="Input bbk"
@@ -111,6 +111,11 @@
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
+
+        <a-form-item label="Book ID:">
+          <a-input-number v-decorator="['book-book_id']" placeholder="Input book id" />
+        </a-form-item>
+
         <a-form-item label="Book title:">
           <a-input v-decorator="['book_title']" placeholder="Input book" />
         </a-form-item>
@@ -119,7 +124,7 @@
           <a-input v-decorator="['isbn']" placeholder="Input ISBN" />
         </a-form-item>
 
-        <a-form-item label="BBK:">
+        <a-form-item label="ББК:">
           <a-input v-decorator="['bbk']" placeholder="Input bbk" />
         </a-form-item>
         <a-form-item label="Author name:">
@@ -190,6 +195,7 @@ export default {
     "a-button": Button,
     "a-form": Form,
     "a-input": Input,
+    "a-input-number": InputNumber,
     "a-form-item": Form.Item,
     "a-table": Table,
     "a-date-picker": DatePicker,
@@ -215,6 +221,10 @@ export default {
         const { data } = response;
         this.data = data;
       });
+    },
+    resetSearch() {
+      this.searchForm.resetFields();
+      this.getData();
     },
     handleSearchSubmit(e) {
       e.preventDefault();

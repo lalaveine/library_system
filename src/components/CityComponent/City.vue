@@ -110,6 +110,10 @@ export default {
         this.data = data;
       });
     },
+    resetSearch() {
+      this.searchForm.resetFields();
+      this.getData();
+    },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
