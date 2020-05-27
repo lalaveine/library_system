@@ -113,7 +113,7 @@ module.exports = function (app, client) {
                 if (key == 'reader-reader_id' || key == 'edition_id') {
                     query += `${key.replace('-','.')}=${req.query[key]} AND `
                 } else if (key == 'take_date' || key == 'return_date') {
-                    // query += ` date_trunc('day', ${key})='${req.query[key].substring(0, req.query[key].indexOf("T"))}' AND `
+                    query += ` date_trunc('day', ${key})='${req.query[key].substring(0, req.query[key].indexOf("T"))}' AND `
                 }
                 else {
                     query += `${key}='${req.query[key]}' AND `

@@ -181,9 +181,11 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (values["take_date"]) {
-          values["take_date"] = moment(values["take_date"]).toISOString();
+          values["take_date"] = moment(new Date(values["take_date"]).setHours(12, 0, 0)).toISOString();
         }
-      
+        if (values["return_date"]) {
+          values["return_date"] = moment(new Date(values["return_date"]).setHours(12, 0, 0)).toISOString();
+        }
         if (!err) {
           (async () => { let link = "/journal?";
           
@@ -219,10 +221,10 @@ export default {
     async handleInputSubmit(e) {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
-        values["take_date"] = moment(new Date().setHours(12, 0, 0));
+        values["take_date"] = moment(new Date().setHours(12, 0, 0)).toISOString();
         values["return_date"] = moment(
           new Date(values["return_date"]).setHours(12, 0, 0)
-        );
+        ).toISOString();
         console.log(values);
         if (!err) {
           await axios
@@ -262,10 +264,10 @@ export default {
       form.validateFields((err, values) => {
         values["take_date"] = moment(
           new Date(values["take_date"]).setHours(12, 0, 0)
-        );
+        ).toISOString();
         values["return_date"] = moment(
           new Date(values["return_date"]).setHours(12, 0, 0)
-        );
+        ).toISOString();
         console.log(values);
         if (!err) {
           (async () =>
