@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/authors`).then(response => {
+      await axios.get(`/authors`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -140,7 +140,7 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           console.log(values);
-          (async () => { let link = "http://localhost:5000/authors?";
+          (async () => { let link = "/authors?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -171,7 +171,7 @@ export default {
         if (!err) {
           (async () =>
             axios
-              .post("http://localhost:5000/authors", Object.values(values))
+              .post("/authors", Object.values(values))
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -209,7 +209,7 @@ export default {
           (async () =>
             await axios
               .put(
-                `http://localhost:5000/authors/${values.author_id}`,
+                `/authors/${values.author_id}`,
                 Object.values(values)
               )
               .then(res =>
@@ -251,7 +251,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/authors/${id}`)
+            .delete(`/authors/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",

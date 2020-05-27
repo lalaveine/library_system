@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/journal`).then(response => {
+      await axios.get(`/journal`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -168,7 +168,7 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         values["take_date"] = moment(values["take_date"]).toISOString();
         if (!err) {
-          (async () => { let link = "http://localhost:5000/journal?";
+          (async () => { let link = "/journal?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -202,7 +202,7 @@ export default {
         console.log(values);
         if (!err) {
           await axios
-            .post("http://localhost:5000/journal", Object.values(values))
+            .post("/journal", Object.values(values))
             .then(res => {
               this.openNotificationWithIcon(
                 "success",
@@ -247,7 +247,7 @@ export default {
           (async () =>
             await axios
               .put(
-                `http://localhost:5000/journal/${values.entry_id}`,
+                `/journal/${values.entry_id}`,
                 Object.values(values)
               )
               .then(res =>
@@ -289,7 +289,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/journal/${id}`)
+            .delete(`/journal/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",

@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/editions`).then(response => {
+      await axios.get(`/editions`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -143,7 +143,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          (async () => { let link = "http://localhost:5000/editions?";
+          (async () => { let link = "/editions?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -174,7 +174,7 @@ export default {
           console.log(values);
           (async () =>
             await axios
-              .post("http://localhost:5000/editions", values)
+              .post("/editions", values)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -211,7 +211,7 @@ export default {
           (async () =>
             await axios
               .put(
-                `http://localhost:5000/editions/${values.edition_id}`,
+                `/editions/${values.edition_id}`,
                 values
               )
               .then(res =>
@@ -253,7 +253,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/editions/${id}`)
+            .delete(`/editions/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",

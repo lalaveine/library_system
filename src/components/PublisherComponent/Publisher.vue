@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/publishers`).then(response => {
+      await axios.get(`/publishers`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -136,7 +136,7 @@ export default {
       this.searchForm.validateFields((err, values) => {
         if (!err) {
           (async () => {
-            let link = "http://localhost:5000/publishers?";
+            let link = "/publishers?";
             for (let key in values) {
               if (values[key]) {
                 link += `${key}=${values[key]}&`;
@@ -167,7 +167,7 @@ export default {
         if (!err) {
           (async () =>
             await axios
-              .post("http://localhost:5000/publisher", Object.values(values))
+              .post("/publisher", Object.values(values))
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -204,7 +204,7 @@ export default {
           (async () =>
             await axios
               .put(
-                `http://localhost:5000/publishers/${values.publisher_id}`,
+                `/publishers/${values.publisher_id}`,
                 Object.values(values)
               )
               .then(res =>
@@ -246,7 +246,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/publishers/${id}`)
+            .delete(`/publishers/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",

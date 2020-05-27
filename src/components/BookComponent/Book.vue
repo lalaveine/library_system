@@ -217,7 +217,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/books`).then(response => {
+      await axios.get(`/books`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -230,7 +230,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          (async () => { let link = "http://localhost:5000/books?";
+          (async () => { let link = "/books?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -284,7 +284,7 @@ export default {
 
           (async () =>
             axios
-              .post("http://localhost:5000/books", data)
+              .post("/books", data)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -343,7 +343,7 @@ export default {
         if (!err) {
           (async () =>
             await axios
-              .put(`http://localhost:5000/books/${values.book_id}`, data)
+              .put(`/books/${values.book_id}`, data)
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -383,7 +383,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/books/${id}`)
+            .delete(`/books/${id}`)
             .then(res =>
               openNotificationWithIcon("success", "Success", "Book is deleted!")
             )
