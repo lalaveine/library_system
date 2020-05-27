@@ -59,7 +59,6 @@ module.exports = function (app, client) {
             query = query.slice(0, -4);
         };
         query += 'GROUP BY book.book_id'
-        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Book is not found.")
@@ -94,7 +93,6 @@ module.exports = function (app, client) {
             };
             query = query.slice(0, -4);
         };
-        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Edition is not found.")
@@ -125,7 +123,6 @@ module.exports = function (app, client) {
             };
             query = query.slice(0, -4);
         };
-        console.log(query);
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Journal entry is not found.")

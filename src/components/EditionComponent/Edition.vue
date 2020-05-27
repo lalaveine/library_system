@@ -130,7 +130,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`/editions`).then(response => {
+      await axios.get(`http://localhost:5000/editions`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -143,7 +143,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          (async () => { let link = "/editions?";
+          (async () => { let link = "http://localhost:5000/editions?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;

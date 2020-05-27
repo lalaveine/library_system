@@ -171,7 +171,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`/journal`).then(response => {
+      await axios.get(`http://localhost:5000/journal`).then(response => {
         const { data } = response;
         this.data = data;
         console.log(data)
@@ -226,7 +226,7 @@ export default {
         console.log(values);
         if (!err) {
           await axios
-            .post("/journal", Object.values(values))
+            .post("http://localhost:5000/journal", values)
             .then(res => {
               this.openNotificationWithIcon(
                 "success",

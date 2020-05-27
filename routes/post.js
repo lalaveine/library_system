@@ -11,9 +11,22 @@ module.exports = function (app, client) {
 
     app.post('/journal', async (req, res) => {
         console.log(req.body)
-        await client.query('INSERT INTO journal (reader_id, edition_id, take_date, return_date) VALUES($1,$2,$4,$3)', req.body)
-            .then(() => { res.status(200).send() })
+        await client.query(`
+                INSERT INTO 
+                    journal (reader_id, edition_id, take_date, return_date, returned) 
+                VALUES($1, $2, $3, $4, $5)`
+            , [
+                req.body['reader_id']
+                , req.body['edition_id']
+                , req.body['take_date']
+                , req.body['return_date']
+                , false
+            ]).then(async () => {
+                await client.query(`UPDATE book_edition SET taken = $1 WHERE edition_id=$2`, [true, req.body['edition_id']]); 
+                res.status(200).send(); 
+            })
             .catch((err) => {
+                console.log(err)
                 res.status(500).send(err)
             });
     });
