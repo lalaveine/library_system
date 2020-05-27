@@ -56,7 +56,6 @@ module.exports = function (app, client) {
             query = query.slice(0, -4);
         };
         query += 'GROUP BY book.book_id'
-        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Book is not found.")
@@ -149,7 +148,19 @@ module.exports = function (app, client) {
     });
 
     app.get('/libraries', async (req, res) => {
-        let query = 'SELECT library_name, library_id, library_address, city_name, library_email FROM library, city WHERE city.city_id = library.city_id';
+        let query = `
+            SELECT 
+                library_name
+                , library_id
+                , library_address
+                , city_name
+                , library_email 
+                , (SELECT COUNT(*) FROM book_edition WHERE book_edition.library_id = library.library_id) AS book_count
+            FROM 
+                library
+                , city 
+            WHERE city.city_id = library.city_id`;
+
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {

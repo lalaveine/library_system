@@ -293,6 +293,12 @@ export const libraryColumns = [
     align: "center",
   },
   {
+    title: "Book Count",
+    dataIndex: "book_count",
+    key: "book_count",
+    align: "center",
+  },
+  {
     title: "Actions",
     dataIndex: "actions",
     key: "actions",
