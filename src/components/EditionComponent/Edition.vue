@@ -134,7 +134,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          let link = "http://localhost:5000/editions?";
+          (async () => { let link = "http://localhost:5000/editions?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -154,6 +154,7 @@ export default {
           } else {
             this.data = [];
           }
+        })();
         }
       });
     },

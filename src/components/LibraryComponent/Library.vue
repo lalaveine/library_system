@@ -147,10 +147,20 @@ export default {
             }
             link = link.slice(0, -1);
 
-            const response = await axios.get(link, values);
-            const { data } = response;
+            const response = await axios.get(link, values).catch(err => {
+            this.openNotificationWithIcon(
+              "warning",
+              "Warning",
+              err.response.data
+            );
+          });
+          if (response) {
+            let { data } = response;
             this.data = data;
-          })();
+          } else {
+            this.data = [];
+          }
+        })();
         }
       });
     },

@@ -16,7 +16,7 @@ module.exports = function (app, client) {
         };
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
-            res.status(404).send()
+            res.status(404).send("Readers is not found.");
         } else {
             res.send(rows);    
         }
@@ -46,6 +46,11 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
+                if (key == 'book-book_id') {
+                    query += `${key.replace('-','.')}=${req.query[key]} AND `
+                } else {
+                    query += `${key}='${req.query[key]}' AND `
+                }
                 query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `;
             };
             query = query.slice(0, -4);
@@ -77,7 +82,11 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                if (key == 'edition_id') {
+                    query += `${key}=${req.query[key]} AND `
+                } else {
+                    query += `${key}='${req.query[key]}' AND `
+                }
             };
             query = query.slice(0, -4);
         };
@@ -100,7 +109,11 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {
-                query += `${key.replace('-','.')} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                if (key == 'reader-reader_id' || key == 'edition_id') {
+                    query += `${key.replace('-','.')}=${req.query[key]} AND `
+                } else {
+                    query += `${key}='${req.query[key]}' AND `
+                }
             };
             query = query.slice(0, -4);
         };
@@ -117,7 +130,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' WHERE '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                query += `${key}='${req.query[key]}' AND `
             };
             query = query.slice(0, -4);
         };
@@ -134,7 +147,7 @@ module.exports = function (app, client) {
         if (!_.isEmpty(req.query)) {
             query += ' AND '
             for (key in req.query) {
-                query += `${key} = ${isNaN(Number(req.query[key])) ? `'${req.query[key]}'` : req.query[key] } AND `
+                query += `${key}='${req.query[key]}' AND `
             };
             query = query.slice(0, -4);
         };

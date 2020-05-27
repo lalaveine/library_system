@@ -157,8 +157,12 @@ export default {
                 "Reader is not found."
               )
             );
-          const { data } = response;
-          this.data = data;
+          if (response) {
+            let { data } = response;
+            this.data = data;
+          } else {
+            this.data = [];
+          }
            })();
         }
       });

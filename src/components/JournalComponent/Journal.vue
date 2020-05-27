@@ -167,7 +167,7 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         values["take_date"] = moment(values["take_date"]).toISOString();
         if (!err) {
-          let link = "http://localhost:5000/journal?";
+          (async () => { let link = "http://localhost:5000/journal?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
@@ -187,6 +187,7 @@ export default {
           } else {
             this.data = [];
           }
+        })();
         }
       });
     },
