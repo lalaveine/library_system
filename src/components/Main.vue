@@ -65,6 +65,7 @@ h2 {
   display: flex;
   margin: 10px;
   flex-direction: column;
+
 }
 
 .ant-btn{
