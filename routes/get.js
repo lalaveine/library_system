@@ -100,7 +100,7 @@ module.exports = function (app, client) {
     });
 
     app.get('/journal', async (req, res) => { 
-        let query = `SELECT entry_id, reader.reader_id, reader_name, reader_mid_name, reader_surname, journal.edition_id, book_title, take_date, return_date 
+        let query = `SELECT entry_id, reader.reader_id, reader_name, reader_mid_name, reader_surname, journal.edition_id, book_title, take_date, return_date, returned 
                     FROM journal, reader, book 
                     WHERE book.book_id = (
                         SELECT book_id from book_edition 
@@ -112,12 +112,16 @@ module.exports = function (app, client) {
             for (key in req.query) {
                 if (key == 'reader-reader_id' || key == 'edition_id') {
                     query += `${key.replace('-','.')}=${req.query[key]} AND `
-                } else {
+                } else if (key == 'take_date' || key == 'return_date') {
+                    // query += ` date_trunc('day', ${key})='${req.query[key].substring(0, req.query[key].indexOf("T"))}' AND `
+                }
+                else {
                     query += `${key}='${req.query[key]}' AND `
                 }
             };
             query = query.slice(0, -4);
         };
+        console.log(query);
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Journal entry is not found.")

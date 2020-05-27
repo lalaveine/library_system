@@ -76,6 +76,14 @@
           <a-date-picker v-decorator="['return_date']" placeholder="Input return date" />
         </a-form-item>
 
+        <a-form-item label="Returned">
+          <a-checkbox v-decorator="['returned']" :defaultChecked="false" />
+        </a-form-item>
+
+        <a-form-item label="Nor returned">
+          <a-checkbox v-decorator="['not_returned']" :defaultChecked="false" />
+        </a-form-item>
+
         <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
           <div class="buttons">
           <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
@@ -128,6 +136,7 @@ import {
   Modal,
   DatePicker,
   InputNumber,
+  Checkbox,
   notification
 } from "ant-design-vue";
 import { journalColumns as columns, dateFormat } from "@/constants.js";
@@ -144,6 +153,7 @@ export default {
     "a-table": Table,
     "a-date-picker": DatePicker,
     "a-modal": Modal,
+    "a-checkbox": Checkbox,
     "journal-update-form": JournalUpdateForm
   },
   data() {
@@ -161,23 +171,34 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`/journal`).then(response => {
+      await axios.get(`http://localhost:5000/journal`).then(response => {
         const { data } = response;
         this.data = data;
+        console.log(data)
       });
     },
     handleSearchSubmit(e) {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
-        values["take_date"] = moment(values["take_date"]).toISOString();
+        if (values["take_date"]) {
+          values["take_date"] = moment(values["take_date"]).toISOString();
+        }
+      
         if (!err) {
-          (async () => { let link = "/journal?";
+          (async () => { let link = "http://localhost:5000/journal?";
+          
+          if (values['not_returned']) {
+            values['returned'] = values['not_returned'];
+            delete values['not_returned'];
+          }
+          
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
             }
           }
           link = link.slice(0, -1);
+          console.log(values)
           const response = await axios.get(link, values).catch(err => {
             this.openNotificationWithIcon(
               "warning",
