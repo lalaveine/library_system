@@ -6,7 +6,7 @@
       <a-form
         :form="inputForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
@@ -25,15 +25,17 @@
           />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form-item>
       </a-form>
 
       <a-form
         :form="searchForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
@@ -54,8 +56,11 @@
           <a-checkbox v-decorator="['taken']" :defaultChecked="false" />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+            <a-button type="danger" @click="resetSearch()">Reset</a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -201,7 +206,10 @@ export default {
         if (!err) {
           (async () =>
             await axios
-              .put(`http://localhost:5000/editions/${values.edition_id}`, values)
+              .put(
+                `http://localhost:5000/editions/${values.edition_id}`,
+                values
+              )
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",

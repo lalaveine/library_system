@@ -6,7 +6,7 @@
       <a-form
         :form="inputForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
@@ -37,8 +37,10 @@
             placeholder="Input email"
           />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form-item>
       </a-form>
       <hr />
@@ -46,7 +48,7 @@
       <a-form
         :form="searchForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
@@ -69,8 +71,11 @@
         <a-form-item label="E-mail:">
           <a-input v-decorator="['reader_email']" placeholder="Input tittle" />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+            <a-button type="danger" @click="resetSearch()">Reset</a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -84,7 +89,10 @@
     />
     <a-table :columns="columns" :data-source="data" rowKey="reader_id">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.reader_id, getData, openNotificationWithIcon)">Delete</a-button>
+        <a-button
+          type="danger"
+          @click="showDeleteConfirm(record.reader_id, getData, openNotificationWithIcon)"
+        >Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -141,13 +149,13 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          console.log(values);
-          (async () => { let link = "http://localhost:5000/readers?";
-          for (let key in values) {
-            if (values[key]) {
-              link += `${key}=${values[key]}&`;
+          (async () => {
+            let link = "http://localhost:5000/readers?";
+            for (let key in values) {
+              if (values[key]) {
+                link += `${key}=${values[key]}&`;
+              }
             }
-          }
           link = link.slice(0, -1);
           const response = await axios.get(link, values)
             .catch(() =>
@@ -171,14 +179,15 @@ export default {
       e.preventDefault();
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
-          axios.post("http://localhost:5000/readers", Object.values(values))
+          axios
+            .post("http://localhost:5000/readers", Object.values(values))
             .then(res =>
-                  this.openNotificationWithIcon(
-                    "success",
-                    "Success",
-                    "Reader is added!"
-                  )
-                )
+              this.openNotificationWithIcon(
+                "success",
+                "Success",
+                "Reader is added!"
+              )
+            )
             .catch(err =>
               this.openNotificationWithIcon(
                 "error",
@@ -245,7 +254,8 @@ export default {
         okType: "danger",
         cancelText: "No",
         async onOk() {
-          await axios.delete(`http://localhost:5000/readers/${id}`)
+          await axios
+            .delete(`http://localhost:5000/readers/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",
@@ -259,9 +269,14 @@ export default {
                 "Error",
                 err.response.data.detail
               )
-            ).then(() => getData());
+            )
+            .then(() => getData());
         }
       });
+    },
+    resetSearch() {
+      this.searchForm.resetFields();
+      this.getData();
     },
     getButtonDisabled() {
       const fields = this.searchForm.getFieldsValue();

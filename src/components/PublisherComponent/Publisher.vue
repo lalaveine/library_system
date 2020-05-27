@@ -6,7 +6,7 @@
       <a-form
         :form="inputForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
@@ -30,8 +30,10 @@
             placeholder="Input email"
           />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form-item>
       </a-form>
       <hr />
@@ -39,7 +41,7 @@
       <a-form
         :form="searchForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
@@ -55,8 +57,11 @@
           <a-input v-decorator="['publisher_email']" placeholder="Input email" />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+            <a-button type="danger" @click="resetSearch()">Reset</a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
@@ -70,7 +75,10 @@
     />
     <a-table :columns="columns" :data-source="data" rowKey="publisher_id">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.publisher_id, getData, openNotificationWithIcon)">Delete</a-button>
+        <a-button
+          type="danger"
+          @click="showDeleteConfirm(record.publisher_id, getData, openNotificationWithIcon)"
+        >Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -127,28 +135,29 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields((err, values) => {
         if (!err) {
-          (async () => { let link = "http://localhost:5000/publishers?";
-          for (let key in values) {
-            if (values[key]) {
-              link += `${key}=${values[key]}&`;
+          (async () => {
+            let link = "http://localhost:5000/publishers?";
+            for (let key in values) {
+              if (values[key]) {
+                link += `${key}=${values[key]}&`;
+              }
             }
-          }
 
-          link = link.slice(0, -1);
-          const response = await axios.get(link, values).catch(err => {
-            this.openNotificationWithIcon(
-              "warning",
-              "Warning",
-              err.response.data
-            );
-          });
-          if (response) {
-            let { data } = response;
-            this.data = data;
-          } else {
-            this.data = [];
-          }
-        })();
+            link = link.slice(0, -1);
+            const response = await axios.get(link, values).catch(err => {
+              this.openNotificationWithIcon(
+                "warning",
+                "Warning",
+                err.response.data
+              );
+            });
+            if (response) {
+              let { data } = response;
+              this.data = data;
+            } else {
+              this.data = [];
+            }
+          })();
         }
       });
     },
@@ -176,7 +185,7 @@ export default {
               .then(() => {
                 this.getData();
               }))();
-              this.inputForm.resetFields();
+          this.inputForm.resetFields();
         }
       });
     },
@@ -239,19 +248,20 @@ export default {
           await axios
             .delete(`http://localhost:5000/publishers/${id}`)
             .then(res =>
-                openNotificationWithIcon(
-                  "success",
-                  "Success",
-                  "Publisher is deleted!"
-                )
+              openNotificationWithIcon(
+                "success",
+                "Success",
+                "Publisher is deleted!"
               )
-              .catch(err =>
-                openNotificationWithIcon(
-                  "error",
-                  "Error",
-                  err.response.data.detail
-                )
-              ).then(() => getData());
+            )
+            .catch(err =>
+              openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              )
+            )
+            .then(() => getData());
         }
       });
     },

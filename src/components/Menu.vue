@@ -1,6 +1,6 @@
 <template>
   <div style="menu" >
-    <a-button type="primary" style="margin-bottom: 16px" @click="toggleCollapsed">
+    <a-button type="primary" :style="collapsed ? 'width: 78px' : 'width: 130px'" @click="toggleCollapsed">
       <a-icon :type="collapsed ? 'menu-unfold' : 'menu-fold'" />
     </a-button>
     <a-menu

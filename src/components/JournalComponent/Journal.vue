@@ -32,7 +32,7 @@
         </a-form-item>
         <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
           <div class="buttons">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+          <div class="buttons"><a-button type="primary" html-type="submit">Submit</a-button></div>
           </div>
         </a-form-item>
       </a-form>
@@ -79,6 +79,7 @@
         <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
           <div class="buttons">
           <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
+          <a-button type="danger" @click="resetSearch()">Reset</a-button>
           </div>
         </a-form-item>
       </a-form>

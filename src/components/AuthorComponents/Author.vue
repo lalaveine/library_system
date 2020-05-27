@@ -6,7 +6,7 @@
       <a-form
         :form="inputForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleInputSubmit"
       >
         <h3>Input</h3>
@@ -19,7 +19,7 @@
 
         <a-form-item label="Middle name:">
           <a-input
-            v-decorator="['author_mid_name', { rules: [{ required: true, message: 'Please input author`s middle surname' }] }]"
+            v-decorator="['author_mid_name', { rules: [{ message: 'Please input author`s middle surname' }] }]"
             placeholder="Input author`s middle name"
           />
         </a-form-item>
@@ -30,8 +30,10 @@
             placeholder="Input author`s surname"
           />
         </a-form-item>
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit">Submit</a-button>
+          </div>
         </a-form-item>
       </a-form>
       <hr />
@@ -39,7 +41,7 @@
       <a-form
         :form="searchForm"
         :label-col="{ span: 5 }"
-        :wrapper-col="{ span: 8 }"
+        :wrapper-col="{ span: 12 }"
         @submit="handleSearchSubmit"
       >
         <h3>Search</h3>
@@ -55,22 +57,28 @@
           <a-input v-decorator="['author_surname']" placeholder="Input Surname" />
         </a-form-item>
 
-        <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
-          <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+        <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
+          <div class="buttons">
+            <a-button type="primary" html-type="submit" :disabled=" getButtonDisabled()">Search</a-button>
+            <a-button type="danger" @click="resetSearch()">Reset</a-button>
+          </div>
         </a-form-item>
       </a-form>
     </div>
     <author-update-form
-        ref="editForm"
-        :visible="visible"
-        v-bind="fields"
-        @cancel="handleCancel"
-        @update="handleUpdateSubmit"
-        @change="handleFormChange"
+      ref="editForm"
+      :visible="visible"
+      v-bind="fields"
+      @cancel="handleCancel"
+      @update="handleUpdateSubmit"
+      @change="handleFormChange"
     />
-    <a-table :columns="columns" :data-source="data" rowKey="author_id"> 
+    <a-table :columns="columns" :data-source="data" rowKey="author_id">
       <span class="action-buttons" slot="action" slot-scope="text, record">
-        <a-button type="danger" @click="showDeleteConfirm(record.author_id, getData, openNotificationWithIcon)">Delete</a-button>
+        <a-button
+          type="danger"
+          @click="showDeleteConfirm(record.author_id, getData, openNotificationWithIcon)"
+        >Delete</a-button>
         <a-button type="primary" @click="showUpdateModal(record)">Edit</a-button>
       </span>
     </a-table>
@@ -90,7 +98,7 @@ import {
   notification
 } from "ant-design-vue";
 import { authorColumns as columns, dateFormat } from "@/constants.js";
-import AuthorUpdateForm from './AuthorUpdateForm.vue'
+import AuthorUpdateForm from "./AuthorUpdateForm.vue";
 
 export default {
   name: "Author",
@@ -158,24 +166,25 @@ export default {
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
           (async () =>
-            axios.post("http://localhost:5000/authors", Object.values(values))
+            axios
+              .post("http://localhost:5000/authors", Object.values(values))
               .then(res =>
-                    this.openNotificationWithIcon(
-                      "success",
-                      "Success",
-                      "Author is added!"
-                    )
-                  )
+                this.openNotificationWithIcon(
+                  "success",
+                  "Success",
+                  "Author is added!"
+                )
+              )
               .catch(err =>
-                    this.openNotificationWithIcon(
-                      "error",
-                      "Error",
-                      err.response.data.detail
-                    )
-                  )
+                this.openNotificationWithIcon(
+                  "error",
+                  "Error",
+                  err.response.data.detail
+                )
+              )
               .then(() => {
                 this.getData();
-          }))();
+              }))();
           this.inputForm.resetFields();
         }
       });
@@ -240,19 +249,20 @@ export default {
           await axios
             .delete(`http://localhost:5000/authors/${id}`)
             .then(res =>
-                openNotificationWithIcon(
-                  "success",
-                  "Success",
-                  "Author is deleted!"
-                )
+              openNotificationWithIcon(
+                "success",
+                "Success",
+                "Author is deleted!"
               )
-              .catch(err =>
-                openNotificationWithIcon(
-                  "error",
-                  "Error",
-                  err.response.data.detail
-                )
-              ).then(() => getData());
+            )
+            .catch(err =>
+              openNotificationWithIcon(
+                "error",
+                "Error",
+                err.response.data.detail
+              )
+            )
+            .then(() => getData());
         }
       });
     },

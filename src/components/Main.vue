@@ -6,7 +6,6 @@
 </template>
 
 <script>
-// import SearchData from "@/components/SearchData.vue";
 import Menu from "@/components/Menu.vue";
 import "ant-design-vue/dist/antd.less";
 import router from '../router.js'
@@ -14,7 +13,6 @@ import router from '../router.js'
 export default {
   name: "main",
   components: {
-//    SearchData,
     Menu
   },
   router,
@@ -29,17 +27,12 @@ export default {
 
 .component{
     width: 100%;
+
 }
 
-/* hr {
-  border: none;
-  margin-bottom: 20px;
-  background-color: rgba(217, 217, 217, 0.5);
-  height: 1px;
-} */
-
 .content {
-  padding: 15px;
+  padding-left: 220px;
+  padding-top: 30px;
    width: 100%;
 display: flex;
   flex-direction: row;

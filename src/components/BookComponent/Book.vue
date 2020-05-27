@@ -24,7 +24,7 @@
           />
         </a-form-item>
 
-        <a-form-item label="Bbk:">
+        <a-form-item label="BBK:">
           <a-input
             v-decorator="['bbk', { rules: [{ required: true, message: 'Please input bbk' }] }]"
             placeholder="Input bbk"
@@ -89,7 +89,7 @@
 
           <a-form-item label="Author Middle Name:">
             <a-input
-              v-decorator="[`${k}author_mid_name`, { rules: [{ required: true, message: 'Please input author middle name' }] }]"
+              v-decorator="[`${k}author_mid_name`, { rules: [{ message: 'Please input author middle name' }] }]"
               placeholder="Input author middle name"
             />
           </a-form-item>
@@ -99,7 +99,7 @@
             <a-button type="dashed" @click="add">
               <a-icon type="plus" />Add author
             </a-button>
-            <a-button type="primary" html-type="submit">Submit</a-button>
+            <div class="buttons"><a-button type="primary" html-type="submit">Submit</a-button></div>
           </div>
         </a-form-item>
       </a-form>
@@ -119,7 +119,7 @@
           <a-input v-decorator="['isbn']" placeholder="Input ISBN" />
         </a-form-item>
 
-        <a-form-item label="Bbk:">
+        <a-form-item label="BBK:">
           <a-input v-decorator="['bbk']" placeholder="Input bbk" />
         </a-form-item>
         <a-form-item label="Author name:">
@@ -136,6 +136,7 @@
         <a-form-item :wrapper-col="{ span: 6, offset: 3 }">
           <div class="buttons">
             <a-button type="primary" html-type="submit" :disabled="getButtonDisabled()">Search</a-button>
+            <a-button type="danger" @click="resetSearch()">Reset</a-button>
           </div>
         </a-form-item>
       </a-form>

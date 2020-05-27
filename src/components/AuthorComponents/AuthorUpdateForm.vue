@@ -37,7 +37,7 @@
           v-decorator="[
                 'author_mid_name',
                 {
-                rules: [{ required: true, message: 'Please enter a middle name!' }],
+                rules: [{ message: 'Please enter a middle name!' }],
                 }
             ]"
           placeholder="Reader's middle name"
