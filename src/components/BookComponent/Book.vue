@@ -32,14 +32,14 @@
         </a-form-item>
         <a-form-item label="Publisher name:">
           <a-input
-            v-decorator="['publisher_name', { rules: [{ required: true, message: 'Please input book id' }] }]"
-            placeholder="Input book"
+            v-decorator="['publisher_name', { rules: [{ required: true, message: 'Please input publisher name' }] }]"
+            placeholder="Input publisher name"
           />
         </a-form-item>
-        <a-form-item label="Publisher year:">
+        <a-form-item label="Publishing year:">
           <a-input
-            v-decorator="['pub_year', { rules: [{ required: true, message: 'Please input book id' }] }]"
-            placeholder="Input book"
+            v-decorator="['pub_year', { rules: [{ required: true, message: 'Please input publishing year' }] }]"
+            placeholder="Input publishing year"
           />
         </a-form-item>
         <h3>Author 1:</h3>
@@ -126,6 +126,18 @@
 
         <a-form-item label="ББК:">
           <a-input v-decorator="['bbk']" placeholder="Input bbk" />
+        </a-form-item>
+        <a-form-item label="Publisher name:">
+          <a-input
+            v-decorator="['publisher_name']"
+            placeholder="Input publisher name"
+          />
+        </a-form-item>
+        <a-form-item label="Publishing year:">
+          <a-input
+            v-decorator="['pub_year']"
+            placeholder="Input publishing year"
+          />
         </a-form-item>
         <a-form-item label="Author name:">
           <a-input v-decorator="['author_name']" placeholder="Input author name" />
@@ -230,7 +242,7 @@ export default {
       e.preventDefault();
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
-          (async () => { let link = "/books?";
+          (async () => { let link = "http://localhost:5000/books?";
           for (let key in values) {
             if (values[key]) {
               link += `${key}=${values[key]}&`;
