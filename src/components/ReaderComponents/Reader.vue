@@ -140,7 +140,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/readers`).then(response => {
+      await axios.get(`/readers`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -150,7 +150,7 @@ export default {
       this.searchForm.validateFields(async (err, values) => {
         if (!err) {
           (async () => {
-            let link = "http://localhost:5000/readers?";
+            let link = "/readers?";
             for (let key in values) {
               if (values[key]) {
                 link += `${key}=${values[key]}&`;
@@ -180,7 +180,7 @@ export default {
       this.inputForm.validateFields(async (err, values) => {
         if (!err) {
           axios
-            .post("http://localhost:5000/readers", Object.values(values))
+            .post("/readers", Object.values(values))
             .then(res =>
               this.openNotificationWithIcon(
                 "success",
@@ -214,7 +214,7 @@ export default {
           (async () =>
             await axios
               .put(
-                `http://localhost:5000/readers/${values.reader_id}`,
+                `/readers/${values.reader_id}`,
                 Object.values(values)
               )
               .then(res =>
@@ -255,7 +255,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/readers/${id}`)
+            .delete(`/readers/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",

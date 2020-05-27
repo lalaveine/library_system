@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     async getData() {
-      await axios.get(`http://localhost:5000/libraries`).then(response => {
+      await axios.get(`/libraries`).then(response => {
         const { data } = response;
         this.data = data;
       });
@@ -151,7 +151,7 @@ export default {
       this.searchForm.validateFields((err, values) => {
         if (!err) {
           (async () => {
-            let link = "http://localhost:5000/libraries?";
+            let link = "/libraries?";
             for (let key in values) {
               if (values[key]) {
                 link += `${key}=${values[key]}&`;
@@ -182,7 +182,7 @@ export default {
         if (!err) {
           (async () =>
             await axios
-              .post("http://localhost:5000/library", Object.values(values))
+              .post("/library", Object.values(values))
               .then(res =>
                 this.openNotificationWithIcon(
                   "success",
@@ -219,7 +219,7 @@ export default {
           (async () =>
             await axios
               .put(
-                `http://localhost:5000/libraries/${values.library_id}`,
+                `/libraries/${values.library_id}`,
                 Object.values(values)
               )
               .then(res =>
@@ -261,7 +261,7 @@ export default {
         cancelText: "No",
         async onOk() {
           await axios
-            .delete(`http://localhost:5000/libraries/${id}`)
+            .delete(`/libraries/${id}`)
             .then(res =>
               openNotificationWithIcon(
                 "success",
