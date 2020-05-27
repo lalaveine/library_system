@@ -85,11 +85,12 @@ module.exports = function (app, client) {
                 if (key == 'edition_id') {
                     query += `${key}=${req.query[key]} AND `
                 } else {
-                    query += `${key}='${req.query[key]}' AND `
+                    query += `${key.replace('-','.')}='${req.query[key]}' AND `
                 }
             };
             query = query.slice(0, -4);
         };
+        console.log(query)
         const { rows } = await client.query(query);
         if (_.isEmpty(rows)) {
             res.status(404).send("Edition is not found.")
