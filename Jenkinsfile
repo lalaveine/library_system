@@ -12,9 +12,13 @@ pipeline {
 		sonarsource/sonar-scanner-cli exec /opt/sonar-scanner
              ''';
 
-	withSonarQubeEnv('sonarqube-server') {
-	    sh "${scannerHome}/bin/sonar-scanner"
-        }
+	withSonarQubeEnv('sonarqube-server', envOnly: true) {
+	    docker run \
+		--rm \
+		--net host \
+		-e SONAR_HOST_URL=env.SONAR_HOST_URL \
+		-v ${PWD}:/root/src  \
+		sonarsource/sonar-scanner-cli         }
       }
     }
   }
