@@ -4,6 +4,7 @@ pipeline {
     stage('sonarqube-test') {
       steps {
         withSonarQubeEnv('sonarqube-server') {
+	    sh "echo ${env.SONAR_AUTH_TOKEN}"
 	    sh '''
 		docker run \
 		--rm \
