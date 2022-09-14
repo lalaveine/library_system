@@ -9,7 +9,7 @@ pipeline {
 		--rm \
 		--net host \
 		-e SONAR_HOST_URL=${env.SONAR_HOST_URL} \
-		-e SONAR_LOGIN=${env.SONAR_AUTH_TOKEN}\
+		-e SONAR_LOGIN=${env.SONAR_AUTH_TOKEN} \
     		-v "${PWD}:/usr/src" \
 		sonarsource/sonar-scanner-cli -Dsonar.projectKey=jenkins-test
              ''';        
