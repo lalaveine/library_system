@@ -5,7 +5,7 @@ pipeline {
       steps {
         withSonarQubeEnv('sonarqube-server') {
 	    sh "pwd"
-	    sh "ls ${WORKSPACE}"
+	    sh "ls -al ${WORKSPACE}"
 	    sh """ 
 	#	docker run \
 		--rm \
