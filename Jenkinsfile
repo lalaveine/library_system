@@ -9,7 +9,8 @@ pipeline {
 		--rm \
 		--net host \
 		-e SONAR_HOST_URL=http://192.168.0.137:9050 \
-		-v ${PWD}:/root/src  \
+		-e SONAR_LOGIN="sqp_bafe85345310621bab12ffb803c602e1180c28fe" \
+    		-v "${PWD}:/usr/src" \
 		sonarsource/sonar-scanner-cli
              ''';        
 	}
