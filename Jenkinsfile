@@ -3,7 +3,8 @@ pipeline {
   stages {
     stage('sonarqube-test') {
       steps {
-	withSonarQubeEnv('sonarqube-server', envOnly: true) {
+	stage('sonar-test') {
+          withSonarQubeEnv('sonarqube-server', envOnly: true) {
 	    sh '''
 		docker run \
 		--rm \
@@ -13,6 +14,8 @@ pipeline {
 		sonarsource/sonar-scanner-cli exec /opt/sonar-scanner
              ''';        
 	}
+	}
+	
       }
     }
   }
