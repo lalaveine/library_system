@@ -4,7 +4,7 @@ pipeline {
     stage('sonarqube-test') {
       steps {
         withSonarQubeEnv('sonarqube-server') {
-	    sh "echo ${PWD}"
+	    sh "pwd"
 	    sh """ 
 	#	docker run \
 		--rm \
