@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('sonarqube-test') {
       steps {
-	stage('sonar-test') {
           withSonarQubeEnv('sonarqube-server', envOnly: true) {
 	    sh '''
 		docker run \
@@ -19,4 +18,3 @@ pipeline {
       }
     }
   }
-}
