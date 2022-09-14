@@ -4,6 +4,7 @@ pipeline {
     stage('sonarqube-test') {
       steps {
         withSonarQubeEnv('sonarqube-server') {
+	    sh "env"
 	    sh '''
 		docker run \
 		--rm \
