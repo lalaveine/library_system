@@ -7,7 +7,6 @@ const client = require('./db/index');
 const bodyParser = require('body-parser');
 
 
-kdshg
 app.listen(PORT, (request, response) => {
 	console.log('hello from express frame work it\'s working from ' + PORT)
 });
