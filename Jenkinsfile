@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('sonarqube-test') {
       steps {
+        withSonarQubeEnv('sonarqube-server') {
 	    sh '''
 		docker run \
 		--rm \
@@ -12,7 +13,7 @@ pipeline {
     		-v "${PWD}:/usr/src" \
 		sonarsource/sonar-scanner-cli -Dsonar.projectKey=jenkins-test
              ''';        
-	
+	}	
       }
 }
 	stage("Quality Gate"){
