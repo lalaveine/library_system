@@ -8,7 +8,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "less": "^3.11.1",
     "less-loader": "^6.1.0",
     "lodash": "^4.17.19",
